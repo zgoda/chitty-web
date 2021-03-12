@@ -1,6 +1,7 @@
 import { h, render } from 'preact';
 import 'preact/devtools';
-import { App } from './App.js';
+
+import { App } from './app';
 import './style.scss';
 
 const root = document.getElementById('root');
