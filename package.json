@@ -7,6 +7,10 @@
     "name": "Jarek Zgoda",
     "url": "https://github.com/zgoda"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zgoda/chitty-web"
+  },
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build",
@@ -51,6 +55,7 @@
   },
   "dependencies": {
     "hoofd": "^1.1.0",
+    "idb-keyval": "^5.0.4",
     "preact": "^10.5.12",
     "preact-feather": "^4.1.0",
     "sockette": "^2.0.6",

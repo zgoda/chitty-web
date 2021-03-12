@@ -3,6 +3,9 @@ import { useState, useEffect, useRef } from 'preact/hooks';
 import { useLang, useTitle, useMeta } from 'hoofd/preact';
 import Sockette from 'sockette';
 
+import {
+  UserNameOperator, RememberUserOperator, WsHostOperator
+} from './services/state';
 import { Chat } from './components/chat';
 import { Sidebar } from './components/sidebar';
 
@@ -15,6 +18,23 @@ const App = ((): JSX.Element => {
   useMeta({ name: 'author', content: 'Jarek Zgoda' });
 
   const [wsHost, setWsHost] = useState('');
+  const [userName, setUserName] = useState('');
+  const [rememberUser, setRememberUser] = useState(false);
+
+  const hostOp = {
+    hostName: wsHost,
+    setHostName: setWsHost,
+  };
+
+  const uNameOp = {
+    name: userName,
+    setName: setUserName,
+  };
+
+  const rememberOp = {
+    remember: rememberUser,
+    setRemember: setRememberUser,
+  };
 
   const messageReceived = ((e: MessageEvent) => {
     console.log(JSON.parse(e.data));
@@ -41,12 +61,18 @@ const App = ((): JSX.Element => {
     <div class="container grid-md">
       <h1>{appTitle}</h1>
       <div class="columns">
-        <div class="column col-8">
-          <Chat />
-        </div>
-        <div class="column col-4">
-          <Sidebar setWsHost={setWsHost} />
-        </div>
+        <WsHostOperator.Provider value={hostOp}>
+          <UserNameOperator.Provider value={uNameOp}>
+            <div class="column col-8">
+              <Chat />
+            </div>
+            <div class="column col-4">
+              <RememberUserOperator.Provider value={rememberOp}>
+                <Sidebar />
+              </RememberUserOperator.Provider>
+            </div>
+          </UserNameOperator.Provider>
+        </WsHostOperator.Provider>
       </div>
     </div>
   );

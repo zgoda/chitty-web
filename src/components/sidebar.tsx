@@ -1,21 +1,16 @@
 import { h, JSX } from 'preact';
 
 import { ConnectionBox } from './connection';
+import { UserDataBox } from './userdata';
 
-type TSidebarProps = {
-  setWsHost: TStringStateSetter,
-}
-
-const Sidebar = (({ setWsHost }: TSidebarProps): JSX.Element => {
+const Sidebar = ((): JSX.Element => {
   return (
     <div>
-      <ConnectionBox setWsHost={setWsHost} />
+      <ConnectionBox />
       <div>
         Topics
       </div>
-      <div>
-        User info
-      </div>
+      <UserDataBox />
     </div>
   );
 });
