@@ -1,11 +1,15 @@
 {
   "include": ["src", "types"],
   "compilerOptions": {
+    "lib": [
+      "dom"
+    ],
     "module": "esnext",
     "target": "esnext",
     "moduleResolution": "node",
     "jsx": "preserve",
     "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
     "baseUrl": "./",
     /* paths - import rewriting/resolving */
     "paths": {
