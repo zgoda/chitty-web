@@ -1,11 +1,11 @@
 import { h, JSX } from 'preact';
 
-import { ConnectionManager } from './connection';
+import { ConnectionBox } from './connection';
 
 const Sidebar = ((): JSX.Element => {
   return (
     <div>
-      <ConnectionManager />
+      <ConnectionBox />
       <div>
         Topics
       </div>

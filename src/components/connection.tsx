@@ -1,6 +1,10 @@
 import { h, JSX } from 'preact';
+import { useContext } from 'preact/hooks';
 
-const ConnectionManager = ((): JSX.Element => {
+import { WSProvider } from '../ws';
+
+const ConnectionBox = ((): JSX.Element => {
+  const ws = useContext(WSProvider);
   return (
     <div>
       Connection
@@ -8,4 +12,4 @@ const ConnectionManager = ((): JSX.Element => {
   );
 });
 
-export { ConnectionManager };
+export { ConnectionBox };
