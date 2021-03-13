@@ -1,13 +1,20 @@
 import { h, JSX } from 'preact';
 import { useState, useEffect, useRef } from 'preact/hooks';
 import { useLang, useTitle, useMeta } from 'hoofd/preact';
+import { getMany, set } from 'idb-keyval';
 import Sockette from 'sockette';
 
 import {
-  UserNameOperator, RememberUserOperator, WsHostOperator
+  UserNameOperator, RememberUserOperator, WsHostOperator, USER_ID_KEY, USER_NAME_KEY
 } from './services/state';
 import { Chat } from './components/chat';
 import { Sidebar } from './components/sidebar';
+
+type TRegPayload = {
+  type: string,
+  value: string,
+  key?: string,
+};
 
 const App = ((): JSX.Element => {
 
@@ -19,6 +26,7 @@ const App = ((): JSX.Element => {
 
   const [wsHost, setWsHost] = useState('');
   const [userName, setUserName] = useState('');
+  const [userKey, setUserKey] = useState('');
   const [rememberUser, setRememberUser] = useState(false);
 
   const hostOp = {
@@ -36,22 +44,50 @@ const App = ((): JSX.Element => {
     setRemember: setRememberUser,
   };
 
+  useEffect(() => {
+    const updateUserData = (async () => {
+      const [savedName, savedKey] = await getMany([USER_NAME_KEY, USER_ID_KEY]);
+      if (savedName) {
+        setUserName(savedName);
+      }
+      if (savedKey) {
+        setUserKey(savedKey);
+      }
+    });    
+    updateUserData();
+  }, []);
+
+  useEffect(() => {
+    if (userName !== '') {
+      const payload: TRegPayload = { type: 'reg', value: userName };
+      if (userKey !== '') {
+        payload['key'] = userKey;
+      }
+      const ws = wsRef.current as Sockette;
+      if (ws !== undefined) {
+        ws.json(payload);
+      }
+    }
+  }, [userName, userKey, wsHost]);
+
   const messageReceived = ((e: MessageEvent) => {
-    console.log(JSON.parse(e.data));
+    const data = JSON.parse(e.data);
+    console.log(data);
+    if (data.type === 'reg') {
+      const key = data.key || '';
+      if (key !== '' && rememberUser) {
+        set(USER_ID_KEY, key);
+      }
+    }
   });
 
   const wsRef = useRef();
-
-  const connectionMade = (() => {
-    (wsRef.current as Sockette).json({ type: 'reg', value: 'jarek' });
-  });
 
   useEffect(() => {
     if (wsHost !== '') {
       const wsUrl = `ws://${wsHost}`;
       wsRef.current = new Sockette(wsUrl, {
         onmessage: messageReceived,
-        onopen: connectionMade,
       });
     }    
   // eslint-disable-next-line react-hooks/exhaustive-deps

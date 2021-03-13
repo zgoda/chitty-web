@@ -8,4 +8,9 @@ const RememberUserOperator =
 const WsHostOperator =
   createContext({ hostName: '', setHostName: (value: string) => { return } });
 
-export { UserNameOperator, RememberUserOperator, WsHostOperator };
+const USER_NAME_KEY = 'screenName';
+const USER_ID_KEY = 'userId';
+
+export {
+  UserNameOperator, RememberUserOperator, WsHostOperator, USER_ID_KEY, USER_NAME_KEY
+};

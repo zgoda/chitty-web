@@ -1,7 +1,10 @@
 import { h, JSX } from 'preact';
 import { useState, useContext } from 'preact/hooks';
+import { set, del } from 'idb-keyval';
 
-import { UserNameOperator, RememberUserOperator } from '../services/state';
+import {
+  UserNameOperator, RememberUserOperator, USER_NAME_KEY
+} from '../services/state';
 
 const UserDataBox = ((): JSX.Element => {
 
@@ -9,17 +12,22 @@ const UserDataBox = ((): JSX.Element => {
   const rememberOp = useContext(RememberUserOperator);
 
   const [name, setName] = useState('');
-  const [remenberKey, setRememberKey] = useState(true);
+  const [rememberKey, setRememberKey] = useState(true);
 
-  const handleSubmit = ((e: Event) => {
+  const handleSubmit = (async (e: Event) => {
     e.preventDefault();
     nameOp.setName(name);
-    rememberOp.setRemember(remenberKey);
+    rememberOp.setRemember(rememberKey);
+    if (rememberKey) {
+      await set(USER_NAME_KEY, name);
+    } else {
+      await del(USER_NAME_KEY);
+    }
   });
 
   const handleNameInput = ((e: Event) => setName((e.target as HTMLInputElement).value));
 
-  const toggleRememberKey = (() => setRememberKey(!remenberKey));
+  const toggleRememberKey = (() => setRememberKey(!rememberKey));
 
   return (
     <div>
@@ -38,10 +46,11 @@ const UserDataBox = ((): JSX.Element => {
         </div>
         <div class="form-group">
           <label class="form-switch">
-            <input type="checkbox" checked={remenberKey} onClick={toggleRememberKey} />
+            <input type="checkbox" checked={rememberKey} onClick={toggleRememberKey} />
             <i class="form-icon" /> remember my data
           </label>
         </div>
+        <button class="btn btn-primary" type="submit">Save</button>
       </form>
     </div>
   );
