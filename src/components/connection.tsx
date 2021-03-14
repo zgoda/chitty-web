@@ -33,7 +33,7 @@ const ConnectionBox = ((): JSX.Element => {
               value={host}
               onInput={handleHostInputChange}
             />
-            <button class="btn btn-action" type="submit">
+            <button class="btn btn-primary btn-action" type="submit">
               <CloudLightning />
             </button>
           </div>

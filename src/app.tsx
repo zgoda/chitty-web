@@ -9,6 +9,7 @@ import {
 } from './services/state';
 import { Chat } from './components/chat';
 import { Sidebar } from './components/sidebar';
+import { ConnectionInfo } from './components/conninfo';
 
 type TRegPayload = {
   type: string,
@@ -28,6 +29,7 @@ const App = ((): JSX.Element => {
   const [userName, setUserName] = useState('');
   const [userKey, setUserKey] = useState('');
   const [rememberUser, setRememberUser] = useState(false);
+  const [connectionState, setConnectionState] = useState('not connected');
 
   const hostOp = {
     hostName: wsHost,
@@ -58,7 +60,7 @@ const App = ((): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    if (userName !== '') {
+    if (userName !== '' && connectionState === 'connected') {
       const payload: TRegPayload = { type: 'reg', value: userName };
       if (userKey !== '') {
         payload['key'] = userKey;
@@ -68,7 +70,7 @@ const App = ((): JSX.Element => {
         ws.json(payload);
       }
     }
-  }, [userName, userKey, wsHost]);
+  }, [userName, userKey, wsHost, connectionState]);
 
   const messageReceived = ((e: MessageEvent) => {
     const data = JSON.parse(e.data);
@@ -81,6 +83,10 @@ const App = ((): JSX.Element => {
     }
   });
 
+  const connectionOpened = (() => {
+    setConnectionState('connected');
+  });
+
   const wsRef = useRef();
 
   useEffect(() => {
@@ -88,6 +94,7 @@ const App = ((): JSX.Element => {
       const wsUrl = `ws://${wsHost}`;
       wsRef.current = new Sockette(wsUrl, {
         onmessage: messageReceived,
+        onopen: connectionOpened,
       });
     }    
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -100,6 +107,7 @@ const App = ((): JSX.Element => {
         <WsHostOperator.Provider value={hostOp}>
           <UserNameOperator.Provider value={uNameOp}>
             <div class="column col-8">
+              <ConnectionInfo state={connectionState} host={wsHost} />
               <Chat />
             </div>
             <div class="column col-4">
