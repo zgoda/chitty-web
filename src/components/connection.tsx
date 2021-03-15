@@ -1,18 +1,31 @@
-import { h, JSX } from 'preact';
-import { useState, useContext } from 'preact/hooks';
+import { FunctionComponent, h, JSX } from 'preact';
+import { useState } from 'preact/hooks';
 import { CloudLightning } from 'preact-feather';
+import { connect } from 'redux-zero/preact';
 
-import { WsHostOperator } from '../services/state';
+import { actions } from '../state';
 
-const ConnectionBox = ((): JSX.Element => {
+type TConnectionBoxProps = {
+  hostName: string,
+  setHostName: (value: string) => void,
+}
 
-  const operator = useContext(WsHostOperator);
+type TMapProps = {
+  hostName: string,
+};
 
-  const [host, setHost] = useState('');
+const mapToProps = ({ hostName }: TMapProps) => ({ hostName });
+
+const ConnectionBoxBase =
+    (({ hostName, setHostName }: TConnectionBoxProps): JSX.Element => {
+
+  const [host, setHost] = useState(hostName);
+
+  debugger;
 
   const handleSubmit = ((ev: Event) => {
     ev.preventDefault();
-    operator.setHostName(host);
+    setHostName(host);
   });
 
   const handleHostInputChange =
@@ -42,5 +55,8 @@ const ConnectionBox = ((): JSX.Element => {
     </div>
   );
 });
+
+const ConnectionBox =
+  connect(mapToProps, actions)(ConnectionBoxBase as FunctionComponent);
 
 export { ConnectionBox };

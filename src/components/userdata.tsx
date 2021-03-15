@@ -1,24 +1,34 @@
-import { h, JSX } from 'preact';
-import { useState, useContext } from 'preact/hooks';
+import { FunctionComponent, h, JSX } from 'preact';
+import { useState } from 'preact/hooks';
 import { set, del } from 'idb-keyval';
 import { Save } from 'preact-feather';
+import { connect } from 'redux-zero/preact';
 
-import {
-  UserNameOperator, RememberUserOperator, USER_NAME_KEY
-} from '../services/state';
+import { USER_NAME_KEY } from '../services/state';
+import { actions } from '../state';
 
-const UserDataBox = ((): JSX.Element => {
+type TUserDataProps = {
+  userName: string,
+  setUserName: (value: string) => void,
+  setRemember: (value: boolean) => void,
+}
 
-  const nameOp = useContext(UserNameOperator);
-  const rememberOp = useContext(RememberUserOperator);
+type TMapProps = {
+  userName: string,
+};
 
-  const [name, setName] = useState('');
+const mapToProps = ({ userName }: TMapProps) => ({ userName });
+
+const UserDataBoxBase =
+    (({ userName, setUserName, setRemember }: TUserDataProps): JSX.Element => {
+
+  const [name, setName] = useState(userName);
   const [rememberKey, setRememberKey] = useState(true);
 
   const handleSubmit = (async (e: Event) => {
     e.preventDefault();
-    nameOp.setName(name);
-    rememberOp.setRemember(rememberKey);
+    setUserName(name);
+    setRemember(rememberKey);
     if (rememberKey) {
       await set(USER_NAME_KEY, name);
     } else {
@@ -60,5 +70,7 @@ const UserDataBox = ((): JSX.Element => {
     </div>
   );
 });
+
+const UserDataBox = connect(mapToProps, actions)(UserDataBoxBase as FunctionComponent);
 
 export { UserDataBox };

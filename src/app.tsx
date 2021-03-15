@@ -1,13 +1,12 @@
-import { h, JSX } from 'preact';
+import { FunctionComponent, h, JSX } from 'preact';
 import { useState, useEffect, useRef } from 'preact/hooks';
 import { useLang, useTitle, useMeta } from 'hoofd/preact';
 import { getMany, set } from 'idb-keyval';
+import { connect } from 'redux-zero/preact';
 import Sockette from 'sockette';
 
-import {
-  UserNameOperator, RememberUserOperator, WsHostOperator, MessageTextOperator,
-  USER_ID_KEY, USER_NAME_KEY,
-} from './services/state';
+import { USER_ID_KEY, USER_NAME_KEY } from './services/state';
+import { actions, store } from './state';
 import { Chat } from './components/chat';
 import { Sidebar } from './components/sidebar';
 import { ConnectionInfo } from './components/conninfo';
@@ -18,7 +17,36 @@ type TRegPayload = {
   key?: string,
 };
 
-const App = ((): JSX.Element => {
+type TStringSetter = (value: string) => void;
+
+type TAppProps = {
+  userName: string,
+  rememberUserData: boolean,
+  hostName: string,
+  connState: string,
+  ws: Sockette | null,
+  setUserName: TStringSetter,
+  setConnState: TStringSetter,
+  setWs: (value: Sockette) => void,
+}
+
+type TMapProps = {
+  userName: string,
+  rememberUserData: boolean,
+  hostName: string,
+  connState: string,
+  ws: Sockette | null,
+}
+
+const mapToProps =
+  ({ userName, rememberUserData, hostName, connState, ws }: TMapProps) =>
+    ({ userName, rememberUserData, hostName, connState, ws });
+
+const AppBase =
+    (({
+      userName, rememberUserData, hostName, connState, ws,
+      setUserName, setConnState, setWs
+    }: TAppProps): JSX.Element => {
 
   const appTitle = 'Chitty chat';
 
@@ -26,29 +54,20 @@ const App = ((): JSX.Element => {
   useTitle(appTitle);
   useMeta({ name: 'author', content: 'Jarek Zgoda' });
 
-  const [wsHost, setWsHost] = useState('');
-  const [userName, setUserName] = useState('');
   const [userKey, setUserKey] = useState('');
-  const [rememberUser, setRememberUser] = useState(false);
-  const [connectionState, setConnectionState] = useState('not connected');
-  const [messageText, setMessageText] = useState('');
 
-  const hostOp = {
-    hostName: wsHost,
-    setHostName: setWsHost,
+  const storeWatch = ({ hostName }) => {
+    if (hostName !== '' && hostName !== undefined) {
+      const wsUrl = `ws://${hostName}`;
+      const ws = new Sockette(wsUrl, {
+        onmessage: messageReceived,
+        onopen: connectionOpened,
+      });
+      setWs(ws);
+    }
   };
 
-  const uNameOp = {
-    name: userName,
-    setName: setUserName,
-  };
-
-  const rememberOp = {
-    remember: rememberUser,
-    setRemember: setRememberUser,
-  };
-
-  const msgTextOp = { messageText, setMessageText };
+  store.subscribe(storeWatch);
 
   useEffect(() => {
     const updateUserData = (async () => {
@@ -61,10 +80,10 @@ const App = ((): JSX.Element => {
       }
     });    
     updateUserData();
-  }, []);
+  }, [setUserName]);
 
   useEffect(() => {
-    if (userName !== '' && connectionState === 'connected') {
+    if (userName !== '' && connState === 'connected') {
       const payload: TRegPayload = { type: 'reg', value: userName };
       if (userKey !== '') {
         payload['key'] = userKey;
@@ -74,58 +93,52 @@ const App = ((): JSX.Element => {
         ws.json(payload);
       }
     }
-  }, [userName, userKey, wsHost, connectionState]);
+  }, [userName, userKey, hostName, connState]);
 
   const messageReceived = ((e: MessageEvent) => {
     const data = JSON.parse(e.data);
     console.log(data);
     if (data.type === 'reg') {
       const key = data.key || '';
-      if (key !== '' && rememberUser) {
+      if (key !== '' && rememberUserData) {
         set(USER_ID_KEY, key);
       }
     }
   });
 
   const connectionOpened = (() => {
-    setConnectionState('connected');
+    setConnState('connected');
   });
 
   const wsRef = useRef();
 
   useEffect(() => {
-    if (wsHost !== '') {
-      const wsUrl = `ws://${wsHost}`;
+    if (hostName !== '' && hostName !== undefined) {
+      const wsUrl = `ws://${hostName}`;
       wsRef.current = new Sockette(wsUrl, {
         onmessage: messageReceived,
         onopen: connectionOpened,
       });
     }    
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wsHost]);
+  }, [hostName]);
 
   return (
     <div class="container grid-md">
       <h1>{appTitle}</h1>
       <div class="columns">
-        <WsHostOperator.Provider value={hostOp}>
-          <UserNameOperator.Provider value={uNameOp}>
-            <div class="column col-8">
-              <ConnectionInfo state={connectionState} host={wsHost} />
-              <MessageTextOperator.Provider value={msgTextOp}>
-                <Chat />
-              </MessageTextOperator.Provider>
-            </div>
-            <div class="column col-4">
-              <RememberUserOperator.Provider value={rememberOp}>
-                <Sidebar />
-              </RememberUserOperator.Provider>
-            </div>
-          </UserNameOperator.Provider>
-        </WsHostOperator.Provider>
+        <div class="column col-8">
+          <ConnectionInfo />
+          <Chat />
+        </div>
+        <div class="column col-4">
+          <Sidebar />
+        </div>
       </div>
     </div>
   );
 });
+
+const App = connect(mapToProps, actions)(AppBase as FunctionComponent);
 
 export { App };
