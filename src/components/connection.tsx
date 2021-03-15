@@ -5,9 +5,9 @@ import { connect } from 'redux-zero/preact';
 
 import { actions } from '../state';
 
-type TConnectionBoxProps = {
+type TProps = {
   hostName: string,
-  setHostName: (value: string) => void,
+  setHostName: ValueSetter<string>,
 }
 
 type TMapProps = {
@@ -17,11 +17,9 @@ type TMapProps = {
 const mapToProps = ({ hostName }: TMapProps) => ({ hostName });
 
 const ConnectionBoxBase =
-    (({ hostName, setHostName }: TConnectionBoxProps): JSX.Element => {
+    (({ hostName, setHostName }: TProps): JSX.Element => {
 
   const [host, setHost] = useState(hostName);
-
-  debugger;
 
   const handleSubmit = ((ev: Event) => {
     ev.preventDefault();

@@ -1,26 +1,36 @@
 import createStore from 'redux-zero';
+
 import type Sockette from 'sockette';
 
-const store = createStore({
+interface State {
+  userName: string,
+  rememberUserData: boolean,
+  hostName: string,
+  messageText: string,
+  connState: string,
+  ws: Sockette | null,
+}
+
+const initialState: State = {
   userName: '',
   rememberUserData: false,
   hostName: '',
   messageText: '',
   connState: 'not connected',
   ws: null,
+};
+
+const store = createStore(initialState);
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+const actions = () => ({
+  setUserName: (_state: unknown, value: string) => ({ userName: value }),
+  setHostName: (_state: unknown, value: string) => ({ hostName: value }),
+  setRemember: (_state: unknown, value: boolean) => ({ rememberUserData: value }),
+  setMessage: (_state: unknown, value: string) => ({ messageText: value }),
+  setConnState: (_state: unknown, value: string) => ({ connState: value }),
+  setWs: (_state: unknown, value: Sockette | null) => ({ ws: value }),
 });
 
-type TBoolRecord = Record<string, boolean>;
-type TStringRecord = Record<string, string>;
-type TSocketteRecord = Record<string, Sockette>;
-
-const actions = {
-  setUserName: ({ value }: TStringRecord): TStringRecord => ({ userName: value }),
-  setHostName: ({ value }: TStringRecord): TStringRecord => ({ hostName: value }),
-  setRemember: ({ value }: TBoolRecord): TBoolRecord => ({ rememberUserData: value }),
-  setMessage: ({ value }: TStringRecord): TStringRecord => ({ messageText: value }),
-  setConnState: ({ value }: TStringRecord): TStringRecord => ({ connState: value }),
-  setWs: ({ value }: TSocketteRecord): TSocketteRecord => ({ ws: value }),
-};
 
 export { store, actions };

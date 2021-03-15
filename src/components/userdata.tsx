@@ -4,7 +4,7 @@ import { set, del } from 'idb-keyval';
 import { Save } from 'preact-feather';
 import { connect } from 'redux-zero/preact';
 
-import { USER_NAME_KEY } from '../services/state';
+import { USER_NAME_KEY } from '../services/storage';
 import { actions } from '../state';
 
 type TUserDataProps = {

@@ -1,52 +1,37 @@
 import { FunctionComponent, h, JSX } from 'preact';
-import { useState, useEffect, useRef } from 'preact/hooks';
 import { useLang, useTitle, useMeta } from 'hoofd/preact';
-import { getMany, set } from 'idb-keyval';
 import { connect } from 'redux-zero/preact';
+import { get } from 'idb-keyval';
 import Sockette from 'sockette';
 
-import { USER_ID_KEY, USER_NAME_KEY } from './services/state';
-import { actions, store } from './state';
+import { messageReceived, connectionOpened, registerUser } from './services/message';
+import { USER_ID_KEY } from './services/storage';
+import { actions } from './state';
 import { Chat } from './components/chat';
 import { Sidebar } from './components/sidebar';
 import { ConnectionInfo } from './components/conninfo';
 
-type TRegPayload = {
-  type: string,
-  value: string,
-  key?: string,
-};
-
-type TStringSetter = (value: string) => void;
-
-type TAppProps = {
+type AppProps = {
   userName: string,
-  rememberUserData: boolean,
   hostName: string,
   connState: string,
   ws: Sockette | null,
-  setUserName: TStringSetter,
-  setConnState: TStringSetter,
-  setWs: (value: Sockette) => void,
+  setWs: ValueSetter<Sockette | null>,
 }
 
-type TMapProps = {
+type MapProps = {
   userName: string,
-  rememberUserData: boolean,
   hostName: string,
   connState: string,
   ws: Sockette | null,
 }
 
 const mapToProps =
-  ({ userName, rememberUserData, hostName, connState, ws }: TMapProps) =>
-    ({ userName, rememberUserData, hostName, connState, ws });
+  ({ userName, hostName, connState, ws }: MapProps) =>
+    ({ userName, hostName, connState, ws });
 
 const AppBase =
-    (({
-      userName, rememberUserData, hostName, connState, ws,
-      setUserName, setConnState, setWs
-    }: TAppProps): JSX.Element => {
+    (({ userName, hostName, connState, ws, setWs }: AppProps): JSX.Element => {
 
   const appTitle = 'Chitty chat';
 
@@ -54,74 +39,20 @@ const AppBase =
   useTitle(appTitle);
   useMeta({ name: 'author', content: 'Jarek Zgoda' });
 
-  const [userKey, setUserKey] = useState('');
-
-  const storeWatch = ({ hostName }) => {
-    if (hostName !== '' && hostName !== undefined) {
-      const wsUrl = `ws://${hostName}`;
-      const ws = new Sockette(wsUrl, {
-        onmessage: messageReceived,
-        onopen: connectionOpened,
-      });
-      setWs(ws);
-    }
+  const wsHandlers = {
+    onopen: connectionOpened,
+    onmessage: messageReceived,
   };
 
-  store.subscribe(storeWatch);
+  if (userName !== '' && hostName !== '' && ws === null) {
+    const webSocket = new Sockette(`ws://${hostName}`, wsHandlers);
+    setWs(webSocket);
+  }
 
-  useEffect(() => {
-    const updateUserData = (async () => {
-      const [savedName, savedKey] = await getMany([USER_NAME_KEY, USER_ID_KEY]);
-      if (savedName) {
-        setUserName(savedName);
-      }
-      if (savedKey) {
-        setUserKey(savedKey);
-      }
-    });    
-    updateUserData();
-  }, [setUserName]);
-
-  useEffect(() => {
-    if (userName !== '' && connState === 'connected') {
-      const payload: TRegPayload = { type: 'reg', value: userName };
-      if (userKey !== '') {
-        payload['key'] = userKey;
-      }
-      const ws = wsRef.current as Sockette;
-      if (ws !== undefined) {
-        ws.json(payload);
-      }
-    }
-  }, [userName, userKey, hostName, connState]);
-
-  const messageReceived = ((e: MessageEvent) => {
-    const data = JSON.parse(e.data);
-    console.log(data);
-    if (data.type === 'reg') {
-      const key = data.key || '';
-      if (key !== '' && rememberUserData) {
-        set(USER_ID_KEY, key);
-      }
-    }
-  });
-
-  const connectionOpened = (() => {
-    setConnState('connected');
-  });
-
-  const wsRef = useRef();
-
-  useEffect(() => {
-    if (hostName !== '' && hostName !== undefined) {
-      const wsUrl = `ws://${hostName}`;
-      wsRef.current = new Sockette(wsUrl, {
-        onmessage: messageReceived,
-        onopen: connectionOpened,
-      });
-    }    
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hostName]);
+  if (connState === 'connected' && ws !== null) {
+    get(USER_ID_KEY)
+      .then((key) => registerUser(ws, userName, key));
+  }
 
   return (
     <div class="container grid-md">
