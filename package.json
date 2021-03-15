@@ -56,7 +56,7 @@
   "dependencies": {
     "hoofd": "^1.1.0",
     "idb-keyval": "^5.0.4",
-    "preact": "^10.5.12",
+    "preact": "^10.5.13",
     "preact-feather": "^4.1.0",
     "sockette": "^2.0.6",
     "spectre.css": "^0.5.9"

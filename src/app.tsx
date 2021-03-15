@@ -5,7 +5,8 @@ import { getMany, set } from 'idb-keyval';
 import Sockette from 'sockette';
 
 import {
-  UserNameOperator, RememberUserOperator, WsHostOperator, USER_ID_KEY, USER_NAME_KEY
+  UserNameOperator, RememberUserOperator, WsHostOperator, MessageTextOperator,
+  USER_ID_KEY, USER_NAME_KEY,
 } from './services/state';
 import { Chat } from './components/chat';
 import { Sidebar } from './components/sidebar';
@@ -30,6 +31,7 @@ const App = ((): JSX.Element => {
   const [userKey, setUserKey] = useState('');
   const [rememberUser, setRememberUser] = useState(false);
   const [connectionState, setConnectionState] = useState('not connected');
+  const [messageText, setMessageText] = useState('');
 
   const hostOp = {
     hostName: wsHost,
@@ -45,6 +47,8 @@ const App = ((): JSX.Element => {
     remember: rememberUser,
     setRemember: setRememberUser,
   };
+
+  const msgTextOp = { messageText, setMessageText };
 
   useEffect(() => {
     const updateUserData = (async () => {
@@ -108,7 +112,9 @@ const App = ((): JSX.Element => {
           <UserNameOperator.Provider value={uNameOp}>
             <div class="column col-8">
               <ConnectionInfo state={connectionState} host={wsHost} />
-              <Chat />
+              <MessageTextOperator.Provider value={msgTextOp}>
+                <Chat />
+              </MessageTextOperator.Provider>
             </div>
             <div class="column col-4">
               <RememberUserOperator.Provider value={rememberOp}>

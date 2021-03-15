@@ -7,10 +7,13 @@ const RememberUserOperator =
   createContext({ remember: false, setRemember: (value: boolean) => { return } });
 const WsHostOperator =
   createContext({ hostName: '', setHostName: (value: string) => { return } });
+const MessageTextOperator =
+  createContext({ messageText: '', setMessageText: (value: string) => { return } });
 
 const USER_NAME_KEY = 'screenName';
 const USER_ID_KEY = 'userId';
 
 export {
-  UserNameOperator, RememberUserOperator, WsHostOperator, USER_ID_KEY, USER_NAME_KEY
+  UserNameOperator, RememberUserOperator, WsHostOperator, MessageTextOperator,
+  USER_ID_KEY, USER_NAME_KEY,
 };
