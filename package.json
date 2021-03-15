@@ -59,7 +59,8 @@
     "preact": "^10.5.13",
     "preact-feather": "^4.1.0",
     "sockette": "^2.0.6",
-    "spectre.css": "^0.5.9"
+    "spectre.css": "^0.5.9",
+    "unistore": "^3.5.2"
   },
   "devDependencies": {
     "@prefresh/snowpack": "^3.1.0",
