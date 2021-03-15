@@ -8,6 +8,7 @@ interface State {
   hostName: string,
   messageText: string,
   connState: string,
+  userRegistered: boolean,
   ws: Sockette | null,
 }
 
@@ -17,6 +18,7 @@ const initialState: State = {
   hostName: '',
   messageText: '',
   connState: 'not connected',
+  userRegistered: false,
   ws: null,
 };
 
@@ -29,6 +31,7 @@ const actions = () => ({
   setRemember: (_state: unknown, value: boolean) => ({ rememberUserData: value }),
   setMessage: (_state: unknown, value: string) => ({ messageText: value }),
   setConnState: (_state: unknown, value: string) => ({ connState: value }),
+  setUserRegistered: (_state: unknown, value: boolean) => ({ userRegistered: value }),
   setWs: (_state: unknown, value: Sockette | null) => ({ ws: value }),
 });
 

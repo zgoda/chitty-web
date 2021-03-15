@@ -4,34 +4,35 @@ import { connect } from 'redux-zero/preact';
 import { get } from 'idb-keyval';
 import Sockette from 'sockette';
 
-import { messageReceived, connectionOpened, registerUser } from './services/message';
+import {
+  messageReceived, connectionOpened, registerUser, connectionClosed
+} from './services/message';
 import { USER_ID_KEY } from './services/storage';
 import { actions } from './state';
 import { Chat } from './components/chat';
 import { Sidebar } from './components/sidebar';
 import { ConnectionInfo } from './components/conninfo';
 
-type AppProps = {
-  userName: string,
-  hostName: string,
-  connState: string,
-  ws: Sockette | null,
-  setWs: ValueSetter<Sockette | null>,
-}
-
 type MapProps = {
   userName: string,
   hostName: string,
   connState: string,
+  userRegistered: boolean,
   ws: Sockette | null,
 }
 
+type AppProps = MapProps & {
+  setWs: ValueSetter<Sockette | null>,
+}
+
 const mapToProps =
-  ({ userName, hostName, connState, ws }: MapProps) =>
-    ({ userName, hostName, connState, ws });
+  ({ userName, hostName, connState, userRegistered, ws }: MapProps) =>
+    ({ userName, hostName, connState, userRegistered, ws });
 
 const AppBase =
-    (({ userName, hostName, connState, ws, setWs }: AppProps): JSX.Element => {
+    (({
+      userName, hostName, connState, userRegistered, ws, setWs
+    }: AppProps): JSX.Element => {
 
   const appTitle = 'Chitty chat';
 
@@ -42,6 +43,7 @@ const AppBase =
   const wsHandlers = {
     onopen: connectionOpened,
     onmessage: messageReceived,
+    onclose: connectionClosed,
   };
 
   if (userName !== '' && hostName !== '' && ws === null) {
@@ -49,7 +51,7 @@ const AppBase =
     setWs(webSocket);
   }
 
-  if (connState === 'connected' && ws !== null) {
+  if (connState === 'connected' && ws !== null && !userRegistered) {
     get(USER_ID_KEY)
       .then((key) => registerUser(ws, userName, key));
   }

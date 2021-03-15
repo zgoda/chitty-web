@@ -7,20 +7,19 @@ import { connect } from 'redux-zero/preact';
 import { USER_NAME_KEY } from '../services/storage';
 import { actions } from '../state';
 
-type TUserDataProps = {
-  userName: string,
-  setUserName: (value: string) => void,
-  setRemember: (value: boolean) => void,
-}
-
-type TMapProps = {
+type MapProps = {
   userName: string,
 };
 
-const mapToProps = ({ userName }: TMapProps) => ({ userName });
+type Props = MapProps & {
+  setUserName: ValueSetter<string>,
+  setRemember: ValueSetter<boolean>,
+}
+
+const mapToProps = ({ userName }: MapProps) => ({ userName });
 
 const UserDataBoxBase =
-    (({ userName, setUserName, setRemember }: TUserDataProps): JSX.Element => {
+    (({ userName, setUserName, setRemember }: Props): JSX.Element => {
 
   const [name, setName] = useState(userName);
   const [rememberKey, setRememberKey] = useState(true);

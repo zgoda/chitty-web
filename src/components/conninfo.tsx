@@ -1,16 +1,14 @@
 import { FunctionComponent, h, JSX } from 'preact';
 import { connect } from 'redux-zero/preact';
 
-type TConnectionInfoProps = {
+type Props = {
   connState: string,
   hostName: string,
 };
 
-const mapToProps =
-  ({ connState, hostName }: TConnectionInfoProps) => ({ connState, hostName });
+const mapToProps = ({ connState, hostName }: Props) => ({ connState, hostName });
 
-const ConnectionInfoBase = 
-    (({ connState, hostName }: TConnectionInfoProps): JSX.Element => {
+const ConnectionInfoBase = (({ connState, hostName }: Props): JSX.Element => {
   return (
     <div>
       <p>

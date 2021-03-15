@@ -6,14 +6,14 @@ import { store, actions } from '../state';
 
 import type Sockette from 'sockette';
 
-type TMsgRegPayload = {
+type MsgRegPayload = {
   type: string,
   value: string,
   key?: string,
 };
 
 function registerUser(ws: Sockette, name: string, key: string | null): void {
-  const payload: TMsgRegPayload = {
+  const payload: MsgRegPayload = {
     type: 'reg', value: name,
   };
   if (key !== null) {
@@ -32,6 +32,7 @@ function messageReceived(e: MessageEvent): void {
     if (key !== '' && state.rememberUserData) {
       set(USER_ID_KEY, key);
     }
+    boundActions.setUserRegistered(true);
   }
 }
 
@@ -39,4 +40,10 @@ function connectionOpened(): void {
   boundActions.setConnState('connected');
 }
 
-export { TMsgRegPayload, registerUser, messageReceived, connectionOpened };
+function connectionClosed(): void {
+  boundActions.setConnState('not connected');
+  boundActions.setUserRegistered(false);
+  boundActions.setWs(null);
+}
+
+export { registerUser, messageReceived, connectionOpened, connectionClosed };

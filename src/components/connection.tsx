@@ -5,19 +5,18 @@ import { connect } from 'redux-zero/preact';
 
 import { actions } from '../state';
 
-type TProps = {
-  hostName: string,
-  setHostName: ValueSetter<string>,
-}
-
-type TMapProps = {
+type MapProps = {
   hostName: string,
 };
 
-const mapToProps = ({ hostName }: TMapProps) => ({ hostName });
+type Props = MapProps & {
+  setHostName: ValueSetter<string>,
+}
+
+const mapToProps = ({ hostName }: MapProps) => ({ hostName });
 
 const ConnectionBoxBase =
-    (({ hostName, setHostName }: TProps): JSX.Element => {
+    (({ hostName, setHostName }: Props): JSX.Element => {
 
   const [host, setHost] = useState(hostName);
 
