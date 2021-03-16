@@ -1,18 +1,18 @@
-import { h, JSX } from 'preact';
+import { FunctionalComponent, h } from 'preact';
 import { connect } from 'redux-zero/preact';
 
-type Props = {
+interface Props {
   connState: ConnectionState,
   hostName: string,
   userRegistered: boolean,
-};
+}
 
 const mapToProps =
   ({ connState, hostName, userRegistered }: Props) =>
     ({ connState, hostName, userRegistered });
 
-const ConnectionInfoBase =
-    (({ connState, hostName, userRegistered }: Props): JSX.Element => {
+const ConnectionInfoBase: FunctionalComponent<Props> =
+    (({ connState, hostName, userRegistered }) => {
   const registrationStatus = userRegistered ? 'registered' : 'not registered';
   return (
     <div>

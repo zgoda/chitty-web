@@ -1,6 +1,6 @@
-import { h, JSX } from 'preact';
+import { FunctionalComponent, h } from 'preact';
 
-const MessageList = ((): JSX.Element => {
+const MessageList: FunctionalComponent = (() => {
   return (
     <div>
       Messages

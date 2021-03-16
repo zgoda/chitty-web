@@ -1,25 +1,25 @@
-import { h, JSX } from 'preact';
+import { FunctionalComponent, h } from 'preact';
 import { connect } from 'redux-zero/preact';
 import { Rss, MoreVertical } from 'preact-feather';
 
 import { actions } from '../state';
 
-type MapProps = {
+interface MapProps {
   currentTopic: string,
   subscribedTopics: Array<string>,
 }
 
-type Props = MapProps & {
+interface Props extends MapProps {
   setCurrentTopic: ValueSetter<string>,
   setSubscribedTopics: ValueSetter<Array<string>>,
 }
 
-type TopicItemProps = {
+interface TopicItemProps {
   topic: string,
   selectTopic: (topic: string) => void;
 }
 
-const TopicItem = (({ topic, selectTopic }: TopicItemProps): JSX.Element => {
+const TopicItem: FunctionalComponent<TopicItemProps> = (({ topic, selectTopic }) => {
 
   const handleActionClick = ((e: Event) => {
     e.preventDefault();
@@ -47,8 +47,8 @@ const mapTopProps =
   ({ currentTopic, subscribedTopics }: MapProps) =>
     ({ currentTopic, subscribedTopics });
 
-const TopicListBoxBase =
-    (({ currentTopic, subscribedTopics, setCurrentTopic }: Props): JSX.Element => {
+const TopicListBoxBase: FunctionalComponent<Props> =
+    (({ currentTopic, subscribedTopics, setCurrentTopic }) => {
 
   const showCurrentTopic = currentTopic.length > 0;
 

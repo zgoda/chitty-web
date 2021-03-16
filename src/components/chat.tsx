@@ -1,9 +1,9 @@
-import { h, JSX } from 'preact';
+import { FunctionalComponent, h } from 'preact';
 
 import { MessageEditor } from './messageeditor';
 import { MessageList } from './messagelist';
 
-const Chat = ((): JSX.Element => {
+const Chat: FunctionalComponent = (() => {
   return (
     <div>
       <MessageList />

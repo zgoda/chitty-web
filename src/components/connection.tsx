@@ -1,22 +1,21 @@
-import { h, JSX } from 'preact';
+import { FunctionalComponent, h } from 'preact';
 import { useState } from 'preact/hooks';
 import { CloudLightning } from 'preact-feather';
 import { connect } from 'redux-zero/preact';
 
 import { actions } from '../state';
 
-type MapProps = {
+interface MapProps {
   hostName: string,
-};
+}
 
-type Props = MapProps & {
+interface Props extends MapProps {
   setHostName: ValueSetter<string>,
 }
 
 const mapToProps = ({ hostName }: MapProps) => ({ hostName });
 
-const ConnectionBoxBase =
-    (({ hostName, setHostName }: Props): JSX.Element => {
+const ConnectionBoxBase: FunctionalComponent<Props> = (({ hostName, setHostName }) => {
 
   const [host, setHost] = useState(hostName);
 
@@ -58,7 +57,6 @@ const ConnectionBoxBase =
   );
 });
 
-const ConnectionBox =
-  connect(mapToProps, actions)(ConnectionBoxBase);
+const ConnectionBox = connect(mapToProps, actions)(ConnectionBoxBase);
 
 export { ConnectionBox };

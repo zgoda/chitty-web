@@ -1,10 +1,10 @@
-import { h, JSX } from 'preact';
+import { FunctionalComponent, h } from 'preact';
 
 import { ConnectionBox } from './connection';
 import { UserDataBox } from './userdata';
 import { TopicListBox } from './topics';
 
-const Sidebar = ((): JSX.Element => {
+const Sidebar: FunctionalComponent = (() => {
   return (
     <div>
       <ConnectionBox />

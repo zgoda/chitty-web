@@ -13,7 +13,7 @@ import { Chat } from './components/chat';
 import { Sidebar } from './components/sidebar';
 import { ConnectionInfo } from './components/conninfo';
 
-type MapProps = {
+interface MapProps {
   userName: string,
   hostName: string,
   connState: string,
@@ -21,7 +21,7 @@ type MapProps = {
   ws: Sockette | null,
 }
 
-type AppProps = MapProps & {
+interface AppProps extends MapProps {
   setWs: ValueSetter<Sockette | null>,
 }
 

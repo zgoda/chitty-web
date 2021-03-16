@@ -1,4 +1,4 @@
-import { h, JSX } from 'preact';
+import { h, FunctionalComponent } from 'preact';
 import { useState } from 'preact/hooks';
 import { set, del } from 'idb-keyval';
 import { Save } from 'preact-feather';
@@ -7,19 +7,19 @@ import { connect } from 'redux-zero/preact';
 import { USER_NAME_KEY } from '../services/storage';
 import { actions } from '../state';
 
-type MapProps = {
+interface MapProps {
   userName: string,
-};
+}
 
-type Props = MapProps & {
+interface Props extends MapProps {
   setUserName: ValueSetter<string>,
   setRemember: ValueSetter<boolean>,
 }
 
 const mapToProps = ({ userName }: MapProps) => ({ userName });
 
-const UserDataBoxBase =
-    (({ userName, setUserName, setRemember }: Props): JSX.Element => {
+const UserDataBoxBase: FunctionalComponent<Props> =
+    (({ userName, setUserName, setRemember }) => {
 
   const [name, setName] = useState(userName);
   const [rememberKey, setRememberKey] = useState(true);

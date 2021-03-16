@@ -1,4 +1,4 @@
-import { h, JSX } from 'preact';
+import { FunctionalComponent, h } from 'preact';
 import { useState } from 'preact/hooks';
 import { Send } from 'preact-feather';
 import type Sockette from 'sockette';
@@ -7,14 +7,14 @@ import { connect } from 'redux-zero/preact';
 import { actions } from '../state';
 import { sendChatMessage } from '../services/message';
 
-type MapProps = {
+interface MapProps {
   connState: ConnectionState,
   userRegistered: boolean,
   ws: Sockette,
   messages: Array<string>,
-};
+}
 
-type Props = MapProps & {
+interface Props extends MapProps {
   setMessages: ValueSetter<Array<string>>,
 }
 
@@ -22,8 +22,8 @@ const mapToProps =
   ({ connState, userRegistered, ws, messages }: MapProps) =>
     ({ connState, userRegistered, ws, messages });
 
-const MessageEditorBase =
-    (({ connState, userRegistered, ws, messages, setMessages }: Props): JSX.Element => {
+const MessageEditorBase: FunctionalComponent<Props> =
+    (({ connState, userRegistered, ws, messages, setMessages }) => {
 
   const [messageText, setMessageText] = useState('');
 

@@ -8,17 +8,17 @@ import type Sockette from 'sockette';
 
 const DEFAULT_TOPIC = 'general';
 
-type MsgRegPayload = {
+interface MsgRegPayload {
   type: string,
   value: string,
   key?: string,
-};
+}
 
-type MsgChatPayload = {
+interface MsgChatPayload {
   type: string,
   value: string,
   to: string,
-};
+}
 
 function registerUser(ws: Sockette, name: string, key: string | null): void {
   const payload: MsgRegPayload = {
