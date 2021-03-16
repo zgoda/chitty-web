@@ -1,3 +1,4 @@
+import { h } from 'preact';
 import { useLang, useTitle, useMeta } from 'hoofd/preact';
 import { connect } from 'redux-zero/preact';
 import { get } from 'idb-keyval';

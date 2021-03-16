@@ -1,3 +1,4 @@
+import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { set, del } from 'idb-keyval';
 import { Save } from 'preact-feather';

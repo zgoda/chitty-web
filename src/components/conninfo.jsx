@@ -1,3 +1,4 @@
+import { h } from 'preact';
 import { connect } from 'redux-zero/preact';
 
 const mapToProps =
