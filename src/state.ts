@@ -7,7 +7,7 @@ interface State {
   rememberUserData: boolean,
   hostName: string,
   messageText: string,
-  connState: string,
+  connState: ConnectionState,
   userRegistered: boolean,
   ws: Sockette | null,
 }
@@ -30,7 +30,7 @@ const actions = () => ({
   setHostName: (_state: unknown, value: string) => ({ hostName: value }),
   setRemember: (_state: unknown, value: boolean) => ({ rememberUserData: value }),
   setMessage: (_state: unknown, value: string) => ({ messageText: value }),
-  setConnState: (_state: unknown, value: string) => ({ connState: value }),
+  setConnState: (_state: unknown, value: ConnectionState) => ({ connState: value }),
   setUserRegistered: (_state: unknown, value: boolean) => ({ userRegistered: value }),
   setWs: (_state: unknown, value: Sockette | null) => ({ ws: value }),
 });

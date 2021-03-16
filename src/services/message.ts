@@ -40,10 +40,12 @@ function connectionOpened(): void {
   boundActions.setConnState('connected');
 }
 
-function connectionClosed(): void {
+function connectionClosed(e: CloseEvent): void {
   boundActions.setConnState('not connected');
-  boundActions.setUserRegistered(false);
-  boundActions.setWs(null);
+  if ([1000, 1001, 1005].includes(e.code)) {
+    boundActions.setUserRegistered(false);
+    boundActions.setWs(null);
+  }
 }
 
 export { registerUser, messageReceived, connectionOpened, connectionClosed };
