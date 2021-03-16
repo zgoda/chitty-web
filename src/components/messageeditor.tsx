@@ -1,16 +1,45 @@
 import { h, JSX } from 'preact';
 import { useState } from 'preact/hooks';
 import { Send } from 'preact-feather';
+import type Sockette from 'sockette';
+import { connect } from 'redux-zero/preact';
 
-const MessageEditor = ((): JSX.Element => {
+import { actions } from '../state';
+import { sendChatMessage } from '../services/message';
+
+type MapProps = {
+  connState: ConnectionState,
+  userRegistered: boolean,
+  ws: Sockette,
+  messages: Array<string>,
+};
+
+type Props = MapProps & {
+  setMessages: ValueSetter<Array<string>>,
+}
+
+const mapToProps =
+  ({ connState, userRegistered, ws, messages }: MapProps) =>
+    ({ connState, userRegistered, ws, messages });
+
+const MessageEditorBase =
+    (({ connState, userRegistered, ws, messages, setMessages }: Props): JSX.Element => {
 
   const [messageText, setMessageText] = useState('');
 
+  const canSend = userRegistered && connState == 'connected';
+
   const handleMessageTextInput =
-    ((e: Event) => setMessageText((e.target as HTMLInputElement).value));
+    ((e: Event) => setMessageText((e.target as HTMLInputElement).value.trim()));
 
   const handleSubmit = ((e: Event) => {
     e.preventDefault();
+    if (canSend && messageText.length > 0) {
+      sendChatMessage(ws, messageText);
+      const newMessages = [...messages, messageText];
+      setMessages(newMessages);
+      setMessageText('');
+    }
   });
 
   return (
@@ -27,7 +56,10 @@ const MessageEditor = ((): JSX.Element => {
               id="message-editor-input"
               placeholder="message"
             />
-            <button class="btn btn-primary btn-action" type="submit">
+            <button
+              class={`btn btn-primary btn-action ${canSend ? '' : 'disabled'}`}
+              type="submit"
+            >
               <Send />
             </button>
           </div>
@@ -36,5 +68,7 @@ const MessageEditor = ((): JSX.Element => {
     </div>
   );
 });
+
+const MessageEditor = connect(mapToProps, actions)(MessageEditorBase);
 
 export { MessageEditor };

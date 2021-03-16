@@ -10,6 +10,8 @@ interface State {
   connState: ConnectionState,
   userRegistered: boolean,
   ws: Sockette | null,
+  messages: Array<string>,
+  subscribedTopics: Array<string>,
 }
 
 const initialState: State = {
@@ -20,6 +22,8 @@ const initialState: State = {
   connState: 'not connected',
   userRegistered: false,
   ws: null,
+  messages: [],
+  subscribedTopics: [],
 };
 
 const store = createStore(initialState);
@@ -33,6 +37,9 @@ const actions = () => ({
   setConnState: (_state: unknown, value: ConnectionState) => ({ connState: value }),
   setUserRegistered: (_state: unknown, value: boolean) => ({ userRegistered: value }),
   setWs: (_state: unknown, value: Sockette | null) => ({ ws: value }),
+  setMessages: (_state: unknown, value: Array<string>) => ({ messages: value }),
+  setSubscribedTopics: (_state: unknown, value: Array<string>) =>
+    ({ subscribedTopics: value }),
 });
 
 

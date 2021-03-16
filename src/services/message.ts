@@ -12,6 +12,12 @@ type MsgRegPayload = {
   key?: string,
 };
 
+type MsgChatPayload = {
+  type: string,
+  value: string,
+  to: string,
+};
+
 function registerUser(ws: Sockette, name: string, key: string | null): void {
   const payload: MsgRegPayload = {
     type: 'reg', value: name,
@@ -21,6 +27,14 @@ function registerUser(ws: Sockette, name: string, key: string | null): void {
   }
   ws.json(payload);
 }
+
+function sendChatMessage(ws: Sockette, message: string): void {
+  const payload: MsgChatPayload = {
+    type: 'msg', value: message, to: 'general'
+  };
+  ws.json(payload);
+}
+
 const boundActions = bindActions(actions, store);
 
 function messageReceived(e: MessageEvent): void {
@@ -33,6 +47,8 @@ function messageReceived(e: MessageEvent): void {
       set(USER_ID_KEY, key);
     }
     boundActions.setUserRegistered(true);
+    const topics = data.topics || [];
+    boundActions.setSubscribedTopics(topics);
   }
 }
 
@@ -48,4 +64,6 @@ function connectionClosed(e: CloseEvent): void {
   }
 }
 
-export { registerUser, messageReceived, connectionOpened, connectionClosed };
+export {
+  registerUser, sendChatMessage, messageReceived, connectionOpened, connectionClosed
+};

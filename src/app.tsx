@@ -1,4 +1,4 @@
-import { FunctionComponent, h, JSX } from 'preact';
+import { h, JSX } from 'preact';
 import { useLang, useTitle, useMeta } from 'hoofd/preact';
 import { connect } from 'redux-zero/preact';
 import { get } from 'idb-keyval';
@@ -72,6 +72,6 @@ const AppBase =
   );
 });
 
-const App = connect(mapToProps, actions)(AppBase as FunctionComponent);
+const App = connect(mapToProps, actions)(AppBase);
 
 export { App };

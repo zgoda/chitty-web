@@ -1,4 +1,4 @@
-import { FunctionComponent, h, JSX } from 'preact';
+import { h, JSX } from 'preact';
 import { connect } from 'redux-zero/preact';
 
 type Props = {
@@ -25,6 +25,6 @@ const ConnectionInfoBase =
   );
 });
 
-const ConnectionInfo = connect(mapToProps)(ConnectionInfoBase as FunctionComponent);
+const ConnectionInfo = connect(mapToProps)(ConnectionInfoBase);
 
 export { ConnectionInfo };

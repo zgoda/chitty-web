@@ -1,4 +1,4 @@
-import { FunctionComponent, h, JSX } from 'preact';
+import { h, JSX } from 'preact';
 import { useState } from 'preact/hooks';
 import { set, del } from 'idb-keyval';
 import { Save } from 'preact-feather';
@@ -70,6 +70,6 @@ const UserDataBoxBase =
   );
 });
 
-const UserDataBox = connect(mapToProps, actions)(UserDataBoxBase as FunctionComponent);
+const UserDataBox = connect(mapToProps, actions)(UserDataBoxBase);
 
 export { UserDataBox };

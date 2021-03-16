@@ -3,7 +3,7 @@ import { h, JSX } from 'preact';
 const TopicListBox = ((): JSX.Element => {
   return (
     <div>
-      Topics
+      <h3>Subscribed topics</h3>
     </div>
   );
 });

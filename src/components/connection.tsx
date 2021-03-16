@@ -1,4 +1,4 @@
-import { FunctionComponent, h, JSX } from 'preact';
+import { h, JSX } from 'preact';
 import { useState } from 'preact/hooks';
 import { CloudLightning } from 'preact-feather';
 import { connect } from 'redux-zero/preact';
@@ -54,6 +54,6 @@ const ConnectionBoxBase =
 });
 
 const ConnectionBox =
-  connect(mapToProps, actions)(ConnectionBoxBase as FunctionComponent);
+  connect(mapToProps, actions)(ConnectionBoxBase);
 
 export { ConnectionBox };
