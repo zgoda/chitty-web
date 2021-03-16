@@ -20,13 +20,15 @@ const ConnectionBoxBase =
 
   const [host, setHost] = useState(hostName);
 
+  const canSave = host.length > 0;
+
   const handleSubmit = ((ev: Event) => {
     ev.preventDefault();
     setHostName(host);
   });
 
   const handleHostInputChange =
-    (e: Event) => setHost((e.target as HTMLInputElement).value);
+    (e: Event) => setHost((e.target as HTMLInputElement).value.trim());
 
   return (
     <div>
@@ -43,7 +45,10 @@ const ConnectionBoxBase =
               value={host}
               onInput={handleHostInputChange}
             />
-            <button class="btn btn-primary btn-action" type="submit">
+            <button
+              class={`btn btn-primary btn-action ${canSave ? '' : 'disabled'}`}
+              type="submit"
+            >
               <CloudLightning />
             </button>
           </div>

@@ -24,6 +24,8 @@ const UserDataBoxBase =
   const [name, setName] = useState(userName);
   const [rememberKey, setRememberKey] = useState(true);
 
+  const canSave = name.length > 0;
+
   const handleSubmit = (async (e: Event) => {
     e.preventDefault();
     setUserName(name);
@@ -35,7 +37,8 @@ const UserDataBoxBase =
     }
   });
 
-  const handleNameInput = ((e: Event) => setName((e.target as HTMLInputElement).value));
+  const handleNameInput =
+    ((e: Event) => setName((e.target as HTMLInputElement).value.trim()));
 
   const toggleRememberKey = (() => setRememberKey(!rememberKey));
 
@@ -43,6 +46,12 @@ const UserDataBoxBase =
     <div>
       <h3>User settings</h3>
       <form onSubmit={handleSubmit}>
+        <div class="form-group">
+          <label class="form-switch">
+            <input type="checkbox" checked={rememberKey} onClick={toggleRememberKey} />
+            <i class="form-icon" /> remember my data
+          </label>
+        </div>
         <div class="form-group">
           <label class="form-label" for="user-name-input">Name</label>
           <div class="input-group">
@@ -54,16 +63,13 @@ const UserDataBoxBase =
               id="user-name-input"
               placeholder="screen name / handle"
             />
-            <button class="btn btn-primary btn-action" type="submit">
+            <button
+              class={`btn btn-primary btn-action ${canSave ? '' : 'disabled'}`}
+              type="submit"
+            >
               <Save />
             </button>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="form-switch">
-            <input type="checkbox" checked={rememberKey} onClick={toggleRememberKey} />
-            <i class="form-icon" /> remember my data
-          </label>
         </div>
       </form>
     </div>
