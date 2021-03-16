@@ -1,28 +1,15 @@
-import { FunctionalComponent, h } from 'preact';
 import { useState } from 'preact/hooks';
 import { Send } from 'preact-feather';
-import type Sockette from 'sockette';
 import { connect } from 'redux-zero/preact';
 
 import { actions } from '../state';
 import { sendChatMessage } from '../services/message';
 
-interface MapProps {
-  connState: ConnectionState,
-  userRegistered: boolean,
-  ws: Sockette,
-  messages: Array<string>,
-}
-
-interface Props extends MapProps {
-  setMessages: ValueSetter<Array<string>>,
-}
-
 const mapToProps =
-  ({ connState, userRegistered, ws, messages }: MapProps) =>
+  ({ connState, userRegistered, ws, messages }) =>
     ({ connState, userRegistered, ws, messages });
 
-const MessageEditorBase: FunctionalComponent<Props> =
+const MessageEditorBase =
     (({ connState, userRegistered, ws, messages, setMessages }) => {
 
   const [messageText, setMessageText] = useState('');
@@ -30,9 +17,9 @@ const MessageEditorBase: FunctionalComponent<Props> =
   const canSend = userRegistered && connState == 'connected';
 
   const handleMessageTextInput =
-    ((e: Event) => setMessageText((e.target as HTMLInputElement).value.trim()));
+    ((e) => setMessageText(e.target.value.trim()));
 
-  const handleSubmit = ((e: Event) => {
+  const handleSubmit = ((e) => {
     e.preventDefault();
     if (canSend && messageText.length > 0) {
       sendChatMessage(ws, messageText);

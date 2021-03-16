@@ -1,27 +1,13 @@
 import { set } from 'idb-keyval';
 import { bindActions } from 'redux-zero/utils';
 
-import { USER_ID_KEY } from '../services/storage';
+import { USER_ID_KEY } from './storage';
 import { store, actions } from '../state';
-
-import type Sockette from 'sockette';
 
 const DEFAULT_TOPIC = 'general';
 
-interface MsgRegPayload {
-  type: string,
-  value: string,
-  key?: string,
-}
-
-interface MsgChatPayload {
-  type: string,
-  value: string,
-  to: string,
-}
-
-function registerUser(ws: Sockette, name: string, key: string | null): void {
-  const payload: MsgRegPayload = {
+function registerUser(ws, name, key) {
+  const payload = {
     type: 'reg', value: name,
   };
   if (key !== null) {
@@ -30,10 +16,8 @@ function registerUser(ws: Sockette, name: string, key: string | null): void {
   ws.json(payload);
 }
 
-function sendChatMessage(
-      ws: Sockette, message: string, topic = DEFAULT_TOPIC
-    ): void {
-  const payload: MsgChatPayload = {
+function sendChatMessage(ws, message, topic = DEFAULT_TOPIC) {
+  const payload = {
     type: 'msg', value: message, to: topic
   };
   ws.json(payload);
@@ -41,7 +25,7 @@ function sendChatMessage(
 
 const boundActions = bindActions(actions, store);
 
-function messageReceived(e: MessageEvent): void {
+function messageReceived(e) {
   const data = JSON.parse(e.data);
   console.log(data);
   if (data.type === 'reg') {
@@ -51,7 +35,7 @@ function messageReceived(e: MessageEvent): void {
       set(USER_ID_KEY, key);
     }
     boundActions.setUserRegistered(true);
-    const topics: Array<string> = data.topics || [];
+    const topics = data.topics || [];
     boundActions.setSubscribedTopics(topics.map((topic) => {
       if (topic === key) {
         return 'personal';
@@ -62,11 +46,11 @@ function messageReceived(e: MessageEvent): void {
   }
 }
 
-function connectionOpened(): void {
+function connectionOpened() {
   boundActions.setConnState('connected');
 }
 
-function connectionClosed(e: CloseEvent): void {
+function connectionClosed(e) {
   boundActions.setConnState('not connected');
   if ([1000, 1001, 1005].includes(e.code)) {
     boundActions.setUserRegistered(false);

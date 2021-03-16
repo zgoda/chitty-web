@@ -1,33 +1,24 @@
-import { FunctionalComponent, h } from 'preact';
 import { useState } from 'preact/hooks';
 import { CloudLightning } from 'preact-feather';
 import { connect } from 'redux-zero/preact';
 
 import { actions } from '../state';
 
-interface MapProps {
-  hostName: string,
-}
+const mapToProps = ({ hostName }) => ({ hostName });
 
-interface Props extends MapProps {
-  setHostName: ValueSetter<string>,
-}
-
-const mapToProps = ({ hostName }: MapProps) => ({ hostName });
-
-const ConnectionBoxBase: FunctionalComponent<Props> = (({ hostName, setHostName }) => {
+const ConnectionBoxBase = (({ hostName, setHostName }) => {
 
   const [host, setHost] = useState(hostName);
 
   const canSave = host.length > 0;
 
-  const handleSubmit = ((ev: Event) => {
+  const handleSubmit = ((ev) => {
     ev.preventDefault();
     setHostName(host);
   });
 
   const handleHostInputChange =
-    (e: Event) => setHost((e.target as HTMLInputElement).value.trim());
+    (e) => setHost(e.target.value.trim());
 
   return (
     <div>

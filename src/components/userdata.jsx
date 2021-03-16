@@ -1,4 +1,3 @@
-import { h, FunctionalComponent } from 'preact';
 import { useState } from 'preact/hooks';
 import { set, del } from 'idb-keyval';
 import { Save } from 'preact-feather';
@@ -7,26 +6,16 @@ import { connect } from 'redux-zero/preact';
 import { USER_NAME_KEY } from '../services/storage';
 import { actions } from '../state';
 
-interface MapProps {
-  userName: string,
-}
+const mapToProps = ({ userName }) => ({ userName });
 
-interface Props extends MapProps {
-  setUserName: ValueSetter<string>,
-  setRemember: ValueSetter<boolean>,
-}
-
-const mapToProps = ({ userName }: MapProps) => ({ userName });
-
-const UserDataBoxBase: FunctionalComponent<Props> =
-    (({ userName, setUserName, setRemember }) => {
+const UserDataBoxBase = (({ userName, setUserName, setRemember }) => {
 
   const [name, setName] = useState(userName);
   const [rememberKey, setRememberKey] = useState(true);
 
   const canSave = name.length > 0;
 
-  const handleSubmit = (async (e: Event) => {
+  const handleSubmit = (async (e) => {
     e.preventDefault();
     setUserName(name);
     setRemember(rememberKey);
@@ -37,8 +26,7 @@ const UserDataBoxBase: FunctionalComponent<Props> =
     }
   });
 
-  const handleNameInput =
-    ((e: Event) => setName((e.target as HTMLInputElement).value.trim()));
+  const handleNameInput = ((e) => setName(e.target.value.trim()));
 
   const toggleRememberKey = (() => setRememberKey(!rememberKey));
 

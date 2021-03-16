@@ -1,4 +1,3 @@
-import { h, JSX } from 'preact';
 import { useLang, useTitle, useMeta } from 'hoofd/preact';
 import { connect } from 'redux-zero/preact';
 import { get } from 'idb-keyval';
@@ -13,26 +12,11 @@ import { Chat } from './components/chat';
 import { Sidebar } from './components/sidebar';
 import { ConnectionInfo } from './components/conninfo';
 
-interface MapProps {
-  userName: string,
-  hostName: string,
-  connState: string,
-  userRegistered: boolean,
-  ws: Sockette | null,
-}
-
-interface AppProps extends MapProps {
-  setWs: ValueSetter<Sockette | null>,
-}
-
 const mapToProps =
-  ({ userName, hostName, connState, userRegistered, ws }: MapProps) =>
+  ({ userName, hostName, connState, userRegistered, ws }) =>
     ({ userName, hostName, connState, userRegistered, ws });
 
-const AppBase =
-    (({
-      userName, hostName, connState, userRegistered, ws, setWs
-    }: AppProps): JSX.Element => {
+const AppBase = (({ userName, hostName, connState, userRegistered, ws, setWs }) => {
 
   const appTitle = 'Chitty chat';
 
