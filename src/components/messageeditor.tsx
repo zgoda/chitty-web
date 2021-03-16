@@ -54,7 +54,7 @@ const MessageEditorBase =
               value={messageText}
               onInput={handleMessageTextInput}
               id="message-editor-input"
-              placeholder="message"
+              placeholder="type your message"
             />
             <button
               class={`btn btn-primary btn-action ${canSend ? '' : 'disabled'}`}

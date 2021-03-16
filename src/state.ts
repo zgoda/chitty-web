@@ -12,6 +12,7 @@ interface State {
   ws: Sockette | null,
   messages: Array<string>,
   subscribedTopics: Array<string>,
+  currentTopic: string,
 }
 
 const initialState: State = {
@@ -24,6 +25,7 @@ const initialState: State = {
   ws: null,
   messages: [],
   subscribedTopics: [],
+  currentTopic: '',
 };
 
 const store = createStore(initialState);
@@ -40,6 +42,7 @@ const actions = () => ({
   setMessages: (_state: unknown, value: Array<string>) => ({ messages: value }),
   setSubscribedTopics: (_state: unknown, value: Array<string>) =>
     ({ subscribedTopics: value }),
+  setCurrentTopic: (_state: unknown, value: string) => ({ currentTopic: value }),
 });
 
 

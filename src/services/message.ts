@@ -6,6 +6,8 @@ import { store, actions } from '../state';
 
 import type Sockette from 'sockette';
 
+const DEFAULT_TOPIC = 'general';
+
 type MsgRegPayload = {
   type: string,
   value: string,
@@ -28,9 +30,11 @@ function registerUser(ws: Sockette, name: string, key: string | null): void {
   ws.json(payload);
 }
 
-function sendChatMessage(ws: Sockette, message: string): void {
+function sendChatMessage(
+      ws: Sockette, message: string, topic = DEFAULT_TOPIC
+    ): void {
   const payload: MsgChatPayload = {
-    type: 'msg', value: message, to: 'general'
+    type: 'msg', value: message, to: topic
   };
   ws.json(payload);
 }
@@ -47,8 +51,14 @@ function messageReceived(e: MessageEvent): void {
       set(USER_ID_KEY, key);
     }
     boundActions.setUserRegistered(true);
-    const topics = data.topics || [];
-    boundActions.setSubscribedTopics(topics);
+    const topics: Array<string> = data.topics || [];
+    boundActions.setSubscribedTopics(topics.map((topic) => {
+      if (topic === key) {
+        return 'personal';
+      }
+      return topic;
+    }));
+    boundActions.setCurrentTopic(DEFAULT_TOPIC);
   }
 }
 
