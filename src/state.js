@@ -15,7 +15,6 @@ const initialState = {
 
 const store = createStore(initialState);
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const actions = () => ({
   setUserName: (_state, value) => ({ userName: value }),
   setHostName: (_state, value) => ({ hostName: value }),

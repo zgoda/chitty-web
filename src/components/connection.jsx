@@ -18,8 +18,7 @@ const ConnectionBoxBase = (({ hostName, setHostName }) => {
     setHostName(host);
   });
 
-  const handleHostInputChange =
-    (e) => setHost(e.target.value.trim());
+  const handleHostInputChange = (e) => setHost(e.target.value.trim());
 
   return (
     <div>

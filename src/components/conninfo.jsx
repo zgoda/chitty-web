@@ -5,9 +5,10 @@ const mapToProps =
   ({ connState, hostName, userRegistered }) =>
     ({ connState, hostName, userRegistered });
 
-const ConnectionInfoBase =
-    (({ connState, hostName, userRegistered }) => {
+const ConnectionInfoBase = (({ connState, hostName, userRegistered }) => {
+
   const registrationStatus = userRegistered ? 'registered' : 'not registered';
+
   return (
     <div>
       <p>
