@@ -1,10 +1,14 @@
 import { h } from 'preact';
-import { ConnectionBox } from '../src/components/connection';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/preact';
+import { Provider } from 'redux-zero/preact';
 
-describe('Initial Test of the Connection Box', () => {
-  test('Connection Box contains expected text', () => {
-    const context = shallow(<ConnectionBox />);
-    expect(context.find('h3').text()).toBe('Server connection');
+import { ConnectionBox } from '../src/components/connection';
+import { store } from '../src/services/state';
+
+
+describe('ConnectionBox', () => {
+  test('should have header text', () => {
+    const { container } = render(<Provider store={store}><ConnectionBox /></Provider>);
+    expect(container.querySelector('h3').textContent).toMatch('Server connection');
   });
 });

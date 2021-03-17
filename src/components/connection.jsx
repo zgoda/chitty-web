@@ -1,3 +1,4 @@
+import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { CloudLightning } from 'preact-feather';
 import { connect } from 'redux-zero/preact';
