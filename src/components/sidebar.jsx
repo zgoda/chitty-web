@@ -1,5 +1,3 @@
-import { h } from 'preact';
-
 import { ConnectionBox } from './connection';
 import { UserDataBox } from './userdata';
 import { TopicListBox } from './topics';

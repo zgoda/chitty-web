@@ -1,11 +1,10 @@
-import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { set, del } from 'idb-keyval';
 import { Save } from 'preact-feather';
 import { connect } from 'redux-zero/preact';
 
 import { USER_NAME_KEY } from '../services/storage';
-import { actions } from '../state';
+import { actions } from '../services/state';
 
 const mapToProps = ({ userName }) => ({ userName });
 

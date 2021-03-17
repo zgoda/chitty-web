@@ -2,7 +2,7 @@ import { set } from 'idb-keyval';
 import { bindActions } from 'redux-zero/utils';
 
 import { USER_ID_KEY } from './storage';
-import { store, actions } from '../state';
+import { store, actions } from './state';
 
 const DEFAULT_TOPIC = 'general';
 

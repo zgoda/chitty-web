@@ -1,13 +1,12 @@
-import { h, render } from 'preact';
 import 'preact/devtools';
 import { Provider } from 'redux-zero/preact';
 
-import { App } from './app';
-import { store } from './state';
-import './style.scss';
+import { App as Application } from './components/app';
+import { store } from './services/state';
+import './style';
 
-const root = document.getElementById('root');
+const App = (() => (
+  <Provider store={store}><Application /></Provider>
+));
 
-if (root) {
-  render(<Provider store={store}><App /></Provider>, root);
-}
+export default App;

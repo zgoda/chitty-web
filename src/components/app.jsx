@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { useLang, useTitle, useMeta } from 'hoofd/preact';
 import { connect } from 'redux-zero/preact';
 import { get } from 'idb-keyval';
@@ -6,12 +5,12 @@ import Sockette from 'sockette';
 
 import {
   messageReceived, connectionOpened, registerUser, connectionClosed
-} from './services/message';
-import { USER_ID_KEY } from './services/storage';
-import { actions } from './state';
-import { Chat } from './components/chat';
-import { Sidebar } from './components/sidebar';
-import { ConnectionInfo } from './components/conninfo';
+} from '../services/message';
+import { USER_ID_KEY } from '../services/storage';
+import { actions } from '../services/state';
+import { Chat } from './chat';
+import { Sidebar } from './sidebar';
+import { ConnectionInfo } from './conninfo';
 
 const mapToProps =
   ({ userName, hostName, connState, userRegistered, ws }) =>

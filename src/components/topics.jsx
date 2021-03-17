@@ -1,8 +1,7 @@
-import { h } from 'preact';
 import { connect } from 'redux-zero/preact';
 import { Rss, MoreVertical } from 'preact-feather';
 
-import { actions } from '../state';
+import { actions } from '../services/state';
 
 const TopicItem = (({ topic, selectTopic }) => {
 

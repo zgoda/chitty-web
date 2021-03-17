@@ -1,9 +1,8 @@
-import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { Send } from 'preact-feather';
 import { connect } from 'redux-zero/preact';
 
-import { actions } from '../state';
+import { actions } from '../services/state';
 import { sendChatMessage } from '../services/message';
 
 const mapToProps =

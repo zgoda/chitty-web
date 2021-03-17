@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { MessageEditor } from './messageeditor';
 import { MessageList } from './messagelist';
 
