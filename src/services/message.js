@@ -6,6 +6,8 @@ import { store, actions } from './state';
 
 const DEFAULT_TOPIC = 'general';
 
+const boundActions = bindActions(actions, store);
+
 function registerUser(ws, name, key) {
   const payload = {
     type: 'reg', value: name,
@@ -22,8 +24,6 @@ function sendChatMessage(ws, message, topic = DEFAULT_TOPIC) {
   };
   ws.json(payload);
 }
-
-const boundActions = bindActions(actions, store);
 
 function messageReceived(e) {
   const data = JSON.parse(e.data);

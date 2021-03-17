@@ -2,4 +2,9 @@
 build
 node_modules
 package-lock.json
-.vscode
+
+# include VS Code debugging configuration
+!.vscode/
+.vscode/*
+!.vscode/launch.json
+

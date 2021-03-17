@@ -6,7 +6,7 @@ Backend: [Trio](https://github.com/python-trio/trio) + [WebSockets](https://gith
 
 Mobile application: [Flutter](https://flutter.dev/)/Dart
 
-Web application: [Preact](https://preactjs.com/) PWA, un-bundled with [Snowpack](https://www.snowpack.dev/)
+Web application: [Preact](https://preactjs.com/) PWA
 
 Educational project so don't expect much.
 
