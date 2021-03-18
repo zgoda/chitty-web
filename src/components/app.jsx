@@ -13,10 +13,12 @@ import { Sidebar } from './sidebar';
 import { ConnectionInfo } from './conninfo';
 
 const mapToProps =
-  ({ userName, hostName, connState, userRegistered, ws }) =>
-    ({ userName, hostName, connState, userRegistered, ws });
+  ({ userName, hostName, connState, userRegistered, ws, secure }) =>
+    ({ userName, hostName, connState, userRegistered, ws, secure });
 
-const AppBase = (({ userName, hostName, connState, userRegistered, ws, setWs }) => {
+const AppBase = (({
+  userName, hostName, connState, userRegistered, ws, secure, setWs
+}) => {
 
   const appTitle = 'Chitty chat';
 
@@ -31,7 +33,8 @@ const AppBase = (({ userName, hostName, connState, userRegistered, ws, setWs }) 
   };
 
   if (userName !== '' && hostName !== '' && ws === null) {
-    const webSocket = new Sockette(`ws://${hostName}`, wsHandlers);
+    const transport = secure ? 'wss' : 'ws';
+    const webSocket = new Sockette(`${transport}://${hostName}`, wsHandlers);
     setWs(webSocket);
   }
 

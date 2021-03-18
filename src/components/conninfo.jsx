@@ -1,12 +1,14 @@
 import { connect } from 'redux-zero/preact';
 
 const mapToProps =
-  ({ connState, hostName, userRegistered }) =>
-    ({ connState, hostName, userRegistered });
+  ({ connState, hostName, secure, userRegistered }) =>
+    ({ connState, hostName, secure, userRegistered });
 
-const ConnectionInfoBase = (({ connState, hostName, userRegistered }) => {
+const ConnectionInfoBase = (({ connState, hostName, secure, userRegistered }) => {
 
   const registrationStatus = userRegistered ? 'registered' : 'not registered';
+
+  const secureConnection = secure ? ', secure' : ', insecure';
 
   return (
     <div>
@@ -14,7 +16,7 @@ const ConnectionInfoBase = (({ connState, hostName, userRegistered }) => {
         <em>Connection status:</em> <strong>{connState}</strong>,&nbsp;
         <em>user status:</em> <strong>{registrationStatus}</strong>
       </p>
-      {hostName && <p><em>host:</em> <strong>{hostName}</strong></p>}
+      {hostName && <p><em>host:</em> <strong>{hostName}{secureConnection}</strong></p>}
     </div>
   );
 });
