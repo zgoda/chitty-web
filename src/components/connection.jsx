@@ -5,22 +5,27 @@ import { connect } from 'redux-zero/preact';
 
 import { actions } from '../services/state';
 
-const mapToProps = ({ hostName, secure }) => ({ hostName, secure });
+const mapToProps = ({ hostName, secure, userName }) => ({ hostName, secure, userName });
 
-const ConnectionBoxBase = (({ hostName, secure, setHostName, setSecure }) => {
+const ConnectionBoxBase =
+    (({ hostName, secure, userName, setHostName, setSecure, setUserName }) => {
 
   const [host, setHost] = useState(hostName);
   const [secureTransport, setSecureTransport] = useState(secure);
+  const [name, setName] = useState(userName);
 
   const canSave = host.length > 0;
 
   const handleSubmit = ((ev) => {
     ev.preventDefault();
     setHostName(host);
+    setUserName(name);
     setSecure(secureTransport);
   });
 
   const handleHostInputChange = (e) => setHost(e.target.value.trim());
+
+  const handleNameInputChange = (e) => setName(e.target.value.trim());
 
   const toggleSecure = () => setSecureTransport(!secureTransport);
 
@@ -33,6 +38,17 @@ const ConnectionBoxBase = (({ hostName, secure, setHostName, setSecure }) => {
             <input type="checkbox" checked={secureTransport} onClick={toggleSecure} />
             <i class="form-icon" /> secure connection
           </label>
+        </div>
+        <div class="form-group">
+          <div class="form-label" for="chat-user-name">User name</div>
+          <input
+            class="form-input"
+            type="text"
+            id="chat-user-name"
+            value={name}
+            onInput={handleNameInputChange}
+            placeholder="chat screen handle"
+          />
         </div>
         <div class="form-group">
           <div class="form-label" for="chat-server-host">Chat server host</div>

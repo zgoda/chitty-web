@@ -1,5 +1,4 @@
 import { ConnectionBox } from './connection';
-import { UserDataBox } from './userdata';
 import { TopicListBox } from './topics';
 
 const Sidebar = (() => {
@@ -7,7 +6,6 @@ const Sidebar = (() => {
     <div>
       <ConnectionBox />
       <TopicListBox />
-      <UserDataBox />
     </div>
   );
 });

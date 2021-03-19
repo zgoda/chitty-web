@@ -29,9 +29,8 @@ function messageReceived(e) {
   const data = JSON.parse(e.data);
   console.log(data);
   if (data.type === 'reg') {
-    const state = store.getState();
     const key = data.key || '';
-    if (key !== '' && state.rememberUserData) {
+    if (key !== '') {
       set(USER_ID_KEY, key);
     }
     boundActions.setUserRegistered(true);
