@@ -65,6 +65,14 @@ function messageReceived(e) {
       newMessages[topic] = newTopicMessages;
       boundActions.setMessages(newMessages);
     },
+    // system event
+    event: (data) => {
+      const message = data.value;
+      const date = new Date(data.date * 1000);
+      const state = store.getState();
+      const newEvents = [...state.events, { message, date }];
+      boundActions.setEvents(newEvents);
+    },
   };
   const data = JSON.parse(e.data);
   if (data.type in handlers) {

@@ -11,6 +11,7 @@ const initialState = {
   messages: {},
   subscribedTopics: [],
   currentTopic: '',
+  events: [],
 };
 
 const store = createStore(initialState);
@@ -26,6 +27,7 @@ const actions = () => ({
   setMessages: (_state, value) => ({ messages: value }),
   setSubscribedTopics: (_state, value) => ({ subscribedTopics: value }),
   setCurrentTopic: (_state, value) => ({ currentTopic: value }),
+  setEvents: (_state, value) => ({ events: value }),
 });
 
 
