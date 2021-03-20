@@ -2,6 +2,7 @@ import createStore from 'redux-zero';
 
 const initialState = {
   userName: '',
+  userKey: '',
   hostName: '',
   secure: false,
   connState: 'not connected',
@@ -16,6 +17,7 @@ const store = createStore(initialState);
 
 const actions = () => ({
   setUserName: (_state, value) => ({ userName: value }),
+  setUserKey: (_state, value) => ({ userKey: value }),
   setHostName: (_state, value) => ({ hostName: value }),
   setSecure: (_state, value) => ({ secure: value }),
   setConnState: (_state, value) => ({ connState: value }),

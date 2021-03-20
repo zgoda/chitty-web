@@ -5,6 +5,7 @@ import { USER_ID_KEY } from './storage';
 import { store, actions } from './state';
 
 const DEFAULT_TOPIC = 'general';
+const PERSONAL_TOPIC = 'personal';
 
 const boundActions = bindActions(actions, store);
 
@@ -26,23 +27,50 @@ function sendChatMessage(ws, message, topic = DEFAULT_TOPIC) {
 }
 
 function messageReceived(e) {
-  const data = JSON.parse(e.data);
-  console.log(data);
-  if (data.type === 'reg') {
-    const key = data.key || '';
-    if (key !== '') {
-      set(USER_ID_KEY, key);
-    }
-    boundActions.setUserRegistered(true);
-    const topics = data.topics || [];
-    boundActions.setSubscribedTopics(topics.map((topic) => {
-      if (topic === key) {
-        return 'personal';
+  const handlers = {
+    // user registration
+    reg: (data) => {
+      const key = data.key || '';
+      if (key !== '') {
+        set(USER_ID_KEY, key);
+        boundActions.setUserKey(key);
       }
-      return topic;
-    }));
-    boundActions.setCurrentTopic(DEFAULT_TOPIC);
+      boundActions.setUserRegistered(true);
+      const topics = data.topics || [];
+      boundActions.setSubscribedTopics(topics.map((topic) => {
+        if (topic === key) {
+          return PERSONAL_TOPIC;
+        }
+        return topic;
+      }));
+      boundActions.setCurrentTopic(DEFAULT_TOPIC);    
+    },
+    // message processing
+    msg: (data) => {
+      const messageTopic = data.to;
+      const message = data.value;
+      const date = new Date(data.date * 1000);
+      const from = data.from;
+      const state = store.getState();
+      let topic;
+      if (state.userKey === messageTopic) {
+        topic = PERSONAL_TOPIC;
+      } else {
+        topic = messageTopic;
+      }
+      const topicMessages = state.messages[topic] || [];
+      const newTopicMessages = [...topicMessages, { message, date, from }];
+      const newMessages = {};
+      Object.assign(newMessages, state.messages);
+      newMessages[topic] = newTopicMessages;
+      boundActions.setMessages(newMessages);
+    },
+  };
+  const data = JSON.parse(e.data);
+  if (data.type in handlers) {
+    handlers[data.type](data);
   }
+  console.log(data);
 }
 
 function connectionOpened() {
