@@ -58,7 +58,7 @@
     "jest-preset-preact": "^4.0.2",
     "preact-cli": "^3.0.5",
     "sass": "^1.32.8",
-    "sass-loader": "@10",
+    "sass-loader": "^10.1.1",
     "sirv-cli": "1.0.11"
   },
   "dependencies": {
@@ -68,7 +68,6 @@
     "preact-feather": "^4.1.0",
     "preact-render-to-string": "^5.1.16",
     "redux-zero": "^5.1.7",
-    "sass-loader": "^10.1.1",
     "sockette": "^2.0.6",
     "spectre.css": "^0.5.9"
   },

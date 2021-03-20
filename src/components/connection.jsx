@@ -1,9 +1,11 @@
 import { h } from 'preact';
-import { useState } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
 import { CloudLightning } from 'preact-feather';
 import { connect } from 'redux-zero/preact';
+import { get } from 'idb-keyval';
 
 import { actions } from '../services/state';
+import { USER_NAME_KEY } from '../services/storage';
 
 const mapToProps = ({ hostName, secure, userName }) => ({ hostName, secure, userName });
 
@@ -13,6 +15,16 @@ const ConnectionBoxBase =
   const [host, setHost] = useState(hostName);
   const [secureTransport, setSecureTransport] = useState(secure);
   const [name, setName] = useState(userName);
+
+  useEffect(() => {
+    async function fetchName() {
+      const savedName = await get(USER_NAME_KEY);
+      if (savedName) {
+        setName(savedName);
+      }
+    }
+    fetchName();
+  }, []);
 
   const canSave = host.length > 0;
 

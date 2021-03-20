@@ -1,12 +1,13 @@
+import { useEffect } from 'preact/hooks';
 import { useLang, useTitle, useMeta } from 'hoofd/preact';
 import { connect } from 'redux-zero/preact';
-import { get } from 'idb-keyval';
+import { get, del } from 'idb-keyval';
 import Sockette from 'sockette';
 
 import {
   messageReceived, connectionOpened, registerUser, connectionClosed
 } from '../services/message';
-import { USER_ID_KEY } from '../services/storage';
+import { USER_ID_KEY, EVENTS_KEY } from '../services/storage';
 import { actions } from '../services/state';
 import { Chat } from './chat';
 import { Sidebar } from './sidebar';
@@ -19,6 +20,13 @@ const mapToProps =
 const AppBase = (({
   userName, hostName, connState, userRegistered, ws, secure, setWs
 }) => {
+
+  useEffect(() => {
+    async function clearEphemeralStorage() {
+      await del(EVENTS_KEY);
+    }
+    clearEphemeralStorage();
+  }, []);
 
   const appTitle = 'Chitty chat';
 
