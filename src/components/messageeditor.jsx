@@ -6,11 +6,10 @@ import { actions } from '../services/state';
 import { sendChatMessage } from '../services/message';
 
 const mapToProps =
-  ({ connState, userRegistered, ws, messages, currentTopic }) =>
-    ({ connState, userRegistered, ws, messages, currentTopic });
+  ({ connState, userRegistered, ws, currentTopic }) =>
+    ({ connState, userRegistered, ws, currentTopic });
 
-const MessageEditorBase =
-    (({ connState, userRegistered, ws, messages, currentTopic, setMessages }) => {
+const MessageEditorBase = (({ connState, userRegistered, ws, currentTopic }) => {
 
   const [messageText, setMessageText] = useState('');
 
@@ -22,12 +21,7 @@ const MessageEditorBase =
   const handleSubmit = ((e) => {
     e.preventDefault();
     if (canSend && messageText.length > 0) {
-      sendChatMessage(ws, messageText);
-      const topicMessages = messages[currentTopic];
-      const newMessages = {};
-      Object.assign(newMessages, messages);
-      newMessages[currentTopic] = [...topicMessages, messageText];
-      setMessages(newMessages);
+      sendChatMessage(ws, messageText, currentTopic);
       setMessageText('');
     }
   });

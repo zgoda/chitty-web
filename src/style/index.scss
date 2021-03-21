@@ -1,9 +1,15 @@
 $primary-color: #0b3954;
-$secondary-color: #bfd7ea;
+/*$secondary-color: #bfd7ea;*/
 
 @import './fonts.scss';
 @import '../node_modules/spectre.css/src/spectre.scss';
 
 body {
   font-family: lato, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.message-list {
+  border: 0.05rem solid $gray-color;
+  height: 24rem;
+  overflow-y: auto;
 }

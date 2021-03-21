@@ -47,8 +47,8 @@ function messageReceived(e) {
     },
     // message processing
     msg: (data) => {
-      const messageTopic = data.to;
-      const message = data.value;
+      const messageTopic = data.topic;
+      const message = data.message;
       const date = new Date(data.date * 1000);
       const from = data.from;
       const state = store.getState();

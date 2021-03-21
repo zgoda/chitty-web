@@ -55,11 +55,11 @@ const AppBase = (({
     <div class="container grid-md">
       <h1>{appTitle}</h1>
       <div class="columns">
-        <div class="column col-8">
+        <div class="column col-8 col-md-12">
           <ConnectionInfo />
           <Chat />
         </div>
-        <div class="column col-4">
+        <div class="column col-4 col-md-12">
           <Sidebar />
         </div>
       </div>
