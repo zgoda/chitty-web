@@ -1,7 +1,7 @@
 import { connect } from 'redux-zero/preact';
-import { actions } from '../services/state';
 import { MessageSquare } from 'preact-feather';
 
+import { actions } from '../services/state';
 import '../typedefs';
 
 /**
@@ -52,7 +52,7 @@ function MessageItem({ message, userKey }) {
 
 /**
  * @typedef {Object} MessageListProps
- * @property {Messages} messages all messages from application state
+ * @property {Map<string, Array<Message>>} messages all messages from application state
  * @property {string} currentTopic current selected topic
  * @property {string} userKey current user key (ID)
  */
@@ -61,9 +61,13 @@ function mapToProps(/** @type MessageListProps */ { messages, currentTopic, user
   return ({ messages, currentTopic, userKey });
 }
 
-function MessageListBase(
-    /** @type MessageListProps */ { messages, currentTopic, userKey }
-  ) {
+/**
+ * Component that displays received messages.
+ * 
+ * @param {MessageListProps} props
+ * @returns HTML `div` element that is a container for message list
+ */
+function MessageListBase({ messages, currentTopic, userKey }) {
 
   const topicMessages = messages.get(currentTopic) || [];
 

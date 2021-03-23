@@ -1,14 +1,32 @@
 import { useState } from 'preact/hooks';
 import { Send } from 'preact-feather';
 import { connect } from 'redux-zero/preact';
+// eslint-disable-next-line no-unused-vars
+import Sockette from 'sockette';
 
 import { actions } from '../services/state';
 import { sendChatMessage } from '../services/message';
 
-function mapToProps({ connState, userRegistered, ws, currentTopic }) {
+/**
+ * @typedef {Object} MessageEditorProps
+ * @property {string} connState - connection status
+ * @property {boolean} userRegistered - flag whether user is registered already
+ * @property {Sockette} ws - web socket object
+ * @property {string} currentTopic - currently selected chat topic
+ */
+
+function mapToProps(
+      /** @type MessageEditorProps */{ connState, userRegistered, ws, currentTopic }
+    ) {
   return ({ connState, userRegistered, ws, currentTopic });
 }
 
+/**
+ * Component that displays message editing control.
+ * 
+ * @param {MessageEditorProps} props
+ * @returns HTML `form` enclosed in appropriate `div`
+ */
 function MessageEditorBase({ connState, userRegistered, ws, currentTopic }) {
 
   const [messageText, setMessageText] = useState('');

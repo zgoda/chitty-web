@@ -96,7 +96,7 @@ function messageReceived(e) {
       const date = new Date(data.date * 1000);
       const state = store.getState();
       const newEvents = 
-        [...state.events, new Map([['message', message], ['date', date]])];
+        [...state.events, { message, date }];
       boundActions.setEvents(newEvents);
     },
   };

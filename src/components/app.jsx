@@ -13,10 +13,29 @@ import { Chat } from './chat';
 import { Sidebar } from './sidebar';
 import { ConnectionInfo } from './conninfo';
 
-function mapToProps({ userName, hostName, connState, userRegistered, ws, secure }) {
+/**
+ * @typedef {Object} AppProps
+ * @property {string} userName - user screen name / handle
+ * @property {string} hostName - chat host name
+ * @property {string} connState - connection status
+ * @property {boolean} userRegistered - flag if user is already registered at
+ *     chat server
+ * @property {Sockette} ws - web socket object
+ * @property {boolean} secure - flag if connection should be secured
+ */
+
+function mapToProps
+    (/** @type AppProps */{ userName, hostName, connState, userRegistered, ws, secure }
+  ) {
   return ({ userName, hostName, connState, userRegistered, ws, secure });
 }
 
+/**
+ * Main application component.
+ * 
+ * @param {AppProps} props
+ * @returns application container as HTML `div` element
+ */
 function AppBase({ userName, hostName, connState, userRegistered, ws, secure, setWs }) {
 
   useEffect(() => {

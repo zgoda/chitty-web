@@ -1,11 +1,15 @@
 /**
  * @fileoverview Common typedefs for JSDoc
+ * 
+ * This module must be kept side-effects free as it may be imported in many places.
  */
 
 /**
- * System event struct as {Map}
+ * System event struct as {Object}
  * 
- * @typedef {Map<string, string|Date>} Event
+ * @typedef {Object} SystemEvent
+ * @property {string} message - event message
+ * @property {Date} date - event date
  */
 
 /**
@@ -24,10 +28,4 @@
  * @property {UserData} from - sender user information
  * @property {Date} date - timestamp when message has been sent
  * @property {string} message - message text
- */
-
-/**
- * Message lists by topic
- * 
- * @typedef {Map<string, Array<Message>>} Messages
  */

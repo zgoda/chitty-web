@@ -4,6 +4,7 @@
 import createStore from 'redux-zero';
 // eslint-disable-next-line no-unused-vars
 import Sockette from 'sockette';
+
 import '../typedefs';
 
 const initialState = {
@@ -15,12 +16,12 @@ const initialState = {
   userRegistered: false,
   /** @type Sockette */
   ws: null,
-  /** @type Messages */
+  /** @type Map<string, Array<Message>> */
   messages: new Map(),
   /** @type Array<string> */
   subscribedTopics: [],
   currentTopic: '',
-  /** @type Array<Event> */
+  /** @type Array<SystemEvent> */
   events: [],
 };
 
@@ -36,11 +37,12 @@ function actions() {
     setUserRegistered:
       (_state, /** @type boolean */ value) => ({ userRegistered: value }),
     setWs: (_state, /** @type Sockette */ value) => ({ ws: value }),
-    setMessages: (_state, /** @type Messages */ value) => ({ messages: value }),
+    setMessages:
+      (_state, /** @type Map<string, Array<Message>> */ value) => ({ messages: value }),
     setSubscribedTopics:
       (_state, /** @type Array<string> */ value) => ({ subscribedTopics: value }),
     setCurrentTopic: (_state, /** @type string */ value) => ({ currentTopic: value }),
-    setEvents: (_state, /** @type Array<Event> */ value) => ({ events: value }),
+    setEvents: (_state, /** @type Array<SystemEvent> */ value) => ({ events: value }),
   });
 }
 
