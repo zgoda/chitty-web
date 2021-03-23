@@ -5,9 +5,9 @@ import { connect } from 'redux-zero/preact';
 import { actions } from '../services/state';
 import { sendChatMessage } from '../services/message';
 
-const mapToProps =
-  ({ connState, userRegistered, ws, currentTopic }) =>
-    ({ connState, userRegistered, ws, currentTopic });
+function mapToProps({ connState, userRegistered, ws, currentTopic }) {
+  return ({ connState, userRegistered, ws, currentTopic });
+}
 
 const MessageEditorBase = (({ connState, userRegistered, ws, currentTopic }) => {
 

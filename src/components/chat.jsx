@@ -1,13 +1,13 @@
 import { MessageEditor } from './messageeditor';
 import { MessageList } from './messagelist';
 
-const Chat = (() => {
+function Chat() {
   return (
     <div>
       <MessageList />
       <MessageEditor />
     </div>
   );
-});
+}
 
 export { Chat };

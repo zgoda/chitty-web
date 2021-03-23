@@ -7,7 +7,9 @@ import { get } from 'idb-keyval';
 import { actions } from '../services/state';
 import { USER_NAME_KEY } from '../services/storage';
 
-const mapToProps = ({ hostName, secure, userName }) => ({ hostName, secure, userName });
+function mapToProps({ hostName, secure, userName }) {
+  return ({ hostName, secure, userName });
+}
 
 const ConnectionBoxBase =
     (({ hostName, secure, userName, setHostName, setSecure, setUserName }) => {

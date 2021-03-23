@@ -30,8 +30,9 @@ const MessageItem = (({ message, userKey }) => {
   );
 });
 
-const mapToProps =
-  ({ messages, currentTopic, userKey }) => ({ messages, currentTopic, userKey });
+function mapToProps({ messages, currentTopic, userKey }) {
+  return ({ messages, currentTopic, userKey });
+}
 
 const MessageListBase = (({ messages, currentTopic, userKey }) => {
 

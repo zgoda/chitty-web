@@ -13,9 +13,9 @@ import { Chat } from './chat';
 import { Sidebar } from './sidebar';
 import { ConnectionInfo } from './conninfo';
 
-const mapToProps =
-  ({ userName, hostName, connState, userRegistered, ws, secure }) =>
-    ({ userName, hostName, connState, userRegistered, ws, secure });
+function mapToProps({ userName, hostName, connState, userRegistered, ws, secure }) {
+  return ({ userName, hostName, connState, userRegistered, ws, secure });
+}
 
 const AppBase = (({
   userName, hostName, connState, userRegistered, ws, secure, setWs

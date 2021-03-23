@@ -37,8 +37,9 @@ const TopicItem = (({ currentTopic, topic, selectTopic }) => {
   );
 });
 
-const mapTopProps =
-  ({ currentTopic, subscribedTopics }) => ({ currentTopic, subscribedTopics });
+function mapTopProps({ currentTopic, subscribedTopics }) {
+  return ({ currentTopic, subscribedTopics });
+}
 
 const TopicListBoxBase = (({ currentTopic, subscribedTopics, setCurrentTopic }) => {
 

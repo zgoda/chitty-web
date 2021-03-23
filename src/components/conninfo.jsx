@@ -1,8 +1,8 @@
 import { connect } from 'redux-zero/preact';
 
-const mapToProps =
-  ({ connState, hostName, secure, userRegistered }) =>
-    ({ connState, hostName, secure, userRegistered });
+function mapToProps({ connState, hostName, secure, userRegistered }) {
+  return ({ connState, hostName, secure, userRegistered });
+}
 
 const ConnectionInfoBase = (({ connState, hostName, secure, userRegistered }) => {
 

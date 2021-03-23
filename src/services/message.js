@@ -1,5 +1,10 @@
+/**
+ * @fileoverview Web socket and messaging services.
+ */
 import { set } from 'idb-keyval';
 import { bindActions } from 'redux-zero/utils';
+// eslint-disable-next-line no-unused-vars
+import Sockette from 'sockette';
 
 import { USER_ID_KEY } from './storage';
 import { store, actions } from './state';
@@ -9,6 +14,13 @@ const PERSONAL_TOPIC = 'personal';
 
 const boundActions = bindActions(actions, store);
 
+/**
+ * Register user in chat server.
+ * 
+ * @param {Sockette} ws web socket object
+ * @param {string} name user screen name / handle
+ * @param {?string} key user key (possibly null)
+ */
 function registerUser(ws, name, key) {
   const payload = {
     type: 'reg', value: name,
@@ -19,6 +31,15 @@ function registerUser(ws, name, key) {
   ws.json(payload);
 }
 
+/**
+ * Post message to chat topic.
+ * 
+ * Topic may be omitted, in this case message will be sent to default topic.
+ * 
+ * @param {Sockette} ws web socket object
+ * @param {string} message message to be sent
+ * @param {string} topic topic where message will be posted
+ */
 function sendChatMessage(ws, message, topic = DEFAULT_TOPIC) {
   const payload = {
     type: 'msg', value: message, to: topic
@@ -26,6 +47,11 @@ function sendChatMessage(ws, message, topic = DEFAULT_TOPIC) {
   ws.json(payload);
 }
 
+/**
+ * Callback function executed on message arrival.
+ * 
+ * @param {MessageEvent} e event instance
+ */
 function messageReceived(e) {
   const handlers = {
     // user registration
@@ -81,10 +107,20 @@ function messageReceived(e) {
   console.log(data);
 }
 
+/**
+ * Callback function executed on connection open.
+ * 
+ * Note the event argument is ignored.
+ */
 function connectionOpened() {
   boundActions.setConnState('connected');
 }
 
+/**
+ * Callback function executed on connection close.
+ * 
+ * @param {CloseEvent} e event instance
+ */
 function connectionClosed(e) {
   boundActions.setConnState('not connected');
   if ([1000, 1001, 1005].includes(e.code)) {
