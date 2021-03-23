@@ -11,8 +11,9 @@ function mapToProps({ hostName, secure, userName }) {
   return ({ hostName, secure, userName });
 }
 
-const ConnectionBoxBase =
-    (({ hostName, secure, userName, setHostName, setSecure, setUserName }) => {
+function ConnectionBoxBase(
+    { hostName, secure, userName, setHostName, setSecure, setUserName }
+  ) {
 
   const [host, setHost] = useState(hostName);
   const [secureTransport, setSecureTransport] = useState(secure);
@@ -86,7 +87,7 @@ const ConnectionBoxBase =
       </form>
     </div>
   );
-});
+}
 
 const ConnectionBox = connect(mapToProps, actions)(ConnectionBoxBase);
 

@@ -4,7 +4,7 @@ import { Rss, Square, CheckSquare } from 'preact-feather';
 
 import { actions } from '../services/state';
 
-const TopicItem = (({ currentTopic, topic, selectTopic }) => {
+function TopicItem({ currentTopic, topic, selectTopic }) {
 
   const selectTopicButtonRef = useRef(null);
 
@@ -35,13 +35,13 @@ const TopicItem = (({ currentTopic, topic, selectTopic }) => {
       </div>
     </div>
   );
-});
+}
 
 function mapTopProps({ currentTopic, subscribedTopics }) {
   return ({ currentTopic, subscribedTopics });
 }
 
-const TopicListBoxBase = (({ currentTopic, subscribedTopics, setCurrentTopic }) => {
+function TopicListBoxBase({ currentTopic, subscribedTopics, setCurrentTopic }) {
 
   const showCurrentTopic = currentTopic.length > 0;
 
@@ -68,7 +68,7 @@ const TopicListBoxBase = (({ currentTopic, subscribedTopics, setCurrentTopic }) 
       )}
     </div>
   );
-});
+}
 
 const TopicListBox = connect(mapTopProps, actions)(TopicListBoxBase);
 

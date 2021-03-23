@@ -50,16 +50,16 @@ function MessageItem({ message, userKey }) {
   );
 }
 
-function mapToProps({ messages, currentTopic, userKey }) {
-  return ({ messages, currentTopic, userKey });
-}
-
 /**
  * @typedef {Object} MessageListProps
- * @property {Messages} messages
- * @property {string} currentTopic
- * @property {string} userKey
+ * @property {Messages} messages all messages from application state
+ * @property {string} currentTopic current selected topic
+ * @property {string} userKey current user key (ID)
  */
+
+function mapToProps(/** @type MessageListProps */ { messages, currentTopic, userKey }) {
+  return ({ messages, currentTopic, userKey });
+}
 
 function MessageListBase(
     /** @type MessageListProps */ { messages, currentTopic, userKey }

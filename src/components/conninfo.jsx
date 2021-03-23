@@ -4,7 +4,7 @@ function mapToProps({ connState, hostName, secure, userRegistered }) {
   return ({ connState, hostName, secure, userRegistered });
 }
 
-const ConnectionInfoBase = (({ connState, hostName, secure, userRegistered }) => {
+function ConnectionInfoBase({ connState, hostName, secure, userRegistered }) {
 
   const registrationStatus = userRegistered ? 'registered' : 'not registered';
 
@@ -19,7 +19,7 @@ const ConnectionInfoBase = (({ connState, hostName, secure, userRegistered }) =>
       {hostName && <p><em>host:</em> <strong>{hostName}{secureConnection}</strong></p>}
     </div>
   );
-});
+}
 
 const ConnectionInfo = connect(mapToProps)(ConnectionInfoBase);
 

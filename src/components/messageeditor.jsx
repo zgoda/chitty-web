@@ -9,7 +9,7 @@ function mapToProps({ connState, userRegistered, ws, currentTopic }) {
   return ({ connState, userRegistered, ws, currentTopic });
 }
 
-const MessageEditorBase = (({ connState, userRegistered, ws, currentTopic }) => {
+function MessageEditorBase({ connState, userRegistered, ws, currentTopic }) {
 
   const [messageText, setMessageText] = useState('');
 
@@ -51,7 +51,7 @@ const MessageEditorBase = (({ connState, userRegistered, ws, currentTopic }) => 
       </form>
     </div>
   );
-});
+}
 
 const MessageEditor = connect(mapToProps, actions)(MessageEditorBase);
 

@@ -17,9 +17,7 @@ function mapToProps({ userName, hostName, connState, userRegistered, ws, secure 
   return ({ userName, hostName, connState, userRegistered, ws, secure });
 }
 
-const AppBase = (({
-  userName, hostName, connState, userRegistered, ws, secure, setWs
-}) => {
+function AppBase({ userName, hostName, connState, userRegistered, ws, secure, setWs }) {
 
   useEffect(() => {
     async function clearEphemeralStorage() {
@@ -65,7 +63,7 @@ const AppBase = (({
       </div>
     </div>
   );
-});
+}
 
 const App = connect(mapToProps, actions)(AppBase);
 
