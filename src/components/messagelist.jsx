@@ -2,7 +2,21 @@ import { connect } from 'redux-zero/preact';
 import { actions } from '../services/state';
 import { MessageSquare } from 'preact-feather';
 
-const MessageActionLine = (({ message, userKey }) => {
+import '../typedefs';
+
+/**
+ * @typedef {Object} MessageActionLineProps
+ * @property {Message} message
+ * @property {string} userKey
+ */
+
+/**
+ * Component that displays available actions on received messages.
+ * 
+ * @param {MessageActionLineProps} props 
+ * @returns HTML `div` element with list of actions
+ */
+function MessageActionLine({ message, userKey }) {
 
   const displayReply = message.from.key !== userKey;
 
@@ -11,9 +25,15 @@ const MessageActionLine = (({ message, userKey }) => {
       {displayReply ? 'reply · DM · ' : ''}details
     </div>    
   );
-});
+}
 
-const MessageItem = (({ message, userKey }) => {
+/**
+ * Component that displays received message.
+ * 
+ * @param {MessageActionLineProps} props 
+ * @returns HTML `div` element with message
+ */
+function MessageItem({ message, userKey }) {
   return (
     <div class="tile tile-centered">
       <div class="tile-icon">
@@ -28,20 +48,29 @@ const MessageItem = (({ message, userKey }) => {
       </div>
     </div>
   );
-});
+}
 
 function mapToProps({ messages, currentTopic, userKey }) {
   return ({ messages, currentTopic, userKey });
 }
 
-const MessageListBase = (({ messages, currentTopic, userKey }) => {
+/**
+ * @typedef {Object} MessageListProps
+ * @property {Messages} messages
+ * @property {string} currentTopic
+ * @property {string} userKey
+ */
 
-  const topicMessages = messages[currentTopic] || [];
+function MessageListBase(
+    /** @type MessageListProps */ { messages, currentTopic, userKey }
+  ) {
+
+  const topicMessages = messages.get(currentTopic) || [];
 
   return (
     <div class="message-list">
       {topicMessages.map(
-        (message) => (
+        (/** @type Message */ message) => (
           <MessageItem
             message={message}
             key={message.date.toString()}
@@ -51,7 +80,7 @@ const MessageListBase = (({ messages, currentTopic, userKey }) => {
       )}
     </div>
   );
-});
+}
 
 const MessageList = connect(mapToProps, actions)(MessageListBase);
 

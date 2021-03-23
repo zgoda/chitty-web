@@ -84,19 +84,19 @@ function messageReceived(e) {
       } else {
         topic = messageTopic;
       }
-      const topicMessages = state.messages[topic] || [];
+      const topicMessages = state.messages.get(topic) || [];
       const newTopicMessages = [...topicMessages, { message, date, from }];
-      const newMessages = {};
-      Object.assign(newMessages, state.messages);
-      newMessages[topic] = newTopicMessages;
+      const newMessages = new Map(state.messages);
+      newMessages.set(topic, newTopicMessages);
       boundActions.setMessages(newMessages);
     },
     // system event
     event: (data) => {
-      const message = data.value;
+      const message = data.message;
       const date = new Date(data.date * 1000);
       const state = store.getState();
-      const newEvents = [...state.events, { message, date }];
+      const newEvents = 
+        [...state.events, new Map([['message', message], ['date', date]])];
       boundActions.setEvents(newEvents);
     },
   };
