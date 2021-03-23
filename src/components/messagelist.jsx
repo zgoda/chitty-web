@@ -2,10 +2,18 @@ import { connect } from 'redux-zero/preact';
 import { actions } from '../services/state';
 import { MessageSquare } from 'preact-feather';
 
-const MessageItem = (({ message, userKey }) => {
+const MessageActionLine = (({ message, userKey }) => {
 
   const displayReply = message.from.key !== userKey;
 
+  return (
+    <div class="tile-subtitle">
+      {displayReply ? 'reply · DM · ' : ''}details
+    </div>    
+  );
+});
+
+const MessageItem = (({ message, userKey }) => {
   return (
     <div class="tile tile-centered">
       <div class="tile-icon">
@@ -16,9 +24,7 @@ const MessageItem = (({ message, userKey }) => {
         <small class="tile-subtitle text-gray">
           By {message.from.name} on {message.date.toLocaleString()}
         </small>
-        <div class="tile-subtitle">
-          {displayReply ? 'reply · DM · ' : ''}details
-        </div>
+        <MessageActionLine message={message} userKey={userKey} />
       </div>
     </div>
   );
