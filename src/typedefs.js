@@ -18,7 +18,7 @@
  * @typedef {Object} UserData
  * @property {string} name - user name
  * @property {string} key - user key (ID)
- * @property {string} client_id - user's client connection identifier
+ * @property {string} clientId - user's client connection identifier
  */
 
 /**

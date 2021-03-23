@@ -29,7 +29,6 @@ async function registerUser(hostName, secure, userName, password) {
     method: 'POST',
     mode: 'cors',
     cache: 'no-cache',
-    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
