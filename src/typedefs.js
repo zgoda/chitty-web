@@ -6,7 +6,6 @@
 
 /**
  * System event struct as {Object}
- * 
  * @typedef {Object} SystemEvent
  * @property {string} message - event message
  * @property {Date} date - event date
@@ -14,7 +13,6 @@
 
 /**
  * User data struct as {Object}
- * 
  * @typedef {Object} UserData
  * @property {string} name - user name
  * @property {string} key - user key (ID)
@@ -23,9 +21,14 @@
 
 /**
  * Chat message struct as {Object}
- * 
  * @typedef {Object} Message
  * @property {UserData} from - sender user information
  * @property {Date} date - timestamp when message has been sent
  * @property {string} message - message text
+ */
+
+/**
+ * Generic value setter function
+ * @template T
+ * @typedef {Function<T>} ValueSetter
  */

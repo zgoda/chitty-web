@@ -10,30 +10,18 @@ import '../typedefs';
  * @property {string} userKey
  */
 
-/**
- * Component that displays available actions on received messages.
- * 
- * @param {MessageActionLineProps} props 
- * @returns HTML `div` element with list of actions
- */
-function MessageActionLine({ message, userKey }) {
+function MessageActionLine(/** @type MessageActionLineProps */{ message, userKey }) {
 
   const displayReply = message.from.key !== userKey;
 
   return (
     <div class="tile-subtitle">
-      {displayReply ? 'reply · DM · ' : ''}details
+      {displayReply ? 'reply • DM • ' : ''}details
     </div>    
   );
 }
 
-/**
- * Component that displays received message.
- * 
- * @param {MessageActionLineProps} props 
- * @returns HTML `div` element with message
- */
-function MessageItem({ message, userKey }) {
+function MessageItem(/** @type MessageActionLineProps */{ message, userKey }) {
   return (
     <div class="tile tile-centered">
       <div class="tile-icon">
@@ -61,13 +49,10 @@ function mapToProps(/** @type MessageListProps */ { messages, currentTopic, user
   return ({ messages, currentTopic, userKey });
 }
 
-/**
- * Component that displays received messages.
- * 
- * @param {MessageListProps} props
- * @returns HTML `div` element that is a container for message list
- */
-function MessageListBase({ messages, currentTopic, userKey }) {
+function MessageListBase(
+  /** @type MessageListProps */
+  { messages, currentTopic, userKey }
+) {
 
   const topicMessages = messages.get(currentTopic) || [];
 

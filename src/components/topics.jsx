@@ -4,11 +4,20 @@ import { Rss, Square, CheckSquare } from 'preact-feather';
 
 import { actions } from '../services/state';
 
-function TopicItem({ currentTopic, topic, selectTopic }) {
+import '../typedefs';
+
+/**
+ * @typedef {Object} TopicItemProps
+ * @property {string} currentTopic
+ * @property {string} topic
+ * @property {ValueSetter<string>} selectTopic
+ */
+
+function TopicItem(/** @type TopicItemProps */{ currentTopic, topic, selectTopic }) {
 
   const selectTopicButtonRef = useRef(null);
 
-  const handleActionClick = ((e) => {
+  const handleActionClick = ((/** @type MouseEvent */e) => {
     e.preventDefault();
     selectTopicButtonRef.current && selectTopicButtonRef.current.blur();
     selectTopic(topic);
@@ -37,11 +46,30 @@ function TopicItem({ currentTopic, topic, selectTopic }) {
   );
 }
 
-function mapTopProps({ currentTopic, subscribedTopics }) {
+/**
+ * @typedef {Object} TopicListStateItems
+ * @property {string} currentTopic
+ * @property {Array<string>} subscribedTopics
+ */
+
+function mapTopProps(
+  /** @type TopicListStateItems */
+  { currentTopic, subscribedTopics }
+) {
   return ({ currentTopic, subscribedTopics });
 }
 
-function TopicListBoxBase({ currentTopic, subscribedTopics, setCurrentTopic }) {
+/**
+ * @typedef {Object} TopicListProps
+ * @property {string} currentTopic
+ * @property {Array<string>} subscribedTopics
+ * @property {ValueSetter<string} setCurrentTopic
+ */
+
+function TopicListBoxBase(
+  /** @type TopicListProps */
+  { currentTopic, subscribedTopics, setCurrentTopic }
+) {
 
   const showCurrentTopic = currentTopic.length > 0;
 
