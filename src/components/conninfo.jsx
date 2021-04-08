@@ -9,18 +9,16 @@ import { connect } from 'redux-zero/preact';
  */
 
 function mapToProps(
-      /** @type ConnInfoProps **/{ connState, hostName, secure, userRegistered }
-    ) {
+  /** @type ConnInfoProps **/
+  { connState, hostName, secure, userRegistered }
+) {
   return ({ connState, hostName, secure, userRegistered });
 }
 
-/**
- * Component that displays connection information.
- * 
- * @param {ConnInfoProps} props
- * @returns connection info component
- */
-function ConnectionInfoBase({ connState, hostName, secure, userRegistered }) {
+function ConnectionInfoBase(
+  /** @type ConnInfoProps */
+  { connState, hostName, secure, userRegistered }
+) {
 
   const registrationStatus = userRegistered ? 'registered' : 'not registered';
 

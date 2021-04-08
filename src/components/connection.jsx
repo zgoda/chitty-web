@@ -7,13 +7,33 @@ import { get } from 'idb-keyval';
 import { actions } from '../services/state';
 import { USER_NAME_KEY } from '../services/storage';
 
-function mapToProps({ hostName, secure, userName }) {
+import '../typedefs';
+
+/**
+ * @typedef {Object} ConnectionBoxState
+ * @property {string} hostName
+ * @property {boolean} secure
+ * @property {string} userName
+ */
+
+function mapToProps(/** @type ConnectionBoxState */{ hostName, secure, userName }) {
   return ({ hostName, secure, userName });
 }
 
+/**
+ * @typedef {Object} ConnectionBoxProps
+ * @property {string} hostName
+ * @property {boolean} secure
+ * @property {string} userName
+ * @property {ValueSetter<string>} setHostName
+ * @property {ValueSetter<boolean>} setSecure
+ * @property {ValueSetter<string>} setUserName
+ */
+
 function ConnectionBoxBase(
-    { hostName, secure, userName, setHostName, setSecure, setUserName }
-  ) {
+  /** @type ConnectionBoxProps */
+  { hostName, secure, userName, setHostName, setSecure, setUserName }
+) {
 
   const [host, setHost] = useState(hostName);
   const [secureTransport, setSecureTransport] = useState(secure);

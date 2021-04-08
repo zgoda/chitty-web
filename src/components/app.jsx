@@ -13,8 +13,10 @@ import { Chat } from './chat';
 import { Sidebar } from './sidebar';
 import { ConnectionInfo } from './conninfo';
 
+import '../typedefs';
+
 /**
- * @typedef {Object} AppProps
+ * @typedef {Object} AppStateItems
  * @property {string} userName - user screen name / handle
  * @property {string} hostName - chat host name
  * @property {string} connState - connection status
@@ -24,19 +26,27 @@ import { ConnectionInfo } from './conninfo';
  * @property {boolean} secure - flag if connection should be secured
  */
 
-function mapToProps
-    (/** @type AppProps */{ userName, hostName, connState, userRegistered, ws, secure }
-  ) {
+function mapToProps(
+  /** @type AppStateItems */
+  { userName, hostName, connState, userRegistered, ws, secure }
+) {
   return ({ userName, hostName, connState, userRegistered, ws, secure });
 }
 
 /**
- * Main application component.
- * 
- * @param {AppProps} props
- * @returns application container as HTML `div` element
+ * @typedef {Object} AppProps
+ * @property {string} userName
+ * @property {string} hostName
+ * @property {string} connState
+ * @property {boolean} userRegistered
+ * @property {Sockette} ws
+ * @property {boolean} secure
+ * @property {ValueSetter<Sockette>} setWs
  */
-function AppBase({ userName, hostName, connState, userRegistered, ws, secure, setWs }) {
+function AppBase(
+  /** @type AppProps */
+  { userName, hostName, connState, userRegistered, ws, secure, setWs }
+) {
 
   useEffect(() => {
     async function clearEphemeralStorage() {

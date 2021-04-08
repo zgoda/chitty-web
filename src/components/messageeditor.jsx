@@ -16,18 +16,16 @@ import { sendChatMessage } from '../services/message';
  */
 
 function mapToProps(
-      /** @type MessageEditorProps */{ connState, userRegistered, ws, currentTopic }
-    ) {
+  /** @type MessageEditorProps */
+  { connState, userRegistered, ws, currentTopic }
+) {
   return ({ connState, userRegistered, ws, currentTopic });
 }
 
-/**
- * Component that displays message editing control.
- * 
- * @param {MessageEditorProps} props
- * @returns HTML `form` enclosed in appropriate `div`
- */
-function MessageEditorBase({ connState, userRegistered, ws, currentTopic }) {
+function MessageEditorBase(
+  /** @type MessageEditorProps */
+  { connState, userRegistered, ws, currentTopic }
+) {
 
   const [messageText, setMessageText] = useState('');
 
