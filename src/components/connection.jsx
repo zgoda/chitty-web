@@ -2,29 +2,17 @@ import { h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 import { CloudLightning } from 'preact-feather';
 import { connect } from 'redux-zero/preact';
-import { get } from 'idb-keyval';
+import { get, set } from 'idb-keyval';
 
 import { actions } from '../services/state';
-import { USER_NAME_KEY } from '../services/storage';
+import {
+  USER_NAME_KEY, SECURE_CONNECTION_KEY, CHAT_SERVER_HOST_KEY, PREVIOUS_HOSTS_KEY,
+} from '../services/storage';
 
 import '../typedefs';
 
 /**
- * @typedef {Object} ConnectionBoxState
- * @property {string} hostName
- * @property {boolean} secure
- * @property {string} userName
- */
-
-function mapToProps(/** @type ConnectionBoxState */{ hostName, secure, userName }) {
-  return ({ hostName, secure, userName });
-}
-
-/**
  * @typedef {Object} ConnectionBoxProps
- * @property {string} hostName
- * @property {boolean} secure
- * @property {string} userName
  * @property {ValueSetter<string>} setHostName
  * @property {ValueSetter<boolean>} setSecure
  * @property {ValueSetter<string>} setUserName
@@ -32,30 +20,52 @@ function mapToProps(/** @type ConnectionBoxState */{ hostName, secure, userName 
 
 function ConnectionBoxBase(
   /** @type ConnectionBoxProps */
-  { hostName, secure, userName, setHostName, setSecure, setUserName }
+  { setHostName, setSecure, setUserName }
 ) {
 
-  const [host, setHost] = useState(hostName);
-  const [secureTransport, setSecureTransport] = useState(secure);
-  const [name, setName] = useState(userName);
+  const [host, setHost] = useState('');
+  const [secureTransport, setSecureTransport] = useState(false);
+  const [name, setName] = useState('');
+  const [previousHosts, setPreviousHosts] = useState([]);
 
   useEffect(() => {
-    async function fetchName() {
+    async function fetchSavedData() {
       const savedName = await get(USER_NAME_KEY);
       if (savedName) {
         setName(savedName);
       }
+      const savedHost = await get(CHAT_SERVER_HOST_KEY);
+      if (savedHost) {
+        setHost(savedHost);
+      }
+      const secure = await get(SECURE_CONNECTION_KEY);
+      if (secure != null) {
+        setSecureTransport(secure);
+      }
+      const previous = await get(PREVIOUS_HOSTS_KEY);
+      if (previous != null) {
+        setPreviousHosts(previous);
+      }
     }
-    fetchName();
+    fetchSavedData();
   }, []);
+
+  const previousHostsId = 'previous-hosts-list';
 
   const canSave = host.length > 0;
 
-  const handleSubmit = ((ev) => {
+  const handleSubmit = (async (/** @type Event */ev) => {
     ev.preventDefault();
     setHostName(host);
     setUserName(name);
     setSecure(secureTransport);
+    const hosts = new Set(previousHosts);
+    hosts.add(host);
+    setPreviousHosts([...hosts]);
+    await set(PREVIOUS_HOSTS_KEY, previousHosts);
+    await set(USER_NAME_KEY, name);
+    await set(SECURE_CONNECTION_KEY, secureTransport);
+    await set(CHAT_SERVER_HOST_KEY, host);
   });
 
   const handleHostInputChange = (e) => setHost(e.target.value.trim());
@@ -67,6 +77,11 @@ function ConnectionBoxBase(
   return (
     <div>
       <h3>Server connection</h3>
+      <datalist id={previousHostsId}>
+        {previousHosts.map((host) => (
+          <option value={host} key={`previous-host-${host}`} />
+        ))}
+      </datalist>
       <form onSubmit={handleSubmit}>
         <div class="form-group">
           <label class="form-switch">
@@ -95,6 +110,7 @@ function ConnectionBoxBase(
               placeholder="chat host"
               value={host}
               onInput={handleHostInputChange}
+              list={previousHostsId}
             />
             <button
               class={`btn btn-primary btn-action ${canSave ? '' : 'disabled'}`}
@@ -109,6 +125,6 @@ function ConnectionBoxBase(
   );
 }
 
-const ConnectionBox = connect(mapToProps, actions)(ConnectionBoxBase);
+const ConnectionBox = connect(null, actions)(ConnectionBoxBase);
 
 export { ConnectionBox };

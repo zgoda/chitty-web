@@ -10,6 +10,7 @@ body {
 
 .message-list {
   border: 0.05rem solid $gray-color;
+  padding: 0.5rem;
   height: 24rem;
   overflow-y: auto;
 }
