@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
 import { Send } from 'preact-feather';
 import { connect } from 'redux-zero/preact';
 // eslint-disable-next-line no-unused-vars
@@ -7,27 +7,46 @@ import Sockette from 'sockette';
 import { actions } from '../services/state';
 import { sendChatMessage } from '../services/message';
 
+import '../typedefs';
+
 /**
- * @typedef {Object} MessageEditorProps
+ * @typedef {Object} MessageEditorState
  * @property {string} connState - connection status
  * @property {boolean} userRegistered - flag whether user is registered already
  * @property {Sockette} ws - web socket object
  * @property {string} currentTopic - currently selected chat topic
+ * @property {UserData} replyingTo
  */
 
 function mapToProps(
-  /** @type MessageEditorProps */
-  { connState, userRegistered, ws, currentTopic }
+  /** @type MessageEditorState */
+  { connState, userRegistered, ws, currentTopic, replyingTo }
 ) {
-  return ({ connState, userRegistered, ws, currentTopic });
+  return ({ connState, userRegistered, ws, currentTopic, replyingTo });
 }
+
+/**
+ * @typedef {Object} MessageEditorProps
+ * @property {string} connState
+ * @property {boolean} userRegistered
+ * @property {Sockette} ws
+ * @property {string} currentTopic
+ * @property {UserData} replyingTo
+ * @property {Function} setReplyingTo
+ */
 
 function MessageEditorBase(
   /** @type MessageEditorProps */
-  { connState, userRegistered, ws, currentTopic }
+  { connState, userRegistered, ws, currentTopic, replyingTo, setReplyingTo }
 ) {
 
   const [messageText, setMessageText] = useState('');
+
+  useEffect(() => {
+    if (replyingTo != null) {
+      setMessageText(`@${replyingTo.name} `);
+    }
+  }, [replyingTo]);
 
   const canSend = userRegistered && connState == 'connected';
 
@@ -39,6 +58,9 @@ function MessageEditorBase(
     if (canSend && messageText.length > 0) {
       sendChatMessage(ws, messageText, currentTopic);
       setMessageText('');
+      if (replyingTo != null) {
+        setReplyingTo(null);
+      }
     }
   });
 

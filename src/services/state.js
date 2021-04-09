@@ -23,6 +23,8 @@ const initialState = {
   currentTopic: '',
   /** @type Array<SystemEvent> */
   events: [],
+  /** @type UserData */
+  replyingTo: null,
 };
 
 const store = createStore(initialState);
@@ -43,6 +45,7 @@ function actions() {
       (_state, /** @type Array<string> */ value) => ({ subscribedTopics: value }),
     setCurrentTopic: (_state, /** @type string */ value) => ({ currentTopic: value }),
     setEvents: (_state, /** @type Array<SystemEvent> */ value) => ({ events: value }),
+    setReplyingTo: (_state, /** @type UserData */ value) => ({ replyingTo: value }),
   });
 }
 

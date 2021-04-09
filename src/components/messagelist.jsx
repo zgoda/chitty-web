@@ -4,6 +4,37 @@ import { MessageSquare } from 'preact-feather';
 import { actions } from '../services/state';
 import '../typedefs';
 
+function ReplyActionItemBase({ msgFrom, setReplyingTo }) {
+
+  const handleClick = ((e) => {
+    e.preventDefault();
+    setReplyingTo(msgFrom.name);
+  });
+
+  return (
+    <a href="#" onClick={handleClick}>reply</a>
+  );
+}
+
+const ReplyActionItem = connect(null, actions)(ReplyActionItemBase);
+
+/**
+ * @typedef {Object} DMActionProps
+ * @property {UserData} msgFrom
+ */
+
+function DMActionItem(/** @type DMActionProps */{ msgFrom }) {
+
+  const handleClick = ((e) => {
+    e.preventDefault();
+    console.log(`DM to ${msgFrom.name}`);
+  });
+
+  return (
+    <a href="#" onClick={handleClick}>DM</a>
+  );
+}
+
 /**
  * @typedef {Object} MessageActionLineProps
  * @property {Message} message
@@ -16,7 +47,11 @@ function MessageActionLine(/** @type MessageActionLineProps */{ message, userKey
 
   return (
     <div class="tile-subtitle">
-      {displayReply ? 'reply • DM • ' : ''}details
+      {displayReply && <ReplyActionItem name={message.from} />}
+      {displayReply ? ' • ' : ''}
+      {displayReply && <DMActionItem name={message.from} />}
+      {displayReply ? ' • ' : ''}
+      details
     </div>    
   );
 }

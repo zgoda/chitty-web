@@ -1,6 +1,6 @@
 import { useRef } from 'preact/hooks';
 import { connect } from 'redux-zero/preact';
-import { Rss, Square, CheckSquare } from 'preact-feather';
+import { Rss, Circle, CheckCircle } from 'preact-feather';
 
 import { actions } from '../services/state';
 
@@ -39,7 +39,7 @@ function TopicItem(/** @type TopicItemProps */{ currentTopic, topic, selectTopic
           onClick={handleActionClick}
           ref={selectTopicButtonRef}
         >
-          {currentSelected ? <CheckSquare /> : <Square />}
+          {currentSelected ? <CheckCircle /> : <Circle />}
         </button>
       </div>
     </div>

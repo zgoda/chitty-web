@@ -9,6 +9,8 @@ import Sockette from 'sockette';
 import { USER_ID_KEY } from './storage';
 import { store, actions } from './state';
 
+import '../typedefs';
+
 const DEFAULT_TOPIC = 'general';
 const PERSONAL_TOPIC = 'personal';
 
@@ -34,16 +36,22 @@ function registerUser(ws, name, key) {
 /**
  * Post message to chat topic.
  * 
- * Topic may be omitted, in this case message will be sent to default topic.
+ * Topic may be omitted, in this case message will be sent to default topic. If
+ * replyingTo is provided then message will be sent as reply.
  * 
- * @param {Sockette} ws web socket object
- * @param {string} message message to be sent
- * @param {string} topic topic where message will be posted
+ * @param {Sockette} ws
+ * @param {string} message
+ * @param {string} topic
+ * @param {UserData} replyingTo
  */
-function sendChatMessage(ws, message, topic = DEFAULT_TOPIC) {
+function sendChatMessage(ws, message, topic = DEFAULT_TOPIC, replyingTo = null) {
   const payload = {
     type: 'msg', value: message, to: topic
   };
+  if (replyingTo != null) {
+    payload.replyingTo = replyingTo;
+    payload.type = 'reply';
+  }
   ws.json(payload);
 }
 

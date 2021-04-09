@@ -22,15 +22,15 @@ function ConnectionInfoBase(
 
   const registrationStatus = userRegistered ? 'registered' : 'not registered';
 
-  const secureConnection = secure ? ', secure' : ', insecure';
+  const secureConnection = secure ? 'secure' : 'insecure';
 
   return (
     <div>
       <p>
-        <em>Connection status:</em> <strong>{connState}</strong>,&nbsp;
-        <em>user status:</em> <strong>{registrationStatus}</strong>
+        Connection status: <strong>{connState}</strong>,&nbsp;
+        user status: <strong>{registrationStatus}</strong>
       </p>
-      {hostName && <p><em>host:</em> <strong>{hostName}{secureConnection}</strong></p>}
+      {hostName && <p>host: <strong>{hostName}, {secureConnection}</strong></p>}
     </div>
   );
 }
