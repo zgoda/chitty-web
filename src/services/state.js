@@ -2,8 +2,6 @@
  * @fileoverview Application state services.
  */
 import createStore from 'redux-zero';
-// eslint-disable-next-line no-unused-vars
-import Sockette from 'sockette';
 
 import '../typedefs';
 

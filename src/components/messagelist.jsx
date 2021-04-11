@@ -2,13 +2,14 @@ import { connect } from 'redux-zero/preact';
 import { MessageSquare } from 'preact-feather';
 
 import { actions } from '../services/state';
+
 import '../typedefs';
 
 function ReplyActionItemBase({ msgFrom, setReplyingTo }) {
 
   const handleClick = ((e) => {
     e.preventDefault();
-    setReplyingTo(msgFrom.name);
+    setReplyingTo(msgFrom);
   });
 
   return (

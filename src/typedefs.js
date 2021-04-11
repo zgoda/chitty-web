@@ -5,6 +5,10 @@
  */
 
 /**
+ * @typedef {import('sockette').default} Sockette
+ */
+
+/**
  * System event struct as {Object}
  * @typedef {Object} SystemEvent
  * @property {string} message - event message

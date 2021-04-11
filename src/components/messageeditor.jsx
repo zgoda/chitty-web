@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'preact/hooks';
 import { Send } from 'preact-feather';
 import { connect } from 'redux-zero/preact';
-// eslint-disable-next-line no-unused-vars
-import Sockette from 'sockette';
 
 import { actions } from '../services/state';
 import { sendChatMessage } from '../services/message';
@@ -56,7 +54,7 @@ function MessageEditorBase(
   const handleSubmit = ((e) => {
     e.preventDefault();
     if (canSend && messageText.length > 0) {
-      sendChatMessage(ws, messageText, currentTopic);
+      sendChatMessage(ws, messageText, currentTopic, replyingTo);
       setMessageText('');
       if (replyingTo != null) {
         setReplyingTo(null);
