@@ -17,7 +17,7 @@ function TopicItem(/** @type TopicItemProps */{ currentTopic, topic, selectTopic
 
   const selectTopicButtonRef = useRef(null);
 
-  const handleActionClick = ((/** @type MouseEvent */e) => {
+  const handleActionClick = ((e) => {
     e.preventDefault();
     selectTopicButtonRef.current && selectTopicButtonRef.current.blur();
     selectTopic(topic);
@@ -26,7 +26,7 @@ function TopicItem(/** @type TopicItemProps */{ currentTopic, topic, selectTopic
   const currentSelected = currentTopic === topic;
 
   return (
-    <div class="tile tile-centered">
+    <div className="tile tile-centered">
       <div class="tile-icon">
         <Rss />
       </div>
@@ -63,7 +63,7 @@ function mapTopProps(
  * @typedef {Object} TopicListProps
  * @property {string} currentTopic
  * @property {Array<string>} subscribedTopics
- * @property {ValueSetter<string} setCurrentTopic
+ * @property {ValueSetter<string>} setCurrentTopic
  */
 
 function TopicListBoxBase(
@@ -73,7 +73,7 @@ function TopicListBoxBase(
 
   const showCurrentTopic = currentTopic.length > 0;
 
-  const selectTopic = ((topic) => {
+  const selectTopic = ((/** @type string */topic) => {
     setCurrentTopic(topic);
   });
 

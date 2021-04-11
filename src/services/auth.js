@@ -1,3 +1,4 @@
+//@ts-check
 /**
  * @fileoverview Authentication service functions.
  */
@@ -10,12 +11,12 @@ import { parseHost } from '../utils/web';
  * @param {boolean} secure flag if secure connection should be used
  * @param {string} userName user name as provided by user
  * @param {string} password password as provided by user
- * @returns {string} authentication token
+ * @returns {Promise<string>} authentication token
  */
 async function registerUser(hostName, secure, userName, password) {
   const hostSpec = parseHost(hostName, secure);
   const data = { name: userName, password };
-  const port = hostSpec.get('port') + 1;
+  const port = Number.parseInt(hostSpec.get('port').toString(), 10) + 1;
   const host = hostSpec.get('host');
   const urlParts = [];
   if (secure) {

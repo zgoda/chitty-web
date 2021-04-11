@@ -1,3 +1,4 @@
+//@ts-check
 /**
  * @fileoverview Application state services.
  */
@@ -29,21 +30,35 @@ const store = createStore(initialState);
 
 function actions() {
   return ({
-    setUserName: (_state, /** @type string */ value) => ({ userName: value }),
-    setUserKey: (_state, /** @type string */ value) => ({ userKey: value }),
-    setHostName: (_state, /** @type string */ value) => ({ hostName: value }),
-    setSecure: (_state, /** @type boolean */ value) => ({ secure: value }),
-    setConnState: (_state, /** @type string */ value) => ({ connState: value }),
+    setUserName:
+      (/** @type {any} */ _state, /** @type string */ value) => ({ userName: value }),
+    setUserKey:
+      (/** @type {any} */ _state, /** @type string */ value) => ({ userKey: value }),
+    setHostName:
+      (/** @type {any} */ _state, /** @type string */ value) => ({ hostName: value }),
+    setSecure:
+      (/** @type {any} */ _state, /** @type boolean */ value) => ({ secure: value }),
+    setConnState:
+      (/** @type {any} */ _state, /** @type string */ value) => ({ connState: value }),
     setUserRegistered:
-      (_state, /** @type boolean */ value) => ({ userRegistered: value }),
-    setWs: (_state, /** @type Sockette */ value) => ({ ws: value }),
+      (/** @type {any} */ _state, /** @type boolean */ value) =>
+        ({ userRegistered: value }),
+    setWs: (/** @type {any} */ _state, /** @type Sockette */ value) => ({ ws: value }),
     setMessages:
-      (_state, /** @type Map<string, Array<Message>> */ value) => ({ messages: value }),
+      (/** @type {any} */ _state, /** @type Map<string, Array<Message>> */ value) =>
+        ({ messages: value }),
     setSubscribedTopics:
-      (_state, /** @type Array<string> */ value) => ({ subscribedTopics: value }),
-    setCurrentTopic: (_state, /** @type string */ value) => ({ currentTopic: value }),
-    setEvents: (_state, /** @type Array<SystemEvent> */ value) => ({ events: value }),
-    setReplyingTo: (_state, /** @type UserData */ value) => ({ replyingTo: value }),
+      (/** @type {any} */ _state, /** @type Array<string> */ value) =>
+        ({ subscribedTopics: value }),
+    setCurrentTopic:
+      (/** @type {any} */ _state, /** @type string */ value) =>
+        ({ currentTopic: value }),
+    setEvents:
+      (/** @type {any} */ _state, /** @type Array<SystemEvent> */ value) =>
+        ({ events: value }),
+    setReplyingTo:
+      (/** @type {any} */ _state, /** @type UserData */ value) =>
+        ({ replyingTo: value }),
   });
 }
 

@@ -1,3 +1,4 @@
+//@ts-check
 /**
  * @fileoverview Web socket and messaging services.
  */

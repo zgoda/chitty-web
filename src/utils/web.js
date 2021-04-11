@@ -1,3 +1,4 @@
+//@ts-check
 /**
  * @fileoverview Web operations related utilities:
  * 
@@ -13,17 +14,17 @@
  * 
  * @param {string} hostName host name
  * @param {boolean} secure flag to infer default port in case it's not provided
- * @returns {Map<string, string|number>} a Map instance with host and port
+ * @returns {Map<string, string>} a Map instance with host and port
  */
 function parseHost(hostName, secure) {
   const parts = hostName.split(':');
   if (parts.length > 1) {
     return new Map([
       ['host', parts[0]],
-      ['port', parseInt(parts[1], 10)],
+      ['port', parts[1]],
     ]);
   }
-  const port = secure ? 443 : 80;
+  const port = secure ? '443' : '80';
   return new Map([
     ['host', parts[0]],
     ['port', port],

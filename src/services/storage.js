@@ -1,3 +1,4 @@
+//@ts-check
 // holds user handle / screen name
 const USER_NAME_KEY = 'screenName';
 // secure connection selector
