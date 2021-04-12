@@ -24,6 +24,7 @@ const initialState = {
   events: [],
   /** @type UserData */
   replyingTo: null,
+  token: '',
 };
 
 const store = createStore(initialState);
@@ -59,6 +60,8 @@ function actions() {
     setReplyingTo:
       (/** @type {any} */ _state, /** @type UserData */ value) =>
         ({ replyingTo: value }),
+    setToken: 
+      (/** @type {any} */ _state, /** @type {string} */ value) => ({ token: value }),
   });
 }
 

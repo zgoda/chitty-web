@@ -2,7 +2,7 @@
 /**
  * @fileoverview Authentication service functions.
  */
-import { parseHost } from '../utils/web';
+import { parseHost, makeUrl } from '../utils/web';
 
 /**
  * Perform user registration at web controller for chat server.
@@ -18,14 +18,8 @@ async function registerUser(hostName, secure, userName, password) {
   const data = { name: userName, password };
   const port = Number.parseInt(hostSpec.get('port').toString(), 10) + 1;
   const host = hostSpec.get('host');
-  const urlParts = [];
-  if (secure) {
-    urlParts.push('https://');
-  } else {
-    urlParts.push('http://');
-  }
-  urlParts.push(`${host}:${port}/register`);
-  const url = urlParts.join('');
+  const hostPart = makeUrl(host, port, secure);
+  const url = [hostPart, 'register'].join('/');
   const resp = await fetch(url, {
     method: 'POST',
     mode: 'cors',
@@ -40,4 +34,60 @@ async function registerUser(hostName, secure, userName, password) {
   return rv.token;
 }
 
-export { registerUser };
+/**
+ * 
+ * @param {string} hostName 
+ * @param {boolean} secure 
+ * @param {string} userName 
+ * @param {string} password 
+ * @returns {Promise<string>}
+ */
+async function loginUser(hostName, secure, userName, password) {
+  const hostSpec = parseHost(hostName, secure);
+  const data = { name: userName, password };
+  const port = Number.parseInt(hostSpec.get('port').toString(), 10) + 1;
+  const host = hostSpec.get('host');
+  const hostPart = makeUrl(host, port, secure);
+  const url = [hostPart, 'login'].join('/');
+  const resp = await fetch(url, {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(data),
+  });
+  const rv = await resp.json();
+  return rv.token;
+}
+
+/**
+ * 
+ * @param {string} hostName 
+ * @param {boolean} secure 
+ * @param {string} userName 
+ * @returns 
+ */
+async function checkUserName(hostName, secure, userName) {
+  const hostSpec = parseHost(hostName, secure);
+  const port = Number.parseInt(hostSpec.get('port').toString(), 10) + 1;
+  const host = hostSpec.get('host');
+  const hostPart = makeUrl(host, port, secure);
+  const url = [hostPart, 'names', encodeURIComponent(userName)].join('/');
+  const resp = await fetch(url, {
+    method: 'GET',
+    cache: 'no-cache',
+    referrerPolicy: 'no-referrer',
+    mode: 'cors'
+  });
+  if (resp.status === 200) {
+    return { ok: true, message: '' };
+  } else if (resp.status === 400) {
+    return { ok: false, message: 'that name is already taken' };
+  }
+  throw new Error('Error response from server');
+}
+
+export { registerUser, loginUser, checkUserName };

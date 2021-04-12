@@ -31,4 +31,22 @@ function parseHost(hostName, secure) {
   ]);
 }
 
-export { parseHost };
+/**
+ * 
+ * @param {string} host 
+ * @param {number} port 
+ * @param {boolean} secure 
+ * @returns {string}
+ */
+function makeUrl(host, port, secure) {
+  const urlParts = [];
+  if (secure) {
+    urlParts.push('https://');
+  } else {
+    urlParts.push('http://');
+  }
+  urlParts.push(`${host}:${port}`);
+  return urlParts.join('');
+}
+
+export { parseHost, makeUrl };
