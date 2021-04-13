@@ -1,9 +1,55 @@
-import { useState } from 'preact/hooks';
+import { useState, useRef } from 'preact/hooks';
 import { connect } from 'redux-zero/preact';
-import { LogIn } from 'preact-feather';
+import { LogIn, UserPlus } from 'preact-feather';
 
 import { actions } from '../services/state';
 import { checkUserName, loginUser, registerUser } from '../services/auth';
+
+function AuthSelector() {
+
+  const loginButtonRef = useRef(null);
+  const registerButtonRef = useRef(null);
+
+  const handleLoginButtonClick = ((e) => {
+    e.preventDefault();
+    loginButtonRef.current && loginButtonRef.current.blur();
+  });
+
+  const handleRegisterButtonClick = ((e) => {
+    e.preventDefault();
+    registerButtonRef.current && registerButtonRef.current.blur();
+  });
+
+  return (
+    <>
+      <h3>Authentication</h3>
+      <div class="container">
+        <div class="columns">
+          <div class="column">
+            <button
+              type="button"
+              class="btn btn-link"
+              ref={loginButtonRef}
+              onClick={handleLoginButtonClick}
+            >
+              <LogIn /> Login
+            </button>
+          </div>
+          <div class="column">
+            <button
+              type="button"
+              class="btn btn-link"
+              ref={registerButtonRef}
+              onClick={handleRegisterButtonClick}
+            >
+              <UserPlus /> Register
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
 
 function mapToProps({ hostName, secure }) {
   return { hostName, secure };
@@ -170,6 +216,12 @@ function RegistrationFormBase({ hostName, secure, setUserName, setToken }) {
             {passwordHasError && <p class="form-input-hint">Passwords do not match</p>}
           </div>
         </div>
+        <div class="form-group">
+          <div class="col-3 col-sm-12" />
+          <div class="col-9 col-sm-12">
+            <button type="submit"><UserPlus /> Register</button>
+          </div>
+        </div>
       </form>
     </div>
   );
@@ -177,4 +229,4 @@ function RegistrationFormBase({ hostName, secure, setUserName, setToken }) {
 
 const RegistrationForm = connect(mapToProps, actions)(RegistrationFormBase);
 
-export { LoginForm, RegistrationForm };
+export { LoginForm, RegistrationForm, AuthSelector };
