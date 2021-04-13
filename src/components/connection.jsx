@@ -11,6 +11,20 @@ import {
 
 import '../typedefs';
 
+function hostSelectorMapToProps({ chatHost, authHost }) {
+  return { chatHost, authHost };
+}
+
+function HostSelectorBase({ chatHost, authHost, setChatHost, setAuthHost }) {
+  return (
+    <div>
+      <h3>Servers</h3>
+    </div>
+  );
+}
+
+const HostSelector = connect(hostSelectorMapToProps, actions)(HostSelectorBase);
+
 /**
  * @typedef {Object} ConnectionBoxProps
  * @property {ValueSetter<string>} setHostName
@@ -127,4 +141,4 @@ function ConnectionBoxBase(
 
 const ConnectionBox = connect(null, actions)(ConnectionBoxBase);
 
-export { ConnectionBox };
+export { ConnectionBox, HostSelector };

@@ -1,4 +1,3 @@
-//@ts-check
 /**
  * @fileoverview Application state services.
  */
@@ -26,46 +25,30 @@ const initialState = {
   replyingTo: null,
   token: '',
   isLoggedIn: false,
+  chatHost: '',
+  authHost: '',
 };
 
 const store = createStore(initialState);
 
 function actions() {
   return ({
-    setUserName:
-      (/** @type {any} */ _state, /** @type string */ value) => ({ userName: value }),
-    setUserKey:
-      (/** @type {any} */ _state, /** @type string */ value) => ({ userKey: value }),
-    setHostName:
-      (/** @type {any} */ _state, /** @type string */ value) => ({ hostName: value }),
-    setSecure:
-      (/** @type {any} */ _state, /** @type boolean */ value) => ({ secure: value }),
-    setConnState:
-      (/** @type {any} */ _state, /** @type string */ value) => ({ connState: value }),
-    setUserRegistered:
-      (/** @type {any} */ _state, /** @type boolean */ value) =>
-        ({ userRegistered: value }),
-    setWs: (/** @type {any} */ _state, /** @type Sockette */ value) => ({ ws: value }),
-    setMessages:
-      (/** @type {any} */ _state, /** @type Map<string, Array<Message>> */ value) =>
-        ({ messages: value }),
-    setSubscribedTopics:
-      (/** @type {any} */ _state, /** @type Array<string> */ value) =>
-        ({ subscribedTopics: value }),
-    setCurrentTopic:
-      (/** @type {any} */ _state, /** @type string */ value) =>
-        ({ currentTopic: value }),
-    setEvents:
-      (/** @type {any} */ _state, /** @type Array<SystemEvent> */ value) =>
-        ({ events: value }),
-    setReplyingTo:
-      (/** @type {any} */ _state, /** @type UserData */ value) =>
-        ({ replyingTo: value }),
-    setToken: 
-      (/** @type {any} */ _state, /** @type {string} */ value) => ({ token: value }),
-    setIsLoggedIn:
-      (/** @type {any} */ _state, /** @type {boolean} */ value) =>
-        ({ isLoggedIn: value }),
+    setUserName: (_state, value) => ({ userName: value }),
+    setUserKey: (_state, value) => ({ userKey: value }),
+    setHostName: (_state, value) => ({ hostName: value }),
+    setSecure: (_state, value) => ({ secure: value }),
+    setConnState: (_state, value) => ({ connState: value }),
+    setUserRegistered: (_state, value) => ({ userRegistered: value }),
+    setWs: (_state, value) => ({ ws: value }),
+    setMessages: (_state, value) => ({ messages: value }),
+    setSubscribedTopics: (_state, value) => ({ subscribedTopics: value }),
+    setCurrentTopic: (_state, value) => ({ currentTopic: value }),
+    setEvents: (_state, value) => ({ events: value }),
+    setReplyingTo: (_state, value) => ({ replyingTo: value }),
+    setToken: (_state, value) => ({ token: value }),
+    setIsLoggedIn: (_state, value) => ({ isLoggedIn: value }),
+    setChatHost: (_state, value) => ({ chatHost: value }),
+    setAuthHost: (_state, value) => ({ authHost: value }),
   });
 }
 
