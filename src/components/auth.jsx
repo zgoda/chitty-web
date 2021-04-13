@@ -3,7 +3,7 @@ import { connect } from 'redux-zero/preact';
 import { LogIn } from 'preact-feather';
 
 import { actions } from '../services/state';
-import { checkUserName, loginUser } from '../services/auth';
+import { checkUserName, loginUser, registerUser } from '../services/auth';
 
 function mapToProps({ hostName, secure }) {
   return { hostName, secure };
@@ -24,7 +24,7 @@ function LoginFormBase({ hostName, secure, setUserName, setToken }) {
     if (token != null) {
       setUserName(name);
       setToken(token);
-    } 
+    }
   });
 
   return (
@@ -103,10 +103,16 @@ function RegistrationFormBase({ hostName, secure, setUserName, setToken }) {
     }
   });
 
-  const handleFormSubmit = ((e) => {
+  const handleFormSubmit = (async (e) => {
     e.preventDefault();
     if (password1 !== password2) {
       setPasswordHasError(true);
+      return;
+    }
+    const token = await registerUser(hostName, secure, name, password1);
+    if (token != null) {
+      setUserName(name);
+      setToken(token);
     }
   });
 
