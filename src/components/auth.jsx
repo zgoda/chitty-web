@@ -1,9 +1,35 @@
 import { useState, useRef } from 'preact/hooks';
 import { connect } from 'redux-zero/preact';
-import { LogIn, UserPlus } from 'preact-feather';
+import { LogIn, LogOut, UserPlus } from 'preact-feather';
 
 import { actions } from '../services/state';
 import { checkUserName, loginUser, registerUser } from '../services/auth';
+
+function LogoutBase({ setIsLoggedIn }) {
+
+  const buttonRef = useRef(null);
+
+  const handleButtonClick = ((e) => {
+    e.preventDefault();
+    setIsLoggedIn(false);
+    buttonRef.current && buttonRef.current.blur();
+  });
+
+  return (
+    <div class="text-center">
+      <button
+        type="button"
+        class="btn btn-link"
+        ref={buttonRef}
+        onClick={handleButtonClick}
+      >
+        <LogOut /> Logout
+      </button>      
+    </div>
+  );
+}
+
+const Logout = connect(() => ({}), actions)(LogoutBase);
 
 function AuthSelector() {
 
@@ -145,10 +171,10 @@ function RegistrationFormBase(
     if (rv.ok) {
       setNameHasError(false);
       setNameError('');
-    } else {
-      setNameHasError(true);
-      setNameError(rv.message);
+      return;
     }
+    setNameHasError(true);
+    setNameError(rv.message);
   });
 
   const handleFormSubmit = (async (e) => {
@@ -206,7 +232,7 @@ function RegistrationFormBase(
             value={password2}
             onInput={(e) => setPassword2(e.target.value)}
           />
-          {passwordHasError && <p class="form-input-hint">Passwords do not match</p>}
+          {passwordHasError && <p class="form-input-hint">passwords do not match</p>}
         </div>
         <div class="form-group buttons">
           <button type="submit" class="btn btn-primary"><UserPlus /> Register</button>
@@ -218,4 +244,4 @@ function RegistrationFormBase(
 
 const RegistrationForm = connect(mapToProps, actions)(RegistrationFormBase);
 
-export { LoginForm, RegistrationForm, AuthSelector };
+export { AuthSelector, Logout };

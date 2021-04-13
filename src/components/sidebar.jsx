@@ -2,7 +2,7 @@ import { connect } from 'redux-zero/preact';
 
 import { ConnectionBox, HostSelector } from './connection';
 import { TopicListBox } from './topics';
-import { AuthSelector } from './auth';
+import { AuthSelector, Logout } from './auth';
 
 const mapToProps = (
   ({ connState, isLoggedIn, subscribedTopics, chatHost, authHost }) =>
@@ -19,6 +19,7 @@ function SidebarBase({ connState, isLoggedIn, subscribedTopics, chatHost, authHo
     <div>
       <HostSelector />
       {!isLoggedIn && canConnect && <AuthSelector />}
+      {isLoggedIn && <Logout />}
       {!isConnected && isLoggedIn && <ConnectionBox />}
       {isConnected && hasTopics && <TopicListBox />}
     </div>

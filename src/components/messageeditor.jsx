@@ -62,19 +62,22 @@ function MessageEditorBase(
     }
   });
 
+  const inputId = 'message-editor-input';
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <div class="form-group">
-          <label class="form-label" for="message-editor-input">Message:</label>
+          <label class="form-label" for={inputId}>Message:</label>
           <div class="input-group">
             <input
               class="form-input"
               type="text"
               value={messageText}
               onInput={handleMessageTextInput}
-              id="message-editor-input"
+              id={inputId}
               placeholder="type your message"
+              disabled={!canSend}
             />
             <button
               class={`btn btn-primary btn-action ${canSend ? '' : 'disabled'}`}
