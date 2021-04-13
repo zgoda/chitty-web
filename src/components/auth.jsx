@@ -64,7 +64,7 @@ function mapToProps({ hostName, secure }) {
   return { hostName, secure };
 }
 
-function LoginFormBase({ hostName, secure, setUserName, setToken }) {
+function LoginFormBase({ hostName, secure, setUserName, setToken, setIsLoggedIn }) {
 
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -79,50 +79,41 @@ function LoginFormBase({ hostName, secure, setUserName, setToken }) {
     if (token != null) {
       setUserName(name);
       setToken(token);
+      setIsLoggedIn(true);
     }
+    setIsLoggedIn(false);
   });
 
   return (
     <div>
       <h4>Login</h4>
-      <form class="form-horizontal" onSubmit={handleFormSubmit}>
+      <form onSubmit={handleFormSubmit}>
         <div class="form-group">
-          <div class="col-3 col-sm-12">
-            <label class="form-label" for={userNameInputId}>User name</label>
-          </div>
-          <div class="col-9 col-sm-12">
-            <input
-              type="text"
-              class="form-input"
-              id={userNameInputId}
-              name="name"
-              value={name}
-              required
-              onInput={(e) => setName(e.target.value)}
-            />
-          </div>
+          <label class="form-label" for={userNameInputId}>User name</label>
+          <input
+            type="text"
+            class="form-input"
+            id={userNameInputId}
+            name="name"
+            value={name}
+            required
+            onInput={(e) => setName(e.target.value)}
+          />
         </div>
         <div class="form-group">
-          <div class="col-3 col-sm-12">
-            <label class="form-label" for={passwordInputId}>Password</label>
-          </div>
-          <div class="col-9 col-sm-12">
-            <input
-              type="password"
-              class="form-input"
-              id={passwordInputId}
-              name="password"
-              required
-              value={password}
-              onInput={(e) => setPassword(e.target.value)}
-            />
-          </div>
+          <label class="form-label" for={passwordInputId}>Password</label>
+          <input
+            type="password"
+            class="form-input"
+            id={passwordInputId}
+            name="password"
+            required
+            value={password}
+            onInput={(e) => setPassword(e.target.value)}
+          />
         </div>
-        <div class="form-group">
-          <div class="col-3 col-sm-12" />
-          <div class="col-9 col-sm-12">
-            <button type="submit" class="btn btn-primary"><LogIn /> Login</button>
-          </div>
+        <div class="form-group buttons">
+          <button type="submit" class="btn btn-primary"><LogIn /> Login</button>
         </div>
       </form>
     </div>
@@ -131,7 +122,9 @@ function LoginFormBase({ hostName, secure, setUserName, setToken }) {
 
 const LoginForm = connect(mapToProps, actions)(LoginFormBase);
 
-function RegistrationFormBase({ hostName, secure, setUserName, setToken }) {
+function RegistrationFormBase(
+    { hostName, secure, setUserName, setToken, setIsLoggedIn }
+) {
   const [name, setName] = useState('');
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
@@ -168,68 +161,55 @@ function RegistrationFormBase({ hostName, secure, setUserName, setToken }) {
     if (token != null) {
       setUserName(name);
       setToken(token);
+      setIsLoggedIn(true);
     }
+    setIsLoggedIn(false);
   });
 
   return (
     <div>
       <h4>Register</h4>
-      <form class="form-horizontal" onSubmit={handleFormSubmit}>
+      <form onSubmit={handleFormSubmit}>
         <div class={nameHasError ? 'form-group has-error' : 'form-group'}>
-          <div class="col-3 col-sm-12">
-            <label class="form-label" for={userNameInputId}>User name</label>
-          </div>
-          <div class="col-9 col-sm-12">
-            <input
-              type="text"
-              class="form-input"
-              id={userNameInputId}
-              name="name"
-              value={name}
-              required
-              onInput={handleNameInput}
-            />
-            {nameHasError && <p class="form-input-hint">{nameError}</p>}
-          </div>
+          <label class="form-label" for={userNameInputId}>User name</label>
+          <input
+            type="text"
+            class="form-input"
+            id={userNameInputId}
+            name="name"
+            value={name}
+            required
+            onInput={handleNameInput}
+          />
+          {nameHasError && <p class="form-input-hint">{nameError}</p>}
         </div>
         <div class="form-group">
-          <div class="col-3 col-sm-12">
-            <label class="form-label" for={password1InputId}>Password</label>
-          </div>
-          <div class="col-9 col-sm-12">
-            <input
-              type="password"
-              class="form-input"
-              id={password1InputId}
-              name="password1"
-              required
-              value={password1}
-              onInput={(e) => setPassword1(e.target.value)}
-            />
-          </div>
+          <label class="form-label" for={password1InputId}>Password</label>
+          <input
+            type="password"
+            class="form-input"
+            id={password1InputId}
+            name="password1"
+            required
+            value={password1}
+            onInput={(e) => setPassword1(e.target.value)}
+          />
         </div>
         <div class={passwordHasError ? 'form-group has-error' : 'form-group'}>
-          <div class="col-3 col-sm-12">
-            <label class="form-label" for={password2InputId}>Password (repeat)</label>
-          </div>
-          <div class="col-9 col-sm-12">
-            <input
-              type="password"
-              class="form-input"
-              id={password2InputId}
-              name="password2"
-              required
-              value={password2}
-              onInput={(e) => setPassword2(e.target.value)}
-            />
-            {passwordHasError && <p class="form-input-hint">Passwords do not match</p>}
-          </div>
+          <label class="form-label" for={password2InputId}>Password (repeat)</label>
+          <input
+            type="password"
+            class="form-input"
+            id={password2InputId}
+            name="password2"
+            required
+            value={password2}
+            onInput={(e) => setPassword2(e.target.value)}
+          />
+          {passwordHasError && <p class="form-input-hint">Passwords do not match</p>}
         </div>
-        <div class="form-group">
-          <div class="col-3 col-sm-12" />
-          <div class="col-9 col-sm-12">
-            <button type="submit" class="btn btn-primary"><UserPlus /> Register</button>
-          </div>
+        <div class="form-group buttons">
+          <button type="submit" class="btn btn-primary"><UserPlus /> Register</button>
         </div>
       </form>
     </div>

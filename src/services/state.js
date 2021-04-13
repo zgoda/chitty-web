@@ -25,6 +25,7 @@ const initialState = {
   /** @type UserData */
   replyingTo: null,
   token: '',
+  isLoggedIn: false,
 };
 
 const store = createStore(initialState);
@@ -62,6 +63,9 @@ function actions() {
         ({ replyingTo: value }),
     setToken: 
       (/** @type {any} */ _state, /** @type {string} */ value) => ({ token: value }),
+    setIsLoggedIn:
+      (/** @type {any} */ _state, /** @type {boolean} */ value) =>
+        ({ isLoggedIn: value }),
   });
 }
 
