@@ -11,11 +11,13 @@ import {
 
 import '../typedefs';
 
-function hostSelectorMapToProps({ chatHost, authHost }) {
-  return { chatHost, authHost };
+function hostSelectorMapToProps({ chatHost, authHost, secure }) {
+  return { chatHost, authHost, secure };
 }
 
-function HostSelectorBase({ chatHost, authHost, setChatHost, setAuthHost }) {
+function HostSelectorBase(
+  { chatHost, authHost, secure, setChatHost, setAuthHost, setSecure }
+) {
 
   const formName = 'host-selector';
   const chatInputId = `${formName}-chat-host`;
@@ -46,6 +48,15 @@ function HostSelectorBase({ chatHost, authHost, setChatHost, setAuthHost }) {
           required
         />
       </div>
+      <div class="form-group">
+        <label class="form-switch">
+          <input type="checkbox"
+            checked={secure}
+            onClick={(e) => setSecure(e.target.value)}
+          />
+            <i class="form-icon" /> secure connection
+          </label>
+        </div>
     </div>
   );
 }

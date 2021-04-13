@@ -16,7 +16,7 @@ import { parseHost, makeUrl } from '../utils/web';
 async function registerUser(hostName, secure, userName, password) {
   const hostSpec = parseHost(hostName, secure);
   const data = { name: userName, password };
-  const port = Number.parseInt(hostSpec.get('port').toString(), 10) + 1;
+  const port = Number.parseInt(hostSpec.get('port').toString(), 10);
   const host = hostSpec.get('host');
   const hostPart = makeUrl(host, port, secure);
   const url = [hostPart, 'register'].join('/');
@@ -45,7 +45,7 @@ async function registerUser(hostName, secure, userName, password) {
 async function loginUser(hostName, secure, userName, password) {
   const hostSpec = parseHost(hostName, secure);
   const data = { name: userName, password };
-  const port = Number.parseInt(hostSpec.get('port').toString(), 10) + 1;
+  const port = Number.parseInt(hostSpec.get('port').toString(), 10);
   const host = hostSpec.get('host');
   const hostPart = makeUrl(host, port, secure);
   const url = [hostPart, 'login'].join('/');
@@ -72,7 +72,7 @@ async function loginUser(hostName, secure, userName, password) {
  */
 async function checkUserName(hostName, secure, userName) {
   const hostSpec = parseHost(hostName, secure);
-  const port = Number.parseInt(hostSpec.get('port').toString(), 10) + 1;
+  const port = Number.parseInt(hostSpec.get('port').toString(), 10);
   const host = hostSpec.get('host');
   const hostPart = makeUrl(host, port, secure);
   const url = [hostPart, 'names', encodeURIComponent(userName)].join('/');

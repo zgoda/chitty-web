@@ -60,11 +60,11 @@ function AuthSelector() {
   );
 }
 
-function mapToProps({ hostName, secure }) {
-  return { hostName, secure };
+function mapToProps({ authHost, secure }) {
+  return { authHost, secure };
 }
 
-function LoginFormBase({ hostName, secure, setUserName, setToken, setIsLoggedIn }) {
+function LoginFormBase({ authHost, secure, setUserName, setToken, setIsLoggedIn }) {
 
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -75,7 +75,7 @@ function LoginFormBase({ hostName, secure, setUserName, setToken, setIsLoggedIn 
 
   const handleFormSubmit = (async (e) => {
     e.preventDefault();
-    const token = await loginUser(hostName, secure, name, password);
+    const token = await loginUser(authHost, secure, name, password);
     if (token != null) {
       setUserName(name);
       setToken(token);
@@ -123,7 +123,7 @@ function LoginFormBase({ hostName, secure, setUserName, setToken, setIsLoggedIn 
 const LoginForm = connect(mapToProps, actions)(LoginFormBase);
 
 function RegistrationFormBase(
-    { hostName, secure, setUserName, setToken, setIsLoggedIn }
+    { authHost, secure, setUserName, setToken, setIsLoggedIn }
 ) {
   const [name, setName] = useState('');
   const [password1, setPassword1] = useState('');
@@ -141,7 +141,7 @@ function RegistrationFormBase(
     e.preventDefault();
     const userName = e.target.value;
     setName(userName);
-    const rv = await checkUserName(hostName, secure, userName);
+    const rv = await checkUserName(authHost, secure, userName);
     if (rv.ok) {
       setNameHasError(false);
       setNameError('');
@@ -157,7 +157,7 @@ function RegistrationFormBase(
       setPasswordHasError(true);
       return;
     }
-    const token = await registerUser(hostName, secure, name, password1);
+    const token = await registerUser(authHost, secure, name, password1);
     if (token != null) {
       setUserName(name);
       setToken(token);
