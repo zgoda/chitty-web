@@ -7,16 +7,23 @@ import { checkUserName, loginUser, registerUser } from '../services/auth';
 
 function AuthSelector() {
 
+  const [loginVisible, setLoginVisible] = useState(false);
+  const [registerVisible, setRegisterVisible] = useState(false);
+
   const loginButtonRef = useRef(null);
   const registerButtonRef = useRef(null);
 
   const handleLoginButtonClick = ((e) => {
     e.preventDefault();
+    setLoginVisible(!loginVisible);
+    setRegisterVisible(false);
     loginButtonRef.current && loginButtonRef.current.blur();
   });
 
   const handleRegisterButtonClick = ((e) => {
     e.preventDefault();
+    setRegisterVisible(!registerVisible);
+    setLoginVisible(false);
     registerButtonRef.current && registerButtonRef.current.blur();
   });
 
@@ -47,6 +54,8 @@ function AuthSelector() {
           </div>
         </div>
       </div>
+      {loginVisible && <LoginForm />}
+      {registerVisible && <RegistrationForm />}
     </>
   );
 }
@@ -75,7 +84,7 @@ function LoginFormBase({ hostName, secure, setUserName, setToken }) {
 
   return (
     <div>
-      <h3>Login</h3>
+      <h4>Login</h4>
       <form class="form-horizontal" onSubmit={handleFormSubmit}>
         <div class="form-group">
           <div class="col-3 col-sm-12">
@@ -112,7 +121,7 @@ function LoginFormBase({ hostName, secure, setUserName, setToken }) {
         <div class="form-group">
           <div class="col-3 col-sm-12" />
           <div class="col-9 col-sm-12">
-            <button type="submit"><LogIn /> Login</button>
+            <button type="submit" class="btn btn-primary"><LogIn /> Login</button>
           </div>
         </div>
       </form>
@@ -164,7 +173,7 @@ function RegistrationFormBase({ hostName, secure, setUserName, setToken }) {
 
   return (
     <div>
-      <h3>Login</h3>
+      <h4>Register</h4>
       <form class="form-horizontal" onSubmit={handleFormSubmit}>
         <div class={nameHasError ? 'form-group has-error' : 'form-group'}>
           <div class="col-3 col-sm-12">
@@ -219,7 +228,7 @@ function RegistrationFormBase({ hostName, secure, setUserName, setToken }) {
         <div class="form-group">
           <div class="col-3 col-sm-12" />
           <div class="col-9 col-sm-12">
-            <button type="submit"><UserPlus /> Register</button>
+            <button type="submit" class="btn btn-primary"><UserPlus /> Register</button>
           </div>
         </div>
       </form>
