@@ -1,22 +1,24 @@
 import { connect } from 'redux-zero/preact';
 
-import { ConnectionBox } from './connection';
+import { ConnectionBox, HostSelector } from './connection';
 import { TopicListBox } from './topics';
 import { AuthSelector } from './auth';
 
 const mapToProps = (
-  ({ connState, isLoggedIn, subscribedTopics }) =>
-    ({ connState, isLoggedIn, subscribedTopics })
+  ({ connState, isLoggedIn, subscribedTopics, chatHost, authHost }) =>
+    ({ connState, isLoggedIn, subscribedTopics, chatHost, authHost })
 );
 
-function SidebarBase({ connState, isLoggedIn, subscribedTopics }) {
+function SidebarBase({ connState, isLoggedIn, subscribedTopics, chatHost, authHost }) {
 
+  const canConnect = chatHost !== '' && authHost !== '';
   const isConnected = connState === 'connected';
   const hasTopics = subscribedTopics.length > 0;
 
   return (
     <div>
-      {!isLoggedIn && <AuthSelector />}
+      <HostSelector />
+      {!isLoggedIn && canConnect && <AuthSelector />}
       {!isConnected && isLoggedIn && <ConnectionBox />}
       {isConnected && hasTopics && <TopicListBox />}
     </div>

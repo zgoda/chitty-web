@@ -16,9 +16,36 @@ function hostSelectorMapToProps({ chatHost, authHost }) {
 }
 
 function HostSelectorBase({ chatHost, authHost, setChatHost, setAuthHost }) {
+
+  const formName = 'host-selector';
+  const chatInputId = `${formName}-chat-host`;
+  const authInputId = `${formName}-auth-host`;
+
   return (
     <div>
       <h3>Servers</h3>
+      <div class="form-group">
+        <label class="form-label" for={chatInputId}>Chat host</label>
+        <input
+          class="form-input"
+          type="text"
+          value={chatHost}
+          id={chatInputId}
+          onInput={(e) => setChatHost(e.target.value)}
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for={authInputId}>Auth host</label>
+        <input
+          class="form-input"
+          type="text"
+          value={authHost}
+          id={authInputId}
+          onInput={(e) => setAuthHost(e.target.value)}
+          required
+        />
+      </div>
     </div>
   );
 }

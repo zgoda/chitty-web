@@ -32,7 +32,7 @@ function AuthSelector() {
       <h3>Authentication</h3>
       <div class="container">
         <div class="columns">
-          <div class="column">
+          <div class="column text-center">
             <button
               type="button"
               class="btn btn-link"
@@ -42,7 +42,7 @@ function AuthSelector() {
               <LogIn /> Login
             </button>
           </div>
-          <div class="column">
+          <div class="column text-center">
             <button
               type="button"
               class="btn btn-link"
