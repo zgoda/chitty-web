@@ -8,45 +8,47 @@ import { actions } from '../services/state';
 import {
   USER_NAME_KEY, SECURE_CONNECTION_KEY, CHAT_SERVER_HOST_KEY, PREVIOUS_HOSTS_KEY,
 } from '../services/storage';
+import { getServerMeta } from '../services/web';
 
 import '../typedefs';
 
-function hostSelectorMapToProps({ chatHost, authHost, secure }) {
-  return { chatHost, authHost, secure };
+function hostSelectorMapToProps({ secure }) {
+  return { secure };
 }
 
-function HostSelectorBase(
-  { chatHost, authHost, secure, setChatHost, setAuthHost, setSecure }
-) {
+function HostSelectorBase({ secure, setChatHost, setAuthHost, setSecure }) {
+
+  const [host, setHost] = useState('');
+  const [hasError, setHasError] = useState(false);
 
   const formName = 'host-selector';
-  const chatInputId = `${formName}-chat-host`;
-  const authInputId = `${formName}-auth-host`;
+  const inputId = `${formName}-host`;
+
+  const fetchServerMeta = (async (e) => {
+    e.preventDefault();
+    const serverMeta = await getServerMeta(host, secure);
+    if (serverMeta != null) {
+      setAuthHost(host);
+      setChatHost(`${serverMeta.chat.host}:${serverMeta.chat.port}`);
+    } else {
+      setHasError(true);
+    }
+  });
 
   return (
     <div>
-      <h3>Servers</h3>
-      <div class="form-group">
-        <label class="form-label" for={chatInputId}>Chat host</label>
+      <div class={hasError ? 'form-group has-error' : 'form-group'}>
+        <label class="form-label" for={inputId}>Server name</label>
         <input
           class="form-input"
           type="text"
-          value={chatHost}
-          id={chatInputId}
-          onInput={(e) => setChatHost(e.target.value)}
+          value={host}
+          id={inputId}
+          onInput={(e) => setHost(e.target.value)}
+          onBlur={fetchServerMeta}
           required
         />
-      </div>
-      <div class="form-group">
-        <label class="form-label" for={authInputId}>Auth host</label>
-        <input
-          class="form-input"
-          type="text"
-          value={authHost}
-          id={authInputId}
-          onInput={(e) => setAuthHost(e.target.value)}
-          required
-        />
+        {hasError && <p class="form-input-hint">specified server is invalid</p>}
       </div>
       <div class="form-group">
         <label class="form-switch">

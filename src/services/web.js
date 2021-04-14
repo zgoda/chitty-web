@@ -14,7 +14,10 @@ async function getServerMeta(hostName, secure) {
     method: 'GET',
     referrerPolicy: 'no-referrer',
   });
-  return await resp.json();
+  if (resp.status === 200) {
+    return await resp.json();
+  }
+  return null;
 }
 
 export { getServerMeta };
