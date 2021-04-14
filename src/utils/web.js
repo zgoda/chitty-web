@@ -3,6 +3,13 @@
  * @fileoverview Web operations related utilities:
  * 
  *  - URL parsing
+ *  - URL building
+ */
+
+/**
+ * @typedef {Object} HostSpec
+ * @property {string} host
+ * @property {number} port
  */
 
 /**
@@ -12,41 +19,49 @@
  * will help to determine port. Note that if host contains port information, it will
  * be used regardless of this flag.
  * 
- * @param {string} hostName host name
- * @param {boolean} secure flag to infer default port in case it's not provided
- * @returns {Map<string, string>} a Map instance with host and port
+ * @param {string} hostName
+ * @param {boolean} secure
+ * @returns {HostSpec}
  */
 function parseHost(hostName, secure) {
   const parts = hostName.split(':');
   if (parts.length > 1) {
-    return new Map([
-      ['host', parts[0]],
-      ['port', parts[1]],
-    ]);
+    return {
+      host: parts[0],
+      port: parseInt(parts[1], 10),
+    };
   }
-  const port = secure ? '443' : '80';
-  return new Map([
-    ['host', parts[0]],
-    ['port', port],
-  ]);
+  const port = secure ? 443 : 80;
+  return {
+    host: parts[0],
+    port,
+  };
 }
 
 /**
+ * Build host URL.
+ * 
+ * Path parameter is optional, if provided it will be added to URL.
  * 
  * @param {string} host 
  * @param {number} port 
- * @param {boolean} secure 
+ * @param {boolean} secure
+ * @param {(string|null)} [path=null]
  * @returns {string}
  */
-function makeUrl(host, port, secure) {
+function makeUrl(host, port, secure, path = null) {
+  /** @type string[] */
   const urlParts = [];
   if (secure) {
-    urlParts.push('https://');
+    urlParts.push('https:/');
   } else {
-    urlParts.push('http://');
+    urlParts.push('http:/');
   }
   urlParts.push(`${host}:${port}`);
-  return urlParts.join('');
+  if (path != null) {
+    urlParts.push(path);
+  }
+  return urlParts.join('/');
 }
 
 export { parseHost, makeUrl };

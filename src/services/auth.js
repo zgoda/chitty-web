@@ -16,10 +16,7 @@ import { parseHost, makeUrl } from '../utils/web';
 async function registerUser(hostName, secure, userName, password) {
   const hostSpec = parseHost(hostName, secure);
   const data = { name: userName, password };
-  const port = Number.parseInt(hostSpec.get('port').toString(), 10);
-  const host = hostSpec.get('host');
-  const hostPart = makeUrl(host, port, secure);
-  const url = [hostPart, 'register'].join('/');
+  const url = makeUrl(hostSpec.host, hostSpec.port, secure, 'register');
   const resp = await fetch(url, {
     method: 'POST',
     mode: 'cors',
@@ -45,10 +42,7 @@ async function registerUser(hostName, secure, userName, password) {
 async function loginUser(hostName, secure, userName, password) {
   const hostSpec = parseHost(hostName, secure);
   const data = { name: userName, password };
-  const port = Number.parseInt(hostSpec.get('port').toString(), 10);
-  const host = hostSpec.get('host');
-  const hostPart = makeUrl(host, port, secure);
-  const url = [hostPart, 'login'].join('/');
+  const url = makeUrl(hostSpec.host, hostSpec.port, secure, 'login');
   const resp = await fetch(url, {
     method: 'POST',
     mode: 'cors',
@@ -72,10 +66,8 @@ async function loginUser(hostName, secure, userName, password) {
  */
 async function checkUserName(hostName, secure, userName) {
   const hostSpec = parseHost(hostName, secure);
-  const port = Number.parseInt(hostSpec.get('port').toString(), 10);
-  const host = hostSpec.get('host');
-  const hostPart = makeUrl(host, port, secure);
-  const url = [hostPart, 'names', encodeURIComponent(userName)].join('/');
+  const path = ['names', encodeURIComponent(userName)].join('/');
+  const url = makeUrl(hostSpec.host, hostSpec.port, secure, path);
   const resp = await fetch(url, {
     method: 'GET',
     cache: 'no-cache',
