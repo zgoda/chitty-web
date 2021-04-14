@@ -4,6 +4,7 @@ import { LogIn, LogOut, UserPlus } from 'preact-feather';
 
 import { actions } from '../services/state';
 import { checkUserName, loginUser, registerUser } from '../services/auth';
+import { Toast } from './misc';
 
 function LogoutBase({ setIsLoggedIn }) {
 
@@ -94,6 +95,7 @@ function LoginFormBase({ authHost, secure, setUserName, setToken, setIsLoggedIn 
 
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [loginResult, setLoginResult] = useState({ token: '', error: '' });
 
   const formName = 'login';
   const userNameInputId = `${formName}-user-name`;
@@ -101,18 +103,29 @@ function LoginFormBase({ authHost, secure, setUserName, setToken, setIsLoggedIn 
 
   const handleFormSubmit = (async (e) => {
     e.preventDefault();
-    const token = await loginUser(authHost, secure, name, password);
-    if (token != null) {
+    const res = await loginUser(authHost, secure, name, password);
+    setLoginResult(res);
+    if (res.token !== '') {
       setUserName(name);
-      setToken(token);
+      setToken(res.token);
       setIsLoggedIn(true);
     }
     setIsLoggedIn(false);
   });
 
+  const closeToast = ((e) => {
+    e.preventDefault();
+    setLoginResult({ token: '', error: '' });
+  });
+
   return (
     <div>
       <h4>Login</h4>
+      {
+        loginResult.error !== '' ? 
+        <Toast state='error' message={loginResult.error} toggler={closeToast} /> : 
+        null
+      }
       <form onSubmit={handleFormSubmit}>
         <div class="form-group">
           <label class="form-label" for={userNameInputId}>User name</label>
@@ -157,6 +170,7 @@ function RegistrationFormBase(
   const [nameHasError, setNameHasError] = useState(false);
   const [nameError, setNameError] = useState('');
   const [passwordHasError, setPasswordHasError] = useState(false);
+  const [loginResult, setLoginResult] = useState({ token: '', error: '' });
 
   const formName = 'register';
   const userNameInputId = `${formName}-user-name`;
@@ -183,18 +197,29 @@ function RegistrationFormBase(
       setPasswordHasError(true);
       return;
     }
-    const token = await registerUser(authHost, secure, name, password1);
-    if (token != null) {
+    const rv = await registerUser(authHost, secure, name, password1);
+    setLoginResult(rv);
+    if (rv.token !== '') {
       setUserName(name);
-      setToken(token);
+      setToken(rv.token);
       setIsLoggedIn(true);
     }
     setIsLoggedIn(false);
   });
 
+  const closeToast = ((e) => {
+    e.preventDefault();
+    setLoginResult({ token: '', error: '' });
+  });
+
   return (
     <div>
       <h4>Register</h4>
+      {
+        loginResult.error !== '' ? 
+        <Toast state='error' message={loginResult.error} toggler={closeToast} /> : 
+        null
+      }
       <form onSubmit={handleFormSubmit}>
         <div class={nameHasError ? 'form-group has-error' : 'form-group'}>
           <label class="form-label" for={userNameInputId}>User name</label>

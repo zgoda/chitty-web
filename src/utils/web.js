@@ -64,4 +64,24 @@ function makeUrl(host, port, secure, path = null) {
   return urlParts.join('/');
 }
 
-export { parseHost, makeUrl };
+/**
+ * Build WebSocket URL
+ * 
+ * @param {string} host 
+ * @param {number} port 
+ * @param {boolean} secure 
+ * @param {string} token 
+ * @returns {string}
+ */
+function makeWsUrl(host, port, secure, token) {
+  const urlParts = [];
+  if (secure) {
+    urlParts.push('wss:/');
+  } else {
+    urlParts.push('ws:/');
+  }
+  urlParts.push(`${host}:${port}`, token);
+  return urlParts.join('/');
+}
+
+export { parseHost, makeUrl, makeWsUrl };

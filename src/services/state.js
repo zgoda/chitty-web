@@ -7,8 +7,6 @@ import '../typedefs';
 
 const initialState = {
   userName: '',
-  userKey: '',
-  hostName: '',
   secure: false,
   connState: 'not connected',
   userRegistered: false,
@@ -34,8 +32,6 @@ const store = createStore(initialState);
 function actions() {
   return ({
     setUserName: (_state, value) => ({ userName: value }),
-    setUserKey: (_state, value) => ({ userKey: value }),
-    setHostName: (_state, value) => ({ hostName: value }),
     setSecure: (_state, value) => ({ secure: value }),
     setConnState: (_state, value) => ({ connState: value }),
     setUserRegistered: (_state, value) => ({ userRegistered: value }),

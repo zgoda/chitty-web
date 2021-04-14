@@ -1,17 +1,18 @@
 import { useEffect } from 'preact/hooks';
 import { useLang, useTitle, useMeta } from 'hoofd/preact';
 import { connect } from 'redux-zero/preact';
-import { get, del } from 'idb-keyval';
+import { del } from 'idb-keyval';
 import Sockette from 'sockette';
 
 import {
-  messageReceived, connectionOpened, registerUser, connectionClosed
+  messageReceived, connectionOpened, connectionClosed,
 } from '../services/message';
-import { USER_ID_KEY, EVENTS_KEY } from '../services/storage';
+import { EVENTS_KEY } from '../services/storage';
 import { actions } from '../services/state';
 import { Chat } from './chat';
 import { Sidebar } from './sidebar';
 import { ConnectionInfo } from './conninfo';
+import { makeWsUrl, parseHost } from '../utils/web';
 
 import '../typedefs';
 
@@ -19,33 +20,28 @@ import '../typedefs';
  * @typedef {Object} AppStateItems
  * @property {string} userName - user screen name / handle
  * @property {string} hostName - chat host name
- * @property {string} connState - connection status
- * @property {boolean} userRegistered - flag if user is already registered at
- *     chat server
  * @property {Sockette} ws - web socket object
  * @property {boolean} secure - flag if connection should be secured
  */
 
 function mapToProps(
   /** @type AppStateItems */
-  { userName, hostName, connState, userRegistered, ws, secure }
+  { userName, hostName, ws, secure, token }
 ) {
-  return ({ userName, hostName, connState, userRegistered, ws, secure });
+  return ({ userName, hostName, ws, secure, token });
 }
 
 /**
  * @typedef {Object} AppProps
  * @property {string} userName
- * @property {string} hostName
- * @property {string} connState
- * @property {boolean} userRegistered
+ * @property {string} chatHostName
  * @property {Sockette} ws
  * @property {boolean} secure
  * @property {ValueSetter<Sockette>} setWs
  */
 function AppBase(
   /** @type AppProps */
-  { userName, hostName, connState, userRegistered, ws, secure, setWs }
+  { userName, chatHostName, ws, secure, token, setWs }
 ) {
 
   useEffect(() => {
@@ -55,7 +51,7 @@ function AppBase(
     clearEphemeralStorage();
   }, []);
 
-  const appTitle = 'Chitty chat';
+  const appTitle = 'Chitty Chat';
 
   useLang('en');
   useTitle(appTitle);
@@ -67,15 +63,11 @@ function AppBase(
     onclose: connectionClosed,
   };
 
-  if (userName !== '' && hostName !== '' && ws === null) {
-    const transport = secure ? 'wss' : 'ws';
-    const webSocket = new Sockette(`${transport}://${hostName}`, wsHandlers);
+  if (userName !== '' && chatHostName !== '' && ws == null && token !== '') {
+    const hostSpec = parseHost(chatHostName, secure);
+    const url = makeWsUrl(hostSpec.host, hostSpec.port, secure, token);
+    const webSocket = new Sockette(url, wsHandlers);
     setWs(webSocket);
-  }
-
-  if (connState === 'connected' && ws !== null && !userRegistered) {
-    get(USER_ID_KEY)
-      .then((key) => registerUser(ws, userName, key));
   }
 
   return (

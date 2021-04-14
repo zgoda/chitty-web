@@ -2,12 +2,8 @@
 /**
  * @fileoverview Web socket and messaging services.
  */
-import { set } from 'idb-keyval';
 import { bindActions } from 'redux-zero/utils';
-// eslint-disable-next-line no-unused-vars
-import Sockette from 'sockette';
 
-import { USER_ID_KEY } from './storage';
 import { store, actions } from './state';
 
 import '../typedefs';
@@ -16,23 +12,6 @@ const DEFAULT_TOPIC = 'general';
 const PERSONAL_TOPIC = 'personal';
 
 const boundActions = bindActions(actions, store);
-
-/**
- * Register user in chat server.
- * 
- * @param {Sockette} ws web socket object
- * @param {string} name user screen name / handle
- * @param {?string} key user key (possibly null)
- */
-function registerUser(ws, name, key) {
-  const payload = {
-    type: 'reg', value: name,
-  };
-  if (key !== null) {
-    payload.key = key;
-  }
-  ws.json(payload);
-}
 
 /**
  * Post message to chat topic.
@@ -63,24 +42,7 @@ function sendChatMessage(ws, message, topic = DEFAULT_TOPIC, replyingTo = null) 
  */
 function messageReceived(e) {
   const handlers = {
-    // user registration
-    reg: (data) => {
-      const key = data.key || '';
-      if (key !== '') {
-        set(USER_ID_KEY, key);
-        boundActions.setUserKey(key);
-      }
-      boundActions.setUserRegistered(true);
-      const topics = data.topics || [];
-      boundActions.setSubscribedTopics(topics.map((topic) => {
-        if (topic === key) {
-          return PERSONAL_TOPIC;
-        }
-        return topic;
-      }));
-      boundActions.setCurrentTopic(DEFAULT_TOPIC);    
-    },
-    // message processing
+    // chat message processing
     msg: (data) => {
       const messageTopic = data.topic;
       const message = data.message;
@@ -139,5 +101,5 @@ function connectionClosed(e) {
 }
 
 export {
-  registerUser, sendChatMessage, messageReceived, connectionOpened, connectionClosed
+  sendChatMessage, messageReceived, connectionOpened, connectionClosed
 };

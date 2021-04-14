@@ -1,6 +1,6 @@
 {
-  "name": "temp",
-  "short_name": "temp",
+  "name": "Chitty Chat",
+  "short_name": "chitty",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
