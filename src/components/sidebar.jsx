@@ -1,6 +1,6 @@
 import { connect } from 'redux-zero/preact';
 
-import { ConnectionBox, HostSelector } from './connection';
+import { HostSelector } from './connection';
 import { TopicListBox } from './topics';
 import { AuthSelector, Logout } from './auth';
 
@@ -20,7 +20,6 @@ function SidebarBase({ connState, isLoggedIn, subscribedTopics, chatHost, authHo
       <HostSelector />
       {!isLoggedIn && canConnect && <AuthSelector />}
       {isLoggedIn && <Logout />}
-      {!isConnected && isLoggedIn && <ConnectionBox />}
       {isConnected && hasTopics && <TopicListBox />}
     </div>
   );
