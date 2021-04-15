@@ -26,9 +26,9 @@ import '../typedefs';
 
 function mapToProps(
   /** @type AppStateItems */
-  { userName, hostName, ws, secure, token }
+  { userName, chatHost, ws, secure, token }
 ) {
-  return ({ userName, hostName, ws, secure, token });
+  return ({ userName, chatHost, ws, secure, token });
 }
 
 /**
@@ -41,7 +41,7 @@ function mapToProps(
  */
 function AppBase(
   /** @type AppProps */
-  { userName, chatHostName, ws, secure, token, setWs }
+  { userName, chatHost, ws, secure, token, setWs }
 ) {
 
   useEffect(() => {
@@ -63,8 +63,8 @@ function AppBase(
     onclose: connectionClosed,
   };
 
-  if (userName !== '' && chatHostName !== '' && ws == null && token !== '') {
-    const hostSpec = parseHost(chatHostName, secure);
+  if (userName !== '' && chatHost !== '' && ws == null && token !== '') {
+    const hostSpec = parseHost(chatHost, secure);
     const url = makeWsUrl(hostSpec.host, hostSpec.port, secure, token);
     const webSocket = new Sockette(url, wsHandlers);
     setWs(webSocket);

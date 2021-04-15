@@ -108,9 +108,8 @@ function LoginFormBase({ authHost, secure, setUserName, setToken, setIsLoggedIn 
     if (res.token !== '') {
       setUserName(name);
       setToken(res.token);
-      setIsLoggedIn(true);
     }
-    setIsLoggedIn(false);
+    setIsLoggedIn(res.token !== '');
   });
 
   const closeToast = ((e) => {
