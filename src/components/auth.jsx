@@ -201,9 +201,8 @@ function RegistrationFormBase(
     if (rv.token !== '') {
       setUserName(name);
       setToken(rv.token);
-      setIsLoggedIn(true);
     }
-    setIsLoggedIn(false);
+    setIsLoggedIn(rv.token !== '');
   });
 
   const closeToast = ((e) => {

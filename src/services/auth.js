@@ -13,11 +13,11 @@ import { parseHost, makeUrl } from '../utils/web';
 /**
  * Perform user registration at web controller for chat server.
  * 
- * @param {string} hostName host name, possibly with port number
- * @param {boolean} secure flag if secure connection should be used
- * @param {string} userName user name as provided by user
- * @param {string} password password as provided by user
- * @returns {Promise<LoginResult>} authentication token
+ * @param {string} hostName
+ * @param {boolean} secure
+ * @param {string} userName
+ * @param {string} password
+ * @returns {Promise<LoginResult>}
  */
 async function registerUser(hostName, secure, userName, password) {
   const hostSpec = parseHost(hostName, secure);
