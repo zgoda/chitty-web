@@ -8,6 +8,7 @@ import { parseHost, makeUrl } from '../utils/web';
  * @typedef {Object} LoginResult
  * @property {string} [token='']
  * @property {string} [error='']
+ * @property {string[]} [topics=[]]
  */
 
 /**
@@ -37,6 +38,7 @@ async function registerUser(hostName, secure, userName, password) {
   if (resp.status === 200) {
     const data = await resp.json();
     rv.token = data.token;
+    rv.topics = data.topics;
   } else {
     rv.error = 'user already exists';
   }
@@ -69,6 +71,7 @@ async function loginUser(hostName, secure, userName, password) {
   if (resp.status === 200) {
     const data = await resp.json();
     rv.token = data.token;
+    rv.topics = data.topics;
   } else {
     rv.error = 'invalid credentials';
   }

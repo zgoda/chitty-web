@@ -94,11 +94,16 @@ function mapToProps({ authHost, secure }) {
   return { authHost, secure };
 }
 
-function LoginFormBase({ authHost, secure, setUserName, setToken, setIsLoggedIn }) {
+function LoginFormBase(
+  {
+    authHost, secure,
+    setUserName, setToken, setIsLoggedIn, setSubscribedTopics,
+  }
+) {
 
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [loginResult, setLoginResult] = useState({ token: '', error: '' });
+  const [loginResult, setLoginResult] = useState({ token: '', error: '', topics: [] });
 
   const formName = 'login';
   const userNameInputId = `${formName}-user-name`;
@@ -111,13 +116,14 @@ function LoginFormBase({ authHost, secure, setUserName, setToken, setIsLoggedIn 
     if (res.token !== '') {
       setUserName(name);
       setToken(res.token);
+      setSubscribedTopics(res.topics);
     }
     setIsLoggedIn(res.token !== '');
   });
 
   const closeToast = ((e) => {
     e.preventDefault();
-    setLoginResult({ token: '', error: '' });
+    setLoginResult({ token: '', error: '', topics: [] });
   });
 
   return (
@@ -164,7 +170,7 @@ function LoginFormBase({ authHost, secure, setUserName, setToken, setIsLoggedIn 
 const LoginForm = connect(mapToProps, actions)(LoginFormBase);
 
 function RegistrationFormBase(
-    { authHost, secure, setUserName, setToken, setIsLoggedIn }
+    { authHost, secure, setUserName, setToken, setIsLoggedIn, setSubscribedTopics }
 ) {
   const [name, setName] = useState('');
   const [password1, setPassword1] = useState('');
@@ -172,7 +178,7 @@ function RegistrationFormBase(
   const [nameHasError, setNameHasError] = useState(false);
   const [nameError, setNameError] = useState('');
   const [passwordHasError, setPasswordHasError] = useState(false);
-  const [loginResult, setLoginResult] = useState({ token: '', error: '' });
+  const [loginResult, setLoginResult] = useState({ token: '', error: '', topics: [] });
 
   const formName = 'register';
   const userNameInputId = `${formName}-user-name`;
@@ -204,13 +210,14 @@ function RegistrationFormBase(
     if (rv.token !== '') {
       setUserName(name);
       setToken(rv.token);
+      setSubscribedTopics(rv.topics);
     }
     setIsLoggedIn(rv.token !== '');
   });
 
   const closeToast = ((e) => {
     e.preventDefault();
-    setLoginResult({ token: '', error: '' });
+    setLoginResult({ token: '', error: '', topics: [] });
   });
 
   return (
