@@ -1,6 +1,6 @@
 import { useState, useRef } from 'preact/hooks';
 import { connect } from 'redux-zero/preact';
-import { LogIn, LogOut, UserPlus } from 'preact-feather';
+import { LogIn, LogOut, UserPlus, Coffee } from 'preact-feather';
 
 import { actions } from '../services/state';
 import { checkUserName, loginUser, registerUser } from '../services/auth';
@@ -8,24 +8,27 @@ import { Toast } from './misc';
 
 function LogoutBase({ setIsLoggedIn }) {
 
-  const buttonRef = useRef(null);
+  const logoutButtonRef = useRef(null);
 
-  const handleButtonClick = ((e) => {
+  const handleLogoutButtonClick = ((e) => {
     e.preventDefault();
     setIsLoggedIn(false);
-    buttonRef.current && buttonRef.current.blur();
+    logoutButtonRef.current && logoutButtonRef.current.blur();
   });
 
   return (
-    <div class="text-center">
+    <div class="btn-group btn-group-block">
       <button
         type="button"
         class="btn btn-link"
-        ref={buttonRef}
-        onClick={handleButtonClick}
+        ref={logoutButtonRef}
+        onClick={handleLogoutButtonClick}
       >
         <LogOut /> Logout
-      </button>      
+      </button>
+      <button class="btn btn-link" type="button">
+        <Coffee /> Disconnect
+      </button>
     </div>
   );
 }

@@ -10,23 +10,23 @@ import '../typedefs';
 /**
  * @typedef {Object} MessageEditorState
  * @property {string} connState - connection status
- * @property {boolean} userRegistered - flag whether user is registered already
- * @property {Sockette} ws - web socket object
+ * @property {boolean} isLoggedIn
+ * @property {Sockette} ws
  * @property {string} currentTopic - currently selected chat topic
  * @property {UserData} replyingTo
  */
 
 function mapToProps(
   /** @type MessageEditorState */
-  { connState, userRegistered, ws, currentTopic, replyingTo }
+  { connState, isLoggedIn, ws, currentTopic, replyingTo }
 ) {
-  return ({ connState, userRegistered, ws, currentTopic, replyingTo });
+  return ({ connState, isLoggedIn, ws, currentTopic, replyingTo });
 }
 
 /**
  * @typedef {Object} MessageEditorProps
  * @property {string} connState
- * @property {boolean} userRegistered
+ * @property {boolean} isLoggedIn
  * @property {Sockette} ws
  * @property {string} currentTopic
  * @property {UserData} replyingTo
@@ -35,7 +35,7 @@ function mapToProps(
 
 function MessageEditorBase(
   /** @type MessageEditorProps */
-  { connState, userRegistered, ws, currentTopic, replyingTo, setReplyingTo }
+  { connState, isLoggedIn, ws, currentTopic, replyingTo, setReplyingTo }
 ) {
 
   const [messageText, setMessageText] = useState('');
@@ -46,7 +46,7 @@ function MessageEditorBase(
     }
   }, [replyingTo]);
 
-  const canSend = userRegistered && connState == 'connected';
+  const canSend = isLoggedIn && connState == 'connected';
 
   const handleMessageTextInput =
     ((e) => setMessageText(e.target.value.trim()));

@@ -9,7 +9,6 @@ const initialState = {
   userName: '',
   secure: false,
   connState: 'not connected',
-  userRegistered: false,
   /** @type Sockette */
   ws: null,
   /** @type Map<string, Array<Message>> */
@@ -34,7 +33,6 @@ function actions() {
     setUserName: (_state, value) => ({ userName: value }),
     setSecure: (_state, value) => ({ secure: value }),
     setConnState: (_state, value) => ({ connState: value }),
-    setUserRegistered: (_state, value) => ({ userRegistered: value }),
     setWs: (_state, value) => ({ ws: value }),
     setMessages: (_state, value) => ({ messages: value }),
     setSubscribedTopics: (_state, value) => ({ subscribedTopics: value }),

@@ -17,7 +17,7 @@ function SidebarBase({ connState, isLoggedIn, subscribedTopics, chatHost, authHo
 
   return (
     <div>
-      <HostSelector />
+      {!isConnected && <HostSelector />}
       {!isLoggedIn && canConnect && <AuthSelector />}
       {isLoggedIn && <Logout />}
       {isConnected && hasTopics && <TopicListBox />}

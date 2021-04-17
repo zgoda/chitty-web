@@ -95,7 +95,7 @@ function connectionOpened() {
 function connectionClosed(e) {
   boundActions.setConnState('not connected');
   if ([1000, 1001, 1005].includes(e.code)) {
-    boundActions.setUserRegistered(false);
+    boundActions.setIsLoggedIn(false);
     boundActions.setWs(null);
   }
 }
