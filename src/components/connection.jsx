@@ -25,10 +25,8 @@ function HostSelectorBase({ secure, setChatHost, setAuthHost, setSecure }) {
     if (serverMeta != null) {
       setAuthHost(host);
       setChatHost(`${serverMeta.chat.host}:${serverMeta.chat.port}`);
-      setHasError(false);
-    } else {
-      setHasError(true);
     }
+    setHasError(serverMeta == null);
   });
 
   return (
