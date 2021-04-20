@@ -46,7 +46,7 @@ function MessageEditorBase(
     }
   }, [replyingTo]);
 
-  const canSend = isLoggedIn && connState == 'connected';
+  const canSend = isLoggedIn && connState == 'connected' && currentTopic !== '';
 
   const handleMessageTextInput =
     ((e) => setMessageText(e.target.value.trim()));

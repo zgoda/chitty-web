@@ -19,7 +19,6 @@
  * User data struct as {Object}
  * @typedef {Object} UserData
  * @property {string} name - user name
- * @property {string} key - user key (ID)
  * @property {string} clientId - user's client connection identifier
  */
 

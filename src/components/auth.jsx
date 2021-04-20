@@ -10,7 +10,9 @@ function logoutMapToProps({ ws }) {
   return { ws };
 }
 
-function LogoutBase({ ws, setIsLoggedIn, setWs, setToken, setSubscribedTopics }) {
+function LogoutBase(
+  { ws, setIsLoggedIn, setWs, setToken, setSubscribedTopics, setCurrentTopic }
+) {
 
   const disconnectButtonRef = useRef(null);
 
@@ -21,6 +23,7 @@ function LogoutBase({ ws, setIsLoggedIn, setWs, setToken, setSubscribedTopics })
     setWs(null);
     setToken('');
     setSubscribedTopics([]);
+    setCurrentTopic('');
     disconnectButtonRef.current && disconnectButtonRef.current.blur();
   });
 

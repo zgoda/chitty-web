@@ -39,12 +39,12 @@ function DMActionItem(/** @type DMActionProps */{ msgFrom }) {
 /**
  * @typedef {Object} MessageActionLineProps
  * @property {Message} message
- * @property {string} userKey
+ * @property {string} userName
  */
 
-function MessageActionLine(/** @type MessageActionLineProps */{ message, userKey }) {
+function MessageActionLine(/** @type MessageActionLineProps */{ message, userName }) {
 
-  const displayReply = message.from.key !== userKey;
+  const displayReply = message.from.name !== userName;
 
   return (
     <div class="tile-subtitle">
@@ -57,7 +57,7 @@ function MessageActionLine(/** @type MessageActionLineProps */{ message, userKey
   );
 }
 
-function MessageItem(/** @type MessageActionLineProps */{ message, userKey }) {
+function MessageItem(/** @type MessageActionLineProps */{ message, userName }) {
   return (
     <div class="tile tile-centered">
       <div class="tile-icon">
@@ -68,7 +68,7 @@ function MessageItem(/** @type MessageActionLineProps */{ message, userKey }) {
         <small class="tile-subtitle text-gray">
           By {message.from.name} on {message.date.toLocaleString()}
         </small>
-        <MessageActionLine message={message} userKey={userKey} />
+        <MessageActionLine message={message} userName={userName} />
       </div>
     </div>
   );
@@ -78,16 +78,18 @@ function MessageItem(/** @type MessageActionLineProps */{ message, userKey }) {
  * @typedef {Object} MessageListProps
  * @property {Map<string, Array<Message>>} messages all messages from application state
  * @property {string} currentTopic current selected topic
- * @property {string} userKey current user key (ID)
+ * @property {string} userName
  */
 
-function mapToProps(/** @type MessageListProps */ { messages, currentTopic, userKey }) {
-  return ({ messages, currentTopic, userKey });
+function mapToProps(
+  /** @type MessageListProps */ { messages, currentTopic, userName }
+) {
+  return ({ messages, currentTopic, userName });
 }
 
 function MessageListBase(
   /** @type MessageListProps */
-  { messages, currentTopic, userKey }
+  { messages, currentTopic, userName }
 ) {
 
   const topicMessages = messages.get(currentTopic) || [];
@@ -99,7 +101,7 @@ function MessageListBase(
           <MessageItem
             message={message}
             key={message.date.toString()}
-            userKey={userKey}
+            userName={userName}
           />
         )
       )}

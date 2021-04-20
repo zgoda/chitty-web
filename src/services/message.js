@@ -43,14 +43,17 @@ function sendChatMessage(ws, message, topic = DEFAULT_TOPIC, replyingTo = null) 
 function messageReceived(e) {
   const handlers = {
     // chat message processing
-    msg: (data) => {
+    msg: (
+        /** @type {{ topic: string; message: string; date: number; from: UserData; }} */
+        data
+    ) => {
       const messageTopic = data.topic;
       const message = data.message;
       const date = new Date(data.date * 1000);
       const from = data.from;
       const state = store.getState();
       let topic;
-      if (state.userKey === messageTopic) {
+      if (state.userName === messageTopic) {
         topic = PERSONAL_TOPIC;
       } else {
         topic = messageTopic;
@@ -62,12 +65,11 @@ function messageReceived(e) {
       boundActions.setMessages(newMessages);
     },
     // system event
-    event: (data) => {
+    event: (/** @type {{ message: string; date: number; }} */ data) => {
       const message = data.message;
       const date = new Date(data.date * 1000);
       const state = store.getState();
-      const newEvents = 
-        [...state.events, { message, date }];
+      const newEvents = [...state.events, { message, date }];
       boundActions.setEvents(newEvents);
     },
   };
@@ -96,6 +98,8 @@ function connectionClosed(e) {
   boundActions.setConnState('not connected');
   if ([1000, 1001, 1005].includes(e.code)) {
     boundActions.setIsLoggedIn(false);
+    boundActions.setSubscribedTopics([]);
+    boundActions.setCurrentTopic('');
     boundActions.setWs(null);
   }
 }
