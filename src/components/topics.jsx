@@ -90,7 +90,7 @@ function TopicListBoxBase(
             currentTopic={currentTopic}
             topic={topic}
             selectTopic={selectTopic}
-            key={topic}
+            key={`topic-${topic}`}
           />
         )
       )}

@@ -30,7 +30,7 @@ function mapToProps(
  * @property {Sockette} ws
  * @property {string} currentTopic
  * @property {UserData} replyingTo
- * @property {Function} setReplyingTo
+ * @property {ValueSetter<UserData>} setReplyingTo
  */
 
 function MessageEditorBase(

@@ -19,9 +19,10 @@ import '../typedefs';
 /**
  * @typedef {Object} AppStateItems
  * @property {string} userName - user screen name / handle
- * @property {string} hostName - chat host name
- * @property {Sockette} ws - web socket object
- * @property {boolean} secure - flag if connection should be secured
+ * @property {string} chatHost - chat host name
+ * @property {Sockette} ws
+ * @property {boolean} secure
+ * @property {string} token
  */
 
 function mapToProps(
@@ -34,9 +35,10 @@ function mapToProps(
 /**
  * @typedef {Object} AppProps
  * @property {string} userName
- * @property {string} chatHostName
+ * @property {string} chatHost
  * @property {Sockette} ws
  * @property {boolean} secure
+ * @property {string} token 
  * @property {ValueSetter<Sockette>} setWs
  */
 function AppBase(

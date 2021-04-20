@@ -105,7 +105,7 @@ function mapToProps({ authHost, secure }) {
 function LoginFormBase(
   {
     authHost, secure,
-    setUserName, setToken, setIsLoggedIn, setSubscribedTopics,
+    setUserName, setToken, setIsLoggedIn, setSubscribedTopics, setCurrentTopic,
   }
 ) {
 
@@ -125,6 +125,9 @@ function LoginFormBase(
       setUserName(name);
       setToken(res.token);
       setSubscribedTopics(res.topics);
+      if (res.topics.includes('general')) {
+        setCurrentTopic('general');
+      }
     }
     setIsLoggedIn(res.token !== '');
   });
@@ -178,7 +181,10 @@ function LoginFormBase(
 const LoginForm = connect(mapToProps, actions)(LoginFormBase);
 
 function RegistrationFormBase(
-    { authHost, secure, setUserName, setToken, setIsLoggedIn, setSubscribedTopics }
+    {
+      authHost, secure,
+      setUserName, setToken, setIsLoggedIn, setSubscribedTopics, setCurrentTopic
+    }
 ) {
   const [name, setName] = useState('');
   const [password1, setPassword1] = useState('');
@@ -219,6 +225,9 @@ function RegistrationFormBase(
       setUserName(name);
       setToken(rv.token);
       setSubscribedTopics(rv.topics);
+      if (rv.topics.includes('general')) {
+        setCurrentTopic('general');
+      }
     }
     setIsLoggedIn(rv.token !== '');
   });
