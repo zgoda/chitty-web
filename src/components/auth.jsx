@@ -6,14 +6,29 @@ import { actions } from '../services/state';
 import { checkUserName, loginUser, registerUser } from '../services/auth';
 import { Toast } from './misc';
 
-function LogoutBase({ setIsLoggedIn }) {
+function logoutMapToProps({ ws }) {
+  return { ws };
+}
+
+function LogoutBase({ ws, setIsLoggedIn, setWs, setToken, setSubscribedTopics }) {
 
   const logoutButtonRef = useRef(null);
+  const disconnectButtonRef = useRef(null);
 
   const handleLogoutButtonClick = ((e) => {
     e.preventDefault();
     setIsLoggedIn(false);
     logoutButtonRef.current && logoutButtonRef.current.blur();
+  });
+
+  const handleDisconnectButtonClick = ((e) => {
+    e.preventDefault();
+    setIsLoggedIn(false);
+    ws.close();
+    setWs(null);
+    setToken('');
+    setSubscribedTopics([]);
+    disconnectButtonRef.current && disconnectButtonRef.current.blur();
   });
 
   return (
@@ -26,14 +41,19 @@ function LogoutBase({ setIsLoggedIn }) {
       >
         <LogOut /> Logout
       </button>
-      <button class="btn btn-link" type="button">
+      <button
+        class="btn btn-link"
+        type="button"
+        ref={disconnectButtonRef}
+        onClick={handleDisconnectButtonClick}
+      >
         <Coffee /> Disconnect
       </button>
     </div>
   );
 }
 
-const Logout = connect(() => ({}), actions)(LogoutBase);
+const Logout = connect(logoutMapToProps, actions)(LogoutBase);
 
 function AuthSelector() {
 
