@@ -61,7 +61,7 @@
     "jest-preset-preact": "^4.0.2",
     "preact-cli": "^3.0.5",
     "regenerator-runtime": "^0.13.7",
-    "sass": "^1.32.10",
+    "sass": "^1.32.11",
     "sass-loader": "<11",
     "sirv-cli": "1.0.11"
   },

@@ -1,6 +1,6 @@
 import { useState, useRef } from 'preact/hooks';
 import { connect } from 'redux-zero/preact';
-import { LogIn, LogOut, UserPlus, Coffee } from 'preact-feather';
+import { LogIn, UserPlus, Coffee } from 'preact-feather';
 
 import { actions } from '../services/state';
 import { checkUserName, loginUser, registerUser } from '../services/auth';
@@ -12,14 +12,7 @@ function logoutMapToProps({ ws }) {
 
 function LogoutBase({ ws, setIsLoggedIn, setWs, setToken, setSubscribedTopics }) {
 
-  const logoutButtonRef = useRef(null);
   const disconnectButtonRef = useRef(null);
-
-  const handleLogoutButtonClick = ((e) => {
-    e.preventDefault();
-    setIsLoggedIn(false);
-    logoutButtonRef.current && logoutButtonRef.current.blur();
-  });
 
   const handleDisconnectButtonClick = ((e) => {
     e.preventDefault();
@@ -33,14 +26,6 @@ function LogoutBase({ ws, setIsLoggedIn, setWs, setToken, setSubscribedTopics })
 
   return (
     <div class="btn-group btn-group-block">
-      <button
-        type="button"
-        class="btn btn-link"
-        ref={logoutButtonRef}
-        onClick={handleLogoutButtonClick}
-      >
-        <LogOut /> Logout
-      </button>
       <button
         class="btn btn-link"
         type="button"
