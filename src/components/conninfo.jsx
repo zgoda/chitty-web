@@ -2,27 +2,30 @@ import { connect } from 'redux-zero/preact';
 
 /**
  * @typedef {Object} ConnInfoProps
- * @property {string} chatHost - websocket server host name
- * @property {boolean} secure - flag if connection should be secured
+ * @property {string} chatHost
+ * @property {string} connState
+ * @property {boolean} secure
  */
 
 function mapToProps(
   /** @type ConnInfoProps **/
-  { chatHost, secure }
+  { chatHost, connState, secure }
 ) {
-  return ({ chatHost, secure });
+  return ({ chatHost, connState, secure });
 }
 
 function ConnectionInfoBase(
   /** @type ConnInfoProps */
-  { chatHost, secure }
+  { chatHost, connState, secure }
 ) {
 
   const secureConnection = secure ? 'secure' : 'insecure';
 
+  const showInfo = chatHost !== '' && connState === 'connected';
+
   return (
     <div>
-      {chatHost && <p>host: <strong>{chatHost}, {secureConnection}</strong></p>}
+      {showInfo && <p>host: <strong>{chatHost}, {secureConnection}</strong></p>}
     </div>
   );
 }

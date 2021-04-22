@@ -11,7 +11,7 @@ const mapToProps = (
 
 function SidebarBase({ connState, isLoggedIn, subscribedTopics, chatHost, authHost }) {
 
-  const canConnect = chatHost !== '' && authHost !== '';
+  const canConnect = chatHost !== '' && authHost !== '' && connState !== 'connected';
   const isConnected = connState === 'connected';
   const hasTopics = subscribedTopics.length > 0;
 

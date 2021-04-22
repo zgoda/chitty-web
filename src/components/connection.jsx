@@ -1,6 +1,7 @@
 import { h } from 'preact';
-import { useState } from 'preact/hooks';
+import { useState, useRef } from 'preact/hooks';
 import { connect } from 'redux-zero/preact';
+import { CloudLightning, XSquare } from 'preact-feather';
 
 import { actions } from '../services/state';
 import { getServerMeta } from '../services/web';
@@ -16,6 +17,9 @@ function HostSelectorBase({ secure, setChatHost, setAuthHost, setSecure }) {
   const [host, setHost] = useState('');
   const [hasError, setHasError] = useState(false);
 
+  const submitButtonRef = useRef(null);
+  const resetButtonRef = useRef(null);
+
   const formName = 'host-selector';
   const inputId = `${formName}-host`;
 
@@ -27,21 +31,43 @@ function HostSelectorBase({ secure, setChatHost, setAuthHost, setSecure }) {
       setChatHost(`${serverMeta.chat.host}:${serverMeta.chat.port}`);
     }
     setHasError(serverMeta == null);
+    submitButtonRef.current && submitButtonRef.current.blur();
+  });
+
+  const formReset = ((e) => {
+    e.preventDefault();
+    setHost('');
+    setHasError(false);
+    setAuthHost('');
+    setChatHost('');
+    resetButtonRef.current && resetButtonRef.current.blur();
   });
 
   return (
-    <div>
+    <form onSubmit={fetchServerMeta} onReset={formReset}>
       <div class={hasError ? 'form-group has-error' : 'form-group'}>
         <label class="form-label" for={inputId}>Server name</label>
-        <input
-          class="form-input"
-          type="text"
-          value={host}
-          id={inputId}
-          onInput={(e) => setHost(e.target.value)}
-          onBlur={fetchServerMeta}
-          required
-        />
+        <div class="input-group">
+          <input
+            class="form-input"
+            type="text"
+            value={host}
+            id={inputId}
+            onInput={(e) => setHost(e.target.value)}
+            onBlur={fetchServerMeta}
+            required
+          />
+          <button
+            class="btn btn-primary btn-action"
+            type="submit"
+            ref={submitButtonRef}
+          >
+            <CloudLightning />
+          </button>
+          <button class="btn btn-link btn-action" type="reset" ref={resetButtonRef}>
+            <XSquare />
+          </button>
+        </div>
         {hasError && <p class="form-input-hint">specified server is invalid</p>}
       </div>
       <div class="form-group">
@@ -53,7 +79,7 @@ function HostSelectorBase({ secure, setChatHost, setAuthHost, setSecure }) {
             <i class="form-icon" /> secure connection
           </label>
         </div>
-    </div>
+    </form>
   );
 }
 
