@@ -5,11 +5,9 @@
 import { bindActions } from 'redux-zero/utils';
 
 import { store, actions } from './state';
+import { DEFAULT_TOPIC, PERSONAL_TOPIC } from '../utils/topic';
 
 import '../typedefs';
-
-const DEFAULT_TOPIC = 'general';
-const PERSONAL_TOPIC = 'personal';
 
 const boundActions = bindActions(actions, store);
 

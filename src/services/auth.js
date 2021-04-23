@@ -3,6 +3,7 @@
  * @fileoverview Authentication service functions.
  */
 import { parseHost, makeUrl } from '../utils/web';
+import { orderTopics } from '../utils/topic';
 
 /**
  * @typedef {Object} LoginResult
@@ -38,7 +39,7 @@ async function registerUser(hostName, secure, userName, password) {
   if (resp.status === 200) {
     const data = await resp.json();
     rv.token = data.token;
-    rv.topics = data.topics;
+    rv.topics = orderTopics(data.topics, userName);
   } else {
     rv.error = 'user already exists';
   }
@@ -71,7 +72,7 @@ async function loginUser(hostName, secure, userName, password) {
   if (resp.status === 200) {
     const data = await resp.json();
     rv.token = data.token;
-    rv.topics = data.topics;
+    rv.topics = orderTopics(data.topics, userName);
   } else {
     rv.error = 'invalid credentials';
   }
