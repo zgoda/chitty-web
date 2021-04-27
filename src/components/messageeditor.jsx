@@ -48,10 +48,11 @@ function MessageEditorBase(
 
   const canSend = isLoggedIn && connState == 'connected' && currentTopic !== '';
 
-  const handleMessageTextInput =
-    ((e) => setMessageText(e.target.value.trim()));
+  const handleMessageTextInput = (
+    (/** @type InputEvent */e) => setMessageText(e.target.value.trim())
+  );
 
-  const handleSubmit = ((e) => {
+  const handleSubmit = ((/** @type SubmitEvent */e) => {
     e.preventDefault();
     if (canSend && messageText.length > 0) {
       sendChatMessage(ws, messageText, currentTopic, replyingTo);

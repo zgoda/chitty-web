@@ -48,9 +48,9 @@ function MessageActionLine(/** @type MessageActionLineProps */{ message, userNam
 
   return (
     <div class="tile-subtitle">
-      {displayReply && <ReplyActionItem name={message.from} />}
+      {displayReply && <ReplyActionItem msgFrom={message.from} />}
       {displayReply ? ' • ' : ''}
-      {displayReply && <DMActionItem name={message.from} />}
+      {displayReply && <DMActionItem msgFrom={message.from} />}
       {displayReply ? ' • ' : ''}
       details
     </div>    

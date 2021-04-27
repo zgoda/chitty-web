@@ -1,3 +1,4 @@
+// @ts-check
 import { connect } from 'redux-zero/preact';
 
 /**
