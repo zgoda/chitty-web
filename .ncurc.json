@@ -1,6 +1,7 @@
 {
   "reject": [
     "sass-loader",
+    "jest",
     "eslint"
   ]
 }
