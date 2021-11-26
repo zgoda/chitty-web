@@ -161,6 +161,7 @@ function LoginFormBase(
             name="name"
             value={name}
             required
+            // @ts-ignore
             onInput={(e) => setName(e.target.value)}
           />
         </div>
@@ -173,6 +174,7 @@ function LoginFormBase(
             name="password"
             required
             value={password}
+            // @ts-ignore
             onInput={(e) => setPassword(e.target.value)}
           />
         </div>
@@ -238,7 +240,7 @@ function RegistrationFormBase(
     setIsLoggedIn(rv.token !== '');
   });
 
-  const closeToast = ((e) => {
+  const closeToast = ((/** @type {{ preventDefault: () => void; }} */ e) => {
     e.preventDefault();
     setLoginResult({ token: '', error: '', topics: [] });
   });
@@ -274,6 +276,7 @@ function RegistrationFormBase(
             name="password1"
             required
             value={password1}
+            // @ts-ignore
             onInput={(e) => setPassword1(e.target.value)}
           />
         </div>
@@ -286,6 +289,7 @@ function RegistrationFormBase(
             name="password2"
             required
             value={password2}
+            // @ts-ignore
             onInput={(e) => setPassword2(e.target.value)}
           />
           {passwordHasError && <p class="form-input-hint">passwords do not match</p>}
